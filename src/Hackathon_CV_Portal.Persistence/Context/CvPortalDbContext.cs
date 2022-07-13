@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Hackathon_CV_Portal.Domain.Users;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hackathon_CV_Portal.Persistence.Context
 {
-    public class CvPortalDbContext : IdentityDbContext
+    public class CvPortalDbContext : IdentityDbContext<ApplicationUser, IdentityRole<int>, int>
     {
         public CvPortalDbContext(DbContextOptions<CvPortalDbContext> options) : base(options)
         {

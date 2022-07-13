@@ -1,4 +1,5 @@
 ﻿using Hackathon_CV_Portal.Application;
+using Hackathon_CV_Portal.Data;
 
 namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
 {
@@ -14,6 +15,14 @@ namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
             services.AddControllersWithViews();
 
             services.AddApplication(configuration);
+
+            //services.AddIdentity<IdentityUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<CvPortalDbContext>();
+
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<CvPortalDbContext>();
+
+            services.AddRepository();
 
             return builder;
         }
