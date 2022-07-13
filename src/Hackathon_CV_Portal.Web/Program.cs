@@ -20,8 +20,13 @@ try
 
     builder.ConfigureService();
 
-    builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>()
+    builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
                     .AddEntityFrameworkStores<CvPortalDbContext>();
+
+    //services.AddIdentity<ApplicationUser, ApplicationRole>()
+    //    .AddEntityFrameworkStores<ApplicationDbContext>()
+    //    .AddDefaultUI()
+    //    .AddDefaultTokenProviders();
 
     builder.Services.AddRazorPages();
 
