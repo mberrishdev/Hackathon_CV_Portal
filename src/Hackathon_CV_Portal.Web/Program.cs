@@ -13,7 +13,7 @@ try
 
     builder.Services.AddDbContext<CvPortalDbContext>(options =>
     {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("MovieDBContextConnection"));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("HackathonCvPortalContextConnection"));
     });
 
     builder.ConfigureService();
