@@ -2,6 +2,7 @@
 using Hackathon_CV_Portal.Data;
 using Hackathon_CV_Portal.Persistence.Seed;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
 {
@@ -26,8 +27,17 @@ namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
                 };
             });
 
+            services.AddAntiforgery(options =>
+            {
+                options.FormFieldName = "AntiforgeryFieldname";
+                options.HeaderName = "X-CSRF-TOKEN-HEADERNAME";
+                options.SuppressXFrameOptionsHeader = false;
+            });
+
+
             // Add services to the container.
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options =>
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
             services.AddRepository();
             services.AddApplication(configuration);
 
@@ -38,6 +48,15 @@ namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<CvPortalDbContext>();
+
+
+            services.AddAuthorization(opts =>
+            {
+                opts.AddPolicy("AspManager", policy =>
+                {
+                    policy.RequireRole("Test");
+                });
+            });
 
             return builder;
         }
