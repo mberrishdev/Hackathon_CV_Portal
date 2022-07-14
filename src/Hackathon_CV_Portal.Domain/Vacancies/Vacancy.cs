@@ -1,14 +1,14 @@
-﻿using Hackathon_CV_Portal.Domain.Users;
+﻿using Hackathon_CV_Portal.Domain.Categories;
+using Hackathon_CV_Portal.Domain.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hackathon_CV_Portal.Domain.Vcancies
 {
-    public class Vacancie
+    public class Vacancy
     {
         [Key]
         public int Id { get; private set; }
-        public int CategoryId { get; private set; }
         [Required, Column(TypeName = "NVARCHAR"), MaxLength(50)]
         public string Title { get; private set; }
         public int Salary { get; private set; }
@@ -23,6 +23,7 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
 
         public int UserId { get; set; }
         public ApplicationUser User { get; set; }
+        public Category Category { get; set; }
         //public ICollection<FavouriteVacancie> FavouriteVacancies { get; set; }
     }
 }

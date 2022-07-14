@@ -1,5 +1,7 @@
-﻿using Hackathon_CV_Portal.Domain.CVs;
+﻿using Hackathon_CV_Portal.Domain.Categories;
+using Hackathon_CV_Portal.Domain.CVs;
 using Hackathon_CV_Portal.Domain.Educations;
+using Hackathon_CV_Portal.Domain.FavouriteVacancies;
 using Hackathon_CV_Portal.Domain.Skills;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vcancies;
@@ -17,7 +19,12 @@ namespace Hackathon_CV_Portal.Persistence.Context
 
 
         public DbSet<CV> CVs { get; set; }
-        public DbSet<Vacancie> Vacancies { get; set; }
+        public DbSet<Education> Educations { get; set; }
+        public DbSet<FavouriteVacancy> FavouriteVacancies { get; set; }
+        public DbSet<Skill> Skills { get; set; }
+        public DbSet<WorkignExperience> WorkignExperiences { get; set; }
+        public DbSet<Vacancy> Vacancies { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,14 +41,16 @@ namespace Hackathon_CV_Portal.Persistence.Context
             //             .HasKey(x => x.Id);
 
             modelBuilder.Entity<ApplicationUser>()
-                .HasOne(c => c.CV)
-                .WithOne(u => u.User)
-                .HasForeignKey<CV>(k => k.UserId);
+                .HasMany(c => c.CVs)
+                .WithOne(u => u.User);
+
+            modelBuilder.Entity<Category>()
+                .HasMany(V => V.Vacancies)
+                .WithOne(c => c.Category);
 
             modelBuilder.Entity<ApplicationUser>()
-                .HasOne(v => v.Vacancie)
-                .WithOne(u => u.User)
-                .HasForeignKey<Vacancie>(k => k.UserId);
+                .HasMany(v => v.Vacancies)
+                .WithOne(u => u.User);
 
             modelBuilder.Entity<CV>()
                 .HasMany(e => e.Educations)

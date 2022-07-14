@@ -1,0 +1,35 @@
+﻿@using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
+@model IEnumerable<VacancyModel>
+
+
+<table class="table table-striped">
+ <thead>
+        <tr>
+            <th>Title</th>
+            <th>Salary</th>
+            <th>Currency</th>
+            <th>CategoryId</th>
+        </tr>
+    </thead>
+    <tbody>
+         @foreach (var vacancy in Model)
+        {
+            <tr>
+                <td>
+                    <p class="pull-right">@vacancy.Title</p>
+                </td>
+                <td>
+                    <p class="pull-right">@vacancy.Salary</p>
+                </td>
+                <td>
+                    <p class="pull-right">@vacancy.Currency</p>
+                </td>
+                <td>
+                    <p class="pull-right">@vacancy.CategoryId</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

@@ -1,4 +1,5 @@
 ﻿using Hackathon_CV_Portal.Data.Abstractions;
+using Hackathon_CV_Portal.Data.Pagination;
 using Hackathon_CV_Portal.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -32,6 +33,13 @@ namespace Hackathon_CV_Portal.Data.Implementations
             query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
             return await query.ToListAsync();
 
+        }
+
+        public async Task<DomainPagedResult<T>> GetAllAsyncByPage(int page, int resultsPerPage = 10)
+        {
+            IQueryable<T> query = _context.Set<T>();
+            var result = query.Paginate<T>(new DomainPagedQueryBase(page, resultsPerPage));
+            return result;
         }
 
         public async Task<T> GetAsync(object key)

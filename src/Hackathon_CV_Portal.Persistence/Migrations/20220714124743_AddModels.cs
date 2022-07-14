@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Hackathon_CV_Portal.Persistence.Migrations
 {
-    public partial class AddAllModel : Migration
+    public partial class AddModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,6 +49,33 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FavouriteVacancies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    VacansyId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavouriteVacancies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,14 +218,14 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
                     Title = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
                     Salary = table.Column<int>(type: "int", nullable: false),
                     Currency = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     PublishDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeadLine = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(500)", maxLength: 500, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -209,10 +236,16 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Vacancies_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Education",
+                name: "Educations",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -227,9 +260,9 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Education", x => x.Id);
+                    table.PrimaryKey("PK_Educations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Education_CVs_CVId",
+                        name: "FK_Educations_CVs_CVId",
                         column: x => x.CVId,
                         principalTable: "CVs",
                         principalColumn: "Id",
@@ -237,7 +270,7 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Skill",
+                name: "Skills",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -247,9 +280,9 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Skill", x => x.Id);
+                    table.PrimaryKey("PK_Skills", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Skill_CVs_CVId",
+                        name: "FK_Skills_CVs_CVId",
                         column: x => x.CVId,
                         principalTable: "CVs",
                         principalColumn: "Id",
@@ -257,7 +290,7 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkignExperience",
+                name: "WorkignExperiences",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -272,9 +305,9 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkignExperience", x => x.Id);
+                    table.PrimaryKey("PK_WorkignExperiences", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkignExperience_CVs_CVId",
+                        name: "FK_WorkignExperiences_CVs_CVId",
                         column: x => x.CVId,
                         principalTable: "CVs",
                         principalColumn: "Id",
@@ -323,28 +356,31 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CVs_UserId",
                 table: "CVs",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Education_CVId",
-                table: "Education",
+                name: "IX_Educations_CVId",
+                table: "Educations",
                 column: "CVId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Skill_CVId",
-                table: "Skill",
+                name: "IX_Skills_CVId",
+                table: "Skills",
                 column: "CVId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vacancies_CategoryId",
+                table: "Vacancies",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vacancies_UserId",
                 table: "Vacancies",
-                column: "UserId",
-                unique: true);
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkignExperience_CVId",
-                table: "WorkignExperience",
+                name: "IX_WorkignExperiences_CVId",
+                table: "WorkignExperiences",
                 column: "CVId");
         }
 
@@ -366,19 +402,25 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Education");
+                name: "Educations");
 
             migrationBuilder.DropTable(
-                name: "Skill");
+                name: "FavouriteVacancies");
+
+            migrationBuilder.DropTable(
+                name: "Skills");
 
             migrationBuilder.DropTable(
                 name: "Vacancies");
 
             migrationBuilder.DropTable(
-                name: "WorkignExperience");
+                name: "WorkignExperiences");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "CVs");

@@ -2,7 +2,7 @@
 
 namespace Hackathon_CV_Portal.Domain.FavouriteVacancies
 {
-    public class FavouriteVacancie
+    public class FavouriteVacancy
     {
         [Key]
         public int Id { get; set; }
