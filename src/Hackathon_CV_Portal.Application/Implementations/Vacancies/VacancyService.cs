@@ -1,6 +1,7 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
 using Hackathon_CV_Portal.Data.Abstractions;
+using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vcancies;
 using System.Linq.Expressions;
 
@@ -13,6 +14,11 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
         public VacancyService(IBaseRepository<Vacancy> baseRepository)
         {
             _baseRepository = baseRepository;
+        }
+
+        public async Task CreateVacancy(CreateVacancyCommand command)
+        {
+            await _baseRepository.CreateAsync(new Vacancy(command));
         }
 
         public async Task<VacansyVM> ListVacancyQuery(int page, Expression<Func<Vacancy, bool>>? expression = null)

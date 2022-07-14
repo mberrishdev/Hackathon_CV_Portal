@@ -1,5 +1,6 @@
 ﻿using Hackathon_CV_Portal.Domain.Categories;
 using Hackathon_CV_Portal.Domain.Users;
+using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,5 +27,21 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
         public ApplicationUser User { get; set; }
         public Category Category { get; set; }
         //public ICollection<FavouriteVacancie> FavouriteVacancies { get; set; }
+
+        public Vacancy()
+        {
+        }
+
+        public Vacancy(CreateVacancyCommand command)
+        {
+            Title = command.Title;
+            Salary = command.Salary;
+            Currency = command.Currency;
+            PublishDate = DateTime.Now;
+            DeadLine = command.DeadLine;
+            Description = command.Description;
+            CategoryId = command.CategoryId;
+            UserId = command.UserId;
+        }
     }
 }
