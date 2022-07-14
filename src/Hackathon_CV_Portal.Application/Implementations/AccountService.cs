@@ -72,12 +72,7 @@ namespace Hackathon_CV_Portal.Application.Implementations
 
         public async Task<IEnumerable<IdentityError>> RegisterAsync(CreateAppilicationUserCommand command, UserType userType)
         {
-            string userName = command.UserName;
-            var user = new ApplicationUser
-            {
-                UserName = userName,
-                Email = command.Email,
-            };
+            var user = new ApplicationUser(command);
 
             string role;
             if (userType == UserType.User)

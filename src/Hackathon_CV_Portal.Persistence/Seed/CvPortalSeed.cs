@@ -1,10 +1,8 @@
 ﻿using Hackathon_CV_Portal.Domain.Enums;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Persistence.Context;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Hackathon_CV_Portal.Persistence.Seed
 {
@@ -16,6 +14,7 @@ namespace Hackathon_CV_Portal.Persistence.Seed
             using var scope = serviceProvider.CreateScope();
             var database = scope.ServiceProvider.GetRequiredService<CvPortalDbContext>();
 
+            Migrate(database);
             Seed(database);
         }
 
@@ -51,6 +50,11 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     seeded = true;
                 }
             }
+        }
+
+        private static void Migrate(CvPortalDbContext context)
+        {
+            context.Database.Migrate();
         }
     }
 }
