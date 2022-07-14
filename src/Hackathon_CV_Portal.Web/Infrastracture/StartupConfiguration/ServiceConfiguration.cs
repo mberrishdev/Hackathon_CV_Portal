@@ -27,17 +27,18 @@ namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
                 };
             });
 
-            services.AddAntiforgery(options =>
-            {
-                options.FormFieldName = "AntiforgeryFieldname";
-                options.HeaderName = "X-CSRF-TOKEN-HEADERNAME";
-                options.SuppressXFrameOptionsHeader = false;
-            });
+            //services.AddAntiforgery(options =>
+            //{
+            //    options.FormFieldName = "AntiforgeryFieldname";
+            //    options.HeaderName = "X-CSRF-TOKEN-HEADERNAME";
+            //    options.SuppressXFrameOptionsHeader = false;
+            //});
 
 
             // Add services to the container.
             services.AddControllersWithViews(options =>
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+
             services.AddRepository();
             services.AddApplication(configuration);
 
