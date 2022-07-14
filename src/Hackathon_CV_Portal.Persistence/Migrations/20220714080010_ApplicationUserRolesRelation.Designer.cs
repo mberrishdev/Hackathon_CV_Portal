@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hackathon_CV_Portal.Persistence.Migrations
 {
     [DbContext(typeof(CvPortalDbContext))]
-    [Migration("20220713212834_AddIdentityUse")]
-    partial class AddIdentityUse
+    [Migration("20220714080010_ApplicationUserRolesRelation")]
+    partial class ApplicationUserRolesRelation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -254,16 +254,6 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<int>");
 
-                    b.Property<int>("RoleId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId1")
-                        .HasColumnType("int");
-
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId1");
-
                     b.HasDiscriminator().HasValue("ApplicationUserRole");
                 });
 
@@ -301,12 +291,6 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Hackathon_CV_Portal.Domain.Users.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -322,13 +306,13 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                 {
                     b.HasOne("Hackathon_CV_Portal.Domain.Users.ApplicationRole", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId1")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Hackathon_CV_Portal.Domain.Users.ApplicationUser", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId1")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

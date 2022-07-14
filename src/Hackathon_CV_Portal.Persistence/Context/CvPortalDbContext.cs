@@ -15,6 +15,10 @@ namespace Hackathon_CV_Portal.Persistence.Context
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CvPortalDbContext).Assembly);
+
+            modelBuilder.Entity<ApplicationUserRole>().HasOne(item => item.Role).WithMany(item => item.UserRoles).HasForeignKey(item => item.RoleId);
+            modelBuilder.Entity<ApplicationUserRole>().HasOne(item => item.User).WithMany(item => item.UserRoles).HasForeignKey(item => item.UserId);
+
         }
     }
 }

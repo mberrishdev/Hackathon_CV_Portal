@@ -40,7 +40,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
                 UserName = model.UserName,
                 Email = model.Email,
                 Password = model.Password,
-                ConfirmPassword = model.Password
+                ConfirmPassword = model.ConfirmPassword
             };
 
             var result = await _accountService.RegisterAsync(createAppilicationUserCommand, UserType.User);
