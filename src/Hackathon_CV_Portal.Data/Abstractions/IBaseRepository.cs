@@ -7,7 +7,7 @@ namespace Hackathon_CV_Portal.Data.Abstractions
     {
         Task<ICollection<T>> GetListAsync(Expression<Func<T, bool>> predicate = null);
         Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includeProperties);
-        Task<DomainPagedResult<T>> GetAllAsyncByPage(int page, int resultsPerPage = 10);
+        Task<DomainPagedResult<T>> GetAllAsyncByPage(int page, Expression<Func<T, object>>[] includeProperties, Expression<Func<T, bool>>? expression = null, int resultsPerPage = 10);
         Task<T> GetAsync(object key);
         Task<T> GetForUpdateAsync(object key);
         Task CreateAsync(T entity);

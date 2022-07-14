@@ -1,6 +1,14 @@
 ﻿@using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
-@model IEnumerable<VacancyModel>
+@model VacansyVM
 
+
+@using (Html.BeginForm("Index", "Vacancy", FormMethod.Get))
+{
+    <p>
+        კატეგორია: @Html.TextBox("searchCategory", ViewBag.CurrentFilter as string)
+        <input type="submit" value="ძებნა" />
+    </p>
+}
 
 <table class="table table-striped">
  <thead>
@@ -8,11 +16,12 @@
             <th>Title</th>
             <th>Salary</th>
             <th>Currency</th>
-            <th>CategoryId</th>
+            <th>Category</th>
+            <th>Detail</th>
         </tr>
     </thead>
     <tbody>
-         @foreach (var vacancy in Model)
+         @foreach (var vacancy in Model.VacancyModels)
         {
             <tr>
                 <td>
@@ -25,11 +34,24 @@
                     <p class="pull-right">@vacancy.Currency</p>
                 </td>
                 <td>
-                    <p class="pull-right">@vacancy.CategoryId</p>
+                    <p class="pull-right">@vacancy.Category</p>
                 </td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="Vacansy" asp-action="Detail" asp-route-id="@vacancy.Id">Detail</a>
+                </td>
+                
             </tr>
         }
     </tbody>
 </table>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+      @for(int i=1; i<=Model.TottalPages; i++)
+      {
+          <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
+      }
+  </ul>
+</nav>
 
 

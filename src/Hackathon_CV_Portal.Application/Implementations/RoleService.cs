@@ -1,32 +1,34 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Domain.Users;
+using Hackathon_CV_Portal.Persistence.Context;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace Hackathon_CV_Portal.Application.Implementations
 {
     public class RoleService : IRoleService
     {
-        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly CvPortalDbContext _context;
 
-        public RoleService(RoleManager<ApplicationRole> roleManager)
+        public RoleService(UserManager<ApplicationUser> userManager, CvPortalDbContext context)
         {
-            _roleManager = roleManager;
+            _userManager = userManager;
+            _context = context;
         }
 
-        public async Task<List<ApplicationRole>> GetUserRoleAsync(int userId)
+        public Task<List<string>> GetUserRoleAsync(int userId)
         {
+            var userRoles = _context.UserRoles.Where(x => x.UserId == userId).ToList();
 
-            var roles = await _userManager.Users.Include(u => u.UserRoles)
-                                          .ThenInclude(ur => ur.Role)
-                                          .AsNoTracking()
-                                          .FirstOrDefault(x => x.Id == userId).UserRoles
-                                          .Select(x => x.Role)
-                                          .AsQueryable()
-                                          .ToListAsync();
+            var result = new List<string>();
 
-            return roles;
+            foreach (var userRole in userRoles)
+            {
+                var role = _context.Roles.FirstOrDefault(x => x.Id == userRole.RoleId);
+                result.Add(role.Name);
+            }
+
+            return Task.FromResult(result);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
-using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
+using Hackathon_CV_Portal.Domain.Vcancies;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 {
@@ -13,9 +14,15 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             _vacancyService = vacancyService;
         }
 
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, string searchCategory = null)
         {
-            List<VacancyModel> result = await _vacancyService.ListVacancyQuery(page);
+            Expression<Func<Vacancy, bool>>? expression = null;
+            if (!String.IsNullOrEmpty(searchCategory))
+            {
+                expression = x => x.Category.Name.Contains(searchCategory);
+            }
+
+            var result = await _vacancyService.ListVacancyQuery(page, expression);
 
             if (result == null)
                 return RedirectToAction("Index", "NotFound");

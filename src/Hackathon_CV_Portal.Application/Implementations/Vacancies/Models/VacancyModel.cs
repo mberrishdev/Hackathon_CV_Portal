@@ -3,7 +3,7 @@
     public class VacancyModel
     {
         public int Id { get; set; }
-        public int CategoryId { get; set; }
+        public string Category { get; set; }
         public string Title { get; set; }
         public int Salary { get; set; }
         public string Currency { get; set; }

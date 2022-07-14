@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Accounts
 {
-    public class UserAccountController : BaseController
+    public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
 
-        public UserAccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
         }
@@ -20,6 +20,11 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
             return View();
         }
         public IActionResult Register()
+        {
+            return View();
+        }
+
+        public IActionResult Profile()
         {
             return View();
         }
@@ -43,7 +48,11 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
                 ConfirmPassword = model.ConfirmPassword
             };
 
-            var result = await _accountService.RegisterAsync(createAppilicationUserCommand, UserType.User);
+            UserType userType = UserType.User;
+            if (model.IsCompany)
+                userType = UserType.Company;
+
+            var result = await _accountService.RegisterAsync(createAppilicationUserCommand, userType);
 
             if (!result.Any())
                 return RedirectToAction("Login");

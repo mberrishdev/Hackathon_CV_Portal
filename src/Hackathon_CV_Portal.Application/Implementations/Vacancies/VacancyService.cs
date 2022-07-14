@@ -2,7 +2,7 @@
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
 using Hackathon_CV_Portal.Data.Abstractions;
 using Hackathon_CV_Portal.Domain.Vcancies;
-using Mapster;
+using System.Linq.Expressions;
 
 namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
 {
@@ -15,13 +15,29 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
             _baseRepository = baseRepository;
         }
 
-        public async Task<List<VacancyModel>> ListVacancyQuery(int page)
+        public async Task<VacansyVM> ListVacancyQuery(int page, Expression<Func<Vacancy, bool>>? expression = null)
         {
-            var vacancies = await _baseRepository.GetAllAsyncByPage(page);
+            var vacancies = await _baseRepository.GetAllAsyncByPage(page, expression: expression,
+                includeProperties: new Expression<Func<Vacancy, object>>[1] { x => x.Category });
+
             if (vacancies == null)
                 return null;
 
-            return vacancies.Items.Adapt<List<VacancyModel>>();
+            return new VacansyVM()
+            {
+                VacancyModels = vacancies.Items.Select(x => new VacancyModel()
+                {
+                    Id = x.Id,
+                    Category = x.Category.Name,
+                    Title = x.Title,
+                    Salary = x.Salary,
+                    Currency = x.Currency,
+                    PublishDate = x.PublishDate,
+                    DeadLine = x.DeadLine,
+                    Description = x.Description,
+                }).ToList(),
+                TottalPages = vacancies.TotalPages
+            };
         }
     }
 }

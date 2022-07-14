@@ -50,7 +50,7 @@ namespace Hackathon_CV_Portal.Application.Implementations
 
                     foreach (var userRole in userRoles)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, userRole.Name));
+                        claims.Add(new Claim(ClaimTypes.Role, userRole));
                     }
 
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

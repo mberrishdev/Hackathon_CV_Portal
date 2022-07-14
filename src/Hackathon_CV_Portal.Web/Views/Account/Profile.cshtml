@@ -1,0 +1,10 @@
+﻿@using Hackathon_CV_Portal.Domain.Users
+@using Hackathon_CV_Portal.Domain.Enums
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject SignInManager<ApplicationUser> SignInManager
+
+@if (User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()))
+{
+   <a class="btn btn-primary" asp-controller="Vcanshy" asp-action="Add">Add</a>
+}

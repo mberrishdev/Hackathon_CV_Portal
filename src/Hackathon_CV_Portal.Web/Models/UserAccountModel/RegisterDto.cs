@@ -23,5 +23,8 @@ namespace Hackathon_CV_Portal.Web.Models.UserAccountModel
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "დავრეგისტრირდე როგორც კომპანია")]
+        public bool IsCompany { get; set; }
     }
 }
