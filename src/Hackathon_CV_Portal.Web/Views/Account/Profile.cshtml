@@ -6,5 +6,8 @@
 
 @if (User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()))
 {
-   <a class="btn btn-primary" asp-controller="Vacancy" asp-action="Add">Add</a>
+   <a class="btn btn-primary" asp-controller="Vacancy" asp-action="Add">ვაკანსიის დამატება</a>
+
+   <a class="btn btn-primary" asp-controller="Vacancy" asp-action="Index" asp-route-companyId="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))">ჩემი ვაკანისები</a>
+
 }

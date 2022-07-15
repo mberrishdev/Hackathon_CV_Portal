@@ -1,9 +1,12 @@
-﻿using Hackathon_CV_Portal.Domain.AppliedCurriculumVitaes.Commands;
+﻿using Hackathon_CV_Portal.Application.Implementations.AppliedCurriculumVitaes.Models;
+using Hackathon_CV_Portal.Application.Implementations.AppliedCurriculumVitaes.Queries;
+using Hackathon_CV_Portal.Domain;
 
 namespace Hackathon_CV_Portal.Application.Abstractions
 {
     public interface IAppliedCurriculumVitaeService
     {
-        Task ApplyVacancy(ApplyCurriculimVataeCommand command);
+        Task ApplyVacancy(int vacansyId, UserModel userModel);
+        Task<AppliedCurriculumVitaesVM> GetCurriculumVitaeByVacancyId(GetCurriculumVitaeByVacancyIdQuery query);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Queries;
-using Hackathon_CV_Portal.Domain;
 using Hackathon_CV_Portal.Domain.FavouriteVacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 
@@ -13,6 +12,5 @@ namespace Hackathon_CV_Portal.Application.Abstractions
         Task<VacancyModel> GetVacancyById(int id);
         Task AddFavourite(AddFavouriteCommand command);
         Task RemoveFavourite(RemoveFavouriteCommand command);
-        Task ApplyVacancy(int vacansyId, UserModel userModel);
     }
 }
