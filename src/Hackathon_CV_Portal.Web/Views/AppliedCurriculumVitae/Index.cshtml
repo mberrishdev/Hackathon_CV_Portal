@@ -1,0 +1,90 @@
+﻿@using Hackathon_CV_Portal.Application.Implementations.AppliedCurriculumVitaes.Models
+@using Hackathon_CV_Portal.Domain.Enums
+@using Hackathon_CV_Portal.Domain.Users
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@inject SignInManager<ApplicationUser> SignInManager
+@model AppliedCurriculumVitaesVM
+
+    <div class="container-xxl py-5">
+    <div class="container">
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">ვაკანსიები</h1>
+
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+            <li class="nav-item">
+                <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
+                    <h6 class="mt-n1 mb-0"><a class="page-link" href="?vacancyType=FullTime">Full Time</a></h6>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
+                    <h6 class="mt-n1 mb-0"><a class="page-link" href="?vacancyType=PartTime">Part Time</a></h6>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane fade show p-0 active">
+                @if (Model.IsEmpty)
+                {    @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
+                        {
+                            <h2>ვაკანსიები არ არის დამატებული.</h2>
+                        }
+                    @if (User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()))
+                        {
+                            <h2>თქვენ არ გაქვს განთავსებული ვაკასიები.</h2>
+                            <a class="btn btn-primary" asp-controller="Vacancy" asp-action="Add">ვაკანსიის დამატება</a>
+                        }
+                }
+                else
+                {
+                    @foreach (var cv in Model.CurriculumVitaes)
+                    {
+                        <div class="job-item p-3 mb-2 bg-light text-dark">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">@cv.FirstName @cv.LastName</h5>
+                                        <span class="text-truncate me-3"><i class="bi bi-envelope text-primary me-2"></i>@cv.Email</span>
+                                        <span class="text-truncate me-3"><i class="bi bi-phone text-primary me-2"></i>@cv.PhoneNumber</span>
+                                        <span class="text-truncate me-0"><i class="bi bi-calendar text-primary me-2"></i>@cv.Age</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        @*@if (@vacancy.IsFavourite && User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
+                                        {
+                                            <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="RemoveFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary bi-suit-heart-fill" ></i></a>
+                                        }
+                                        else if(User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
+                                        {
+                                            <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="AddFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary" ></i></a>
+                                        }
+                                        @if(User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) || !SignInManager.IsSignedIn(User))
+                                        {
+                                            <a class="btn btn-primary me-2" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@vacancy.Id">Apply Now</a>
+                                        }*@
+                                        <a class="btn btn-info me-2" asp-controller="CurriculumVitae" asp-action="Index" asp-route-cvId="@cv.Id">დეტალები</a>
+                                        @*@if (User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                                        {
+                                            <a class="btn btn-warning me-2" asp-controller="Vacancy" asp-action="Edit" asp-route-id="@vacancy.Id">რედაქტირება</a>
+                                        }
+                                        @if ((User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))) || User.HasClaim(ClaimTypes.Role, UserRole.Admin.ToString()))
+                                        {
+                                            <a class="btn btn-danger me-2" asp-controller="Vacancy" asp-action="Delete" asp-route-id="@vacancy.Id">წაშლა</a>
+                                        }*@
+                                    </div>
+                                    @*<small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>@vacancy.DeadLine</small>*@
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+        </div>
+        </div>
+         </div>
+    </div>
+</div>
+
+
+

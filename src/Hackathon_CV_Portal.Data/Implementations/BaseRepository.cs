@@ -1,4 +1,5 @@
 ﻿using Hackathon_CV_Portal.Data.Abstractions;
+using Hackathon_CV_Portal.Data.Pagination;
 using Hackathon_CV_Portal.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -26,7 +27,7 @@ namespace Hackathon_CV_Portal.Data.Implementations
             return await _dbSet.Where(predicate).ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includeProperties)
+        public async Task<IEnumerable<T>> GetAllAsyncWithIP(params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _context.Set<T>();
             query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
@@ -34,10 +35,27 @@ namespace Hackathon_CV_Portal.Data.Implementations
 
         }
 
-        public async Task<T> GetAsync(object key)
+        public async Task<DomainPagedResult<T>> GetAllAsyncByPage(int page, Expression<Func<T, object>>[] includeProperties,
+            Expression<Func<T, bool>>? expression = null, int resultsPerPage = 10)
         {
-            var obj = new object[1] { key };
-            return await _dbSet.FindAsync(obj);
+            IQueryable<T> query = _context.Set<T>();
+
+            if (expression != null)
+                query = query.Where(expression);
+
+            query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+            var result = query.Paginate<T>(new DomainPagedQueryBase(page, resultsPerPage));
+            return result;
+        }
+
+        public async Task<T> GetAsync(Expression<Func<T, object>>[] includeProperties, Expression<Func<T, bool>> predicate)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (includeProperties != null)
+                query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+
+            return await query.FirstOrDefaultAsync(predicate);
         }
 
         public async Task<T> GetForUpdateAsync(object key)
@@ -68,16 +86,22 @@ namespace Hackathon_CV_Portal.Data.Implementations
             await _context.SaveChangesAsync();
         }
 
+        public async Task<T> GetAsyncByKey(object key)
+        {
+            var obj = new object[1] { key };
+            return await _dbSet.FindAsync(obj);
+        }
+
         public async Task RemoveAsync(params object[] key)
         {
-            var entity = await GetAsync(key);
+            var entity = await GetAsyncByKey(key);
             _dbSet.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
-        public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.AnyAsync(predicate);
+            return await _dbSet.AnyAsync(predicate);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
+using Hackathon_CV_Portal.Application.Implementations.Cv;
+using Hackathon_CV_Portal.Domain.CVs.Commands;
 using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Users.Commands;
@@ -16,18 +18,21 @@ namespace Hackathon_CV_Portal.Application.Implementations
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRoleService _roleService;
+        private readonly ICvService _cvService;
         private readonly ILogger<AccountService> _logger;
 
         public AccountService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IRoleService roleService,
+            ICvService cvService,
             ILogger<AccountService> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleService = roleService;
             _logger = logger;
+            _cvService = cvService;
         }
 
         public async Task<SignInStatus> LoginAsync(LogInUserCommand command, HttpContext httpContext)
@@ -45,12 +50,13 @@ namespace Hackathon_CV_Portal.Application.Implementations
                     var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(ClaimTypes.Email, user.Email)
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                     };
 
                     foreach (var userRole in userRoles)
                     {
-                        claims.Add(new Claim(ClaimTypes.Role, userRole.Name));
+                        claims.Add(new Claim(ClaimTypes.Role, userRole));
                     }
 
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -72,12 +78,7 @@ namespace Hackathon_CV_Portal.Application.Implementations
 
         public async Task<IEnumerable<IdentityError>> RegisterAsync(CreateAppilicationUserCommand command, UserType userType)
         {
-            string userName = command.UserName;
-            var user = new ApplicationUser
-            {
-                UserName = userName,
-                Email = command.Email,
-            };
+            var user = new ApplicationUser(command);
 
             string role;
             if (userType == UserType.User)
@@ -91,6 +92,26 @@ namespace Hackathon_CV_Portal.Application.Implementations
             {
                 _logger.LogInformation("User created a new account with password.");
                 await _userManager.AddToRoleAsync(user, role);
+
+                // Create Cv
+                if (userType == UserType.User)
+                {
+                    CreateCvCommand cvCommand = new CreateCvCommand()
+                    {
+                        UserId = user.Id,
+                        FirstName = "Jhon",
+                        LastName = "Doe",
+                        AboutMe = "",
+                        BirtDate = DateTime.Now,
+                        Email = "",
+                        Educations = new List<Domain.Educations.Education>(),
+                        WorkingExperiences = new List<Domain.WorkignExperiences.WorkingExperience>(),
+                        Skills = new List<Domain.Skills.Skill>(),
+                        Address = "",
+                        PhoneNumber = "",
+                    };
+                    await _cvService.CreateCv(cvCommand);
+                }
             }
 
             return result.Errors;
