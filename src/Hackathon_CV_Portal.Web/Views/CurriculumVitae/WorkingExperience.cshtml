@@ -1,0 +1,40 @@
+﻿@using Hackathon_CV_Portal.Application.Implementations.Cv.Models.WorkingExperienceVM
+@model WorkingExperienceVM
+@{
+    ViewData["Title"] = "შენი სამუშაო გამოცდილება";
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1 class="text-center">სამუშაო გამოცდილება</h1>
+        </p>
+
+        @foreach (var workingExperience in @Model.WorkingExperienceModels)
+        {
+             <div class="job-item p-3 mb-2 bg-light text-dark">
+                    <div class="row g-4">
+                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">@workingExperience.Name</h5>
+                                <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@workingExperience.Company</span>
+                                <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>@workingExperience.City</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3">
+                                <a class="btn btn-danger me-2" asp-controller="CurriculumVitae" asp-action="DeleteWorkingExperience" asp-route-id="@workingExperience.Id">წაშლა</a>                            
+                            </div>
+                            <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>დაწყების თარიღი: @workingExperience.StartDate</small>
+                        </div>
+                    </div>
+                </div>
+        }
+
+          <div class="form-group">
+                <a class="btn btn-outline-success float-right" asp-controller="CurriculumVitae"  asp-action="AddWorkingExperience">დაამატე სამუშაო გამოცდილება</a>
+                <a class="btn btn-outline-secondary" asp-controller="Home"  asp-action="Index">უკან დაბრუნება</a>
+          </div>
+
+    </div>
+</div>

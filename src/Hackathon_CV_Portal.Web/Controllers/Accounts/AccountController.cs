@@ -12,10 +12,12 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
     public class AccountController : BaseController
     {
         private readonly IAccountService _accountService;
+        private readonly ICvService _cvService;
 
-        public AccountController(IAccountService accountService, SignInManager<ApplicationUser> signInManager) : base(signInManager)
+        public AccountController(IAccountService accountService, SignInManager<ApplicationUser> signInManager, ICvService cvService) : base(signInManager)
         {
             _accountService = accountService;
+            _cvService = _cvService;
         }
 
         public IActionResult AccessDenied()
@@ -61,6 +63,11 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
                 userType = UserType.Company;
 
             var result = await _accountService.RegisterAsync(createAppilicationUserCommand, userType);
+
+            // Crate Cv
+            if(userType == UserType.User && !result.Any())
+            {
+            }
 
             if (!result.Any())
                 return RedirectToAction("Login");

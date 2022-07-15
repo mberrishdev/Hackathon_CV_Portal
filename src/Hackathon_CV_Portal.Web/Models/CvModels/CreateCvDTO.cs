@@ -8,23 +8,23 @@ namespace Hackathon_CV_Portal.Web.Models.CvModels
     public class CreateCvDTO
     {
         [Required]
-        public string FirstName { get; private set; }
+        public string FirstName { get; set; }
         [Required]
-        public string LastName { get; private set; }
+        public string LastName { get; set; }
 
         [Required]
-        public DateTime BirtDate { get; private set; }
+        public DateTime BirtDate { get; set; }
         [Required, MaxLength(15)]
-        public string PhoneNumber { get; private set; }
+        public string PhoneNumber { get; set; }
 
         [Required, MaxLength(50)]
-        public string Email { get; private set; }
+        public string Email { get; set; }
 
         [Required, MaxLength(100)]
-        public string Address { get; private set; }
+        public string Address { get; set; }
 
         [Required, MaxLength(250)]
-        public string AboutMe { get; private set; }
+        public string AboutMe { get; set; }
 
         public List<Education> Educations { get; set; }
         public List<WorkingExperience> WorkingExperiences { get; set; }
