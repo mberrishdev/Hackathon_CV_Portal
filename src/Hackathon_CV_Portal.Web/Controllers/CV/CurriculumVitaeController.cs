@@ -27,7 +27,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             _cvService = cvService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int cvId = 0)
         {
             CvVM result = null;
 
@@ -38,9 +38,16 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
                 return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
 
             LoadUserModel();
+
+            var query = new GetCVQuery()
+            {
+                UserModel = UserModel,
+                CvId = cvId,
+            };
+
             if (UserModel != null)
             {
-                result = await _cvService.GetCV(UserModel.UserId);
+                result = await _cvService.GetCV(query);
             }
 
             if (result == null)

@@ -1,18 +1,12 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
-using Hackathon_CV_Portal.Data.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Hackathon_CV_Portal.Domain.CVs;
 using Hackathon_CV_Portal.Application.Implementations.Cv.Models;
-using Hackathon_CV_Portal.Domain.Users;
-using Microsoft.AspNetCore.Identity;
-using Hackathon_CV_Portal.Persistence.Context;
-using Hackathon_CV_Portal.Domain.CVs.Commands;
+using Hackathon_CV_Portal.Application.Implementations.Cv.Queries;
+using Hackathon_CV_Portal.Data.Abstractions;
 using Hackathon_CV_Portal.Domain.CVs;
-using Hackathon_CV_Portal.Data.Implementations;
+using Hackathon_CV_Portal.Domain.CVs.Commands;
+using Hackathon_CV_Portal.Domain.Users;
+using Hackathon_CV_Portal.Persistence.Context;
+using Microsoft.AspNetCore.Identity;
 using System.Linq.Expressions;
 using Hackathon_CV_Portal.Domain.Educations.Commands;
 using Hackathon_CV_Portal.Domain.Skills.Commands;
@@ -132,18 +126,43 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
             await _context.SaveChangesAsync();
         }
 
-        public async Task<CvVM> GetCV(int userId)
+        public async Task<CvVM> GetCV(GetCVQuery query)
         {
-            
+            CurriculumVitae cv;
+            if (query.CvId != 0)
+            {
+                var myVacs = _context.Vacancies.Where(x => x.UserId == query.UserModel.UserId);
 
-            var cv = await _baseRepository.GetAsync(
-                new Expression<Func<CurriculumVitae, object>>[3] { x => x.WorkingExperience, x => x.Educations, x => x.Skills },
-                x => x.UserId == userId);
+                bool exist = false;
+                foreach (var myVac in myVacs)
+                {
+                    var ac = _context.AppliedCurriculumVitaes.FirstOrDefault(x => x.VacansyId == myVac.Id);
+                    if (ac != null)
+                        exist = _context.CVs.Any(x => x.UserId == ac.UserId && x.Id == query.CvId);
+
+                    if (exist)
+                        break;
+                }
+
+                if (!exist)
+                    return null;
+
+                cv = await _baseRepository.GetAsync(
+                        new Expression<Func<CurriculumVitae, object>>[3] { x => x.WorkingExperience, x => x.Educations, x => x.Skills },
+                        x => x.Id == query.CvId);
+            }
+            else
+            {
+                cv = await _baseRepository.GetAsync(
+                    new Expression<Func<CurriculumVitae, object>>[3] { x => x.WorkingExperience, x => x.Educations, x => x.Skills },
+                    x => x.UserId == query.UserModel.UserId);
+            }
 
             if (cv != null)
             {
                 var cvVm = new CvVM()
                 {
+                    Id = cv.Id,
                     FirstName = cv.FirstName,
                     LastName = cv.LastName,
                     BirthDate = cv.BirtDate,
@@ -162,6 +181,31 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
             }
 
             return null;
+        }
+
+        public async Task<CvModel> GetCVById(int cvId)
+        {
+            var cv = await _baseRepository.GetAsync(predicate: x => x.Id == cvId);
+
+            if (cv == null)
+                return null;
+
+            var cvModel = new CvModel()
+            {
+                Id = cvId,
+                FirstName = cv.FirstName,
+                LastName = cv.LastName,
+                BirthDate = cv.BirtDate,
+                Age = cv.Age,
+                PhoneNumber = cv.PhoneNumber,
+                Email = cv.Email,
+                Address = cv.Address,
+                AboutMe = cv.AboutMe,
+
+            };
+
+            return cvModel;
+
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Hackathon_CV_Portal.Application.Implementations.Cv.Models;
+using Hackathon_CV_Portal.Application.Implementations.Cv.Queries;
 using Hackathon_CV_Portal.Domain.CVs.Commands;
 using Hackathon_CV_Portal.Domain.Educations.Commands;
 using Hackathon_CV_Portal.Domain.Skills.Commands;
@@ -13,8 +14,10 @@ namespace Hackathon_CV_Portal.Application.Abstractions
 {
     public interface ICvService
     {
-        Task<CvVM> GetCV(int userId); 
+        Task<CvVM> GetCV(GetCVQuery query);
         Task CreateCv(CreateCvCommand command);
+        Task<CvModel> GetCVById(int cvId);
+        Task<CvVM> GetCV(int userId); 
 
         Task AddSkillAsync(CreateSkillCommand command);
         Task AddWorkingExperienceAsync(CreateWorkingExperienceCommand command);

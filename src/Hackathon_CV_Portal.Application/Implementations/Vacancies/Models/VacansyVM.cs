@@ -4,5 +4,6 @@
     {
         public List<VacancyModel> VacancyModels { get; set; }
         public int TottalPages { get; set; }
+        public bool IsEmpty { get; internal set; }
     }
 }

@@ -21,20 +21,33 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             _vacancyService = vacancyService;
         }
 
-        public async Task<IActionResult> Index(string searchCategory, string vacancyType, int page = 1)
+        public async Task<IActionResult> Index(string searchCategory, string vacancyType, int page = 1, int companyId = 0)
         {
             Expression<Func<Vacancy, bool>>? expression = null;
             if (!String.IsNullOrEmpty(searchCategory))
             {
-                expression = x => x.Category.Name.Contains(searchCategory);
+                if (companyId == 0)
+                    expression = x => x.Category.Name.Contains(searchCategory);
+                else
+                    expression = x => x.Category.Name.Contains(searchCategory) && x.UserId == companyId;
             }
 
             if (!String.IsNullOrEmpty(vacancyType))
             {
-                expression = x => x.Type == Enum.Parse<VacancyType>(vacancyType);
+                if (companyId == 0)
+                    expression = x => x.Type == Enum.Parse<VacancyType>(vacancyType);
+                else
+                    expression = x => x.Category.Name.Contains(searchCategory) && x.UserId == companyId;
             }
 
+            if (String.IsNullOrEmpty(searchCategory) && String.IsNullOrEmpty(vacancyType) && companyId != 0)
+                expression = x => x.UserId == companyId;
+
             LoadUserModel();
+
+            if (UserModel?.UserId != companyId && companyId != 0)
+                return RedirectToAction("AccessDenied", "Account");
+
             var query = new ListVacancyQuery()
             {
                 Page = page,
@@ -64,20 +77,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return View();
         }
 
-        public async Task<IActionResult> Apply(int id)
-        {
-            var returnAcction = "Apply";
-            var returnController = "Vacancy";
-
-            if (!IsSignedId())
-                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
-
-            LoadUserModel();
-
-            await _vacancyService.ApplyVacancy(id, UserModel);
-            return View();
-        }
-
         public async Task<IActionResult> AddFavourite(int id)
         {
             var returnAcction = "AddFavourite";
@@ -100,8 +99,8 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
         public async Task<IActionResult> RemoveFavourite(int id)
         {
-            var returnAcction = "Apply";
-            var returnController = "RemoveFavourite";
+            var returnAcction = "emoveFavourite";
+            var returnController = "Vacancy";
             var routeiD = id.ToString();
 
             if (!IsSignedId())

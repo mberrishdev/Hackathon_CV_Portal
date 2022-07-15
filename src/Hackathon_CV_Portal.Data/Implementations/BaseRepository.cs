@@ -52,7 +52,8 @@ namespace Hackathon_CV_Portal.Data.Implementations
         {
             IQueryable<T> query = _dbSet;
 
-            query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+            if (includeProperties != null)
+                query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
 
             return await query.FirstOrDefaultAsync(predicate);
         }

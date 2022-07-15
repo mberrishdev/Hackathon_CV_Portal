@@ -17,10 +17,10 @@ namespace Hackathon_CV_Portal.Application
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IRoleService, RoleService>();
-            services.AddScoped<IAppliedCurriculumVitaeService, AppliedCurriculumVitaeService>();
             services.AddScoped<IFavouriteVacancyService, FavouriteVacancyService>();
             services.AddScoped<IVacancyService, VacancyService>();
             services.AddScoped<ICvService, CvService>();
+            services.AddScoped<IAppliedCurriculumVitaeService, AppliedCurriculumVitaeService>();
 
             return services;
         }
