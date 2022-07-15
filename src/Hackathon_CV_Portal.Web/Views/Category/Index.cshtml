@@ -1,0 +1,28 @@
+﻿@using Hackathon_CV_Portal.Application.Categories.Vacancies.Models
+
+@model ICollection<CategoryVM>
+    
+
+    <div class="container my-5 pt-5 pb-4">
+        <h1 class="display-3  mb-3 animated slideInDown">კატეგორიები</h1>
+        <nav aria-label="breadcrumb">
+        </nav>
+    </div>
+
+
+  <div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-4">
+            @foreach (var category in Model)
+            {
+                <div class="col-lg-3 col-sm-6 wow fadeInUp">
+                    <a class="cat-item rounded p-4" asp-controller="Vacancy" asp-action="Index" asp-route-searchCategory="@category.Name">
+                        <i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i>
+                        <h6 class="mb-3">@category.Name</h6>
+                        <p class="mb-0">@category.VacancyCount</p>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

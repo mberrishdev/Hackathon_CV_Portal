@@ -1,6 +1,7 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Application.Implementations;
 using Hackathon_CV_Portal.Application.Implementations.AppliedCurriculumVitaes;
+using Hackathon_CV_Portal.Application.Implementations.Categories;
 using Hackathon_CV_Portal.Application.Implementations.Cv;
 using Hackathon_CV_Portal.Application.Implementations.FavouriteVacancies;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies;
@@ -21,6 +22,7 @@ namespace Hackathon_CV_Portal.Application
             services.AddScoped<IVacancyService, VacancyService>();
             services.AddScoped<ICvService, CvService>();
             services.AddScoped<IAppliedCurriculumVitaeService, AppliedCurriculumVitaeService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             return services;
         }

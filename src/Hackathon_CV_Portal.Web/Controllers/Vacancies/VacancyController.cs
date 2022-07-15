@@ -6,6 +6,7 @@ using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vcancies;
 using Hackathon_CV_Portal.Web.Models.VacancyModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
@@ -119,6 +120,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
 
         [HttpPost]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> Add([FromForm] CreateVacancyDTO model)
         {
             if (!ModelState.IsValid)
@@ -128,14 +130,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
             var command = new CreateVacancyCommand()
             {
-                Title = model.Title,
-                Description = model.Description,
-                DeadLine = model.DeadLine,
                 CategoryId = model.CategoryId,
-                Currency = model.Currency,
-                //Salary = model.Salary,
-                UserId = UserModel.UserId,
-                UserName = UserModel.UserName
+                Type = (VacancyType)model.Type,
+                CompanyName = model.CompanyName,
+                Location = model.Location,
+                Title = model.Title,
+                SalaryRange = model.SalaryRange,
+                DeadLine = model.DeadLine,
+                Description = model.Description,
+                Responsibility = model.Responsibility,
+                Qualifications = model.Qualifications,
+                UserModel = UserModel
             };
 
             await _vacancyService.CreateVacancy(command);
