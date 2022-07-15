@@ -1,14 +1,14 @@
-﻿using Hackathon_CV_Portal.Domain.Enums;
+﻿using Hackathon_CV_Portal.Domain.Categories;
+using Hackathon_CV_Portal.Domain.CVs;
+using Hackathon_CV_Portal.Domain.Educations;
+using Hackathon_CV_Portal.Domain.Enums;
+using Hackathon_CV_Portal.Domain.Skills;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vcancies;
+using Hackathon_CV_Portal.Domain.WorkignExperiences;
 using Hackathon_CV_Portal.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Hackathon_CV_Portal.Domain.Categories;
-using Hackathon_CV_Portal.Domain.CVs;
-using Hackathon_CV_Portal.Domain.Educations;
-using Hackathon_CV_Portal.Domain.WorkignExperiences;
-using Hackathon_CV_Portal.Domain.Skills;
 
 namespace Hackathon_CV_Portal.Persistence.Seed
 {
@@ -30,9 +30,9 @@ namespace Hackathon_CV_Portal.Persistence.Seed
 
             SeedRoles(context, ref seeded);
             SeedUsers(context, ref seeded);
-            SeedCategories(context, ref seeded);
+            //SeedCategories(context, ref seeded);
             //SeedCv(context, ref seeded);
-            //SeedVacancies(context, ref seeded);
+            SeedVacancies(context, ref seeded);
 
             if (seeded)
                 context.SaveChanges();
@@ -118,7 +118,7 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                        }
                    },
                    Image = "",
-                   UserId = 2,
+                   UserId = 5,
                }
             };
 
@@ -224,8 +224,16 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     Type = VacancyType.PartTime,
                     UserId = 1,
                     CategoryId = 1,
-                    Responsibility = "",
-                    Qualifications = "",
+                    Responsibility = "** მაღაზიაში არსებული სტანდარტის მიხედვით მომხმარებლისათვის კვალიფიციური მომსახურების და კონსულტაციის გაწევა" +
+                                    "* *პროდუქციის მოწესრიგება," +
+                                     "მაღაზიის ვიზუალზე ზრუნვა" +
+                                    "* *მომხმარებლისათვის პროდუქციის ეფექტური შეთავაზება," +
+                                     " გაყიდვების ზრდაზე ზრუნვა" +
+                                    "* *მაღაზიის ყოველდღიური მუშაობის პროცესში ჩართულობა.,",
+                    Qualifications = "** ინტერესი მოდის ინდუსტრიის მიმართ, მსოფლიო მოდის ტენდენციებისა და ლუქს კლასის ბრენდების კარგი ცოდნა, სტილისა და ფერის შეგრძნება, კრეატიულობა და კარგი ხედვა" +
+                                    "** ასაკი : 25+ (ასაკობრივი ზედა ზღვარის, სქესისა და სხვა შეზღუდვის გარეშე)" +
+                                    "** მსგავს პოზიციაზე მინიმუმ 2 წლიანი სამუშაო გამოცდილება;" +
+                                    "** ქართული ენის სრულყოფილად ცოდნა. ინგლისური და სხვა უცხო ენები- კარგი, თავისუფალი საკომუნიკაციო დონე"
                 };
 
                 context.Vacancies.Add(vac);

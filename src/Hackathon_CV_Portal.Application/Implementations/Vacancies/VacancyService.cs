@@ -2,6 +2,8 @@
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Queries;
 using Hackathon_CV_Portal.Data.Abstractions;
+using Hackathon_CV_Portal.Domain;
+using Hackathon_CV_Portal.Domain.AppliedCurriculumVitaes.Commands;
 using Hackathon_CV_Portal.Domain.FavouriteVacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vcancies;
@@ -13,11 +15,16 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
     {
         private readonly IBaseRepository<Vacancy> _baseRepository;
         private readonly IFavouriteVacancyService _favouriteVacancyService;
+        private readonly ICvService _cvService;
+        private readonly IAppliedCurriculumVitaeService _appliedCurriculumVitaeService;
 
-        public VacancyService(IBaseRepository<Vacancy> baseRepository, IFavouriteVacancyService favouriteVacancyService)
+        public VacancyService(IBaseRepository<Vacancy> baseRepository, IFavouriteVacancyService favouriteVacancyService,
+            ICvService cvService, IAppliedCurriculumVitaeService appliedCurriculumVitaeService)
         {
             _baseRepository = baseRepository;
             _favouriteVacancyService = favouriteVacancyService;
+            _cvService = cvService;
+            _appliedCurriculumVitaeService = appliedCurriculumVitaeService;
         }
 
         public async Task CreateVacancy(CreateVacancyCommand command)
@@ -66,13 +73,15 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                     Title = item.Title,
                     SalaryRange = item.SalaryRange,
                     CompanyName = item.CompanyName,
+                    Location = item.Location,
                     Type = item.Type.ToString(),
                     PublishDate = item.PublishDate,
                     DeadLine = item.DeadLine,
                     Description = item.Description,
                     Responsibility = item.Responsibility,
                     Qualifications = item.Qualifications,
-                    IsFavourite = isFavoutire
+                    IsFavourite = isFavoutire,
+                    UserId = item.UserId,
                 });
             }
             return new VacansyVM()
@@ -90,6 +99,21 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
         public async Task RemoveFavourite(RemoveFavouriteCommand command)
         {
             await _favouriteVacancyService.RemoveFavourite(command);
+        }
+
+        public async Task ApplyVacancy(int vacansyId, UserModel userModel)
+        {
+            var userCv = await _cvService.GetCV(userModel.UserId);
+            if (userCv == null)
+                throw new Exception("მომხარებელს არ აქვს cv ატვირთული");
+
+            var command = new ApplyCurriculimVataeCommand()
+            {
+                VacansyId = vacansyId,
+                CurriculimVataeId = userCv.Id
+            };
+
+            await _appliedCurriculumVitaeService.ApplyVacancy(command);
         }
     }
 }

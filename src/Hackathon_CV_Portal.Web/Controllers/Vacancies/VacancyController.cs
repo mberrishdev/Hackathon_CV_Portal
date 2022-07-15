@@ -33,7 +33,8 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             {
                 expression = x => x.Type == Enum.Parse<VacancyType>(vacancyType);
             }
-            LodaUserModel();
+
+            LoadUserModel();
             var query = new ListVacancyQuery()
             {
                 Page = page,
@@ -52,6 +53,9 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
         public async Task<IActionResult> Detail(int id)
         {
             var result = await _vacancyService.GetVacancyById(id);
+            if (result == null)
+                return RedirectToAction("NotFound", "Home");
+
             return View(result);
         }
 
@@ -60,7 +64,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return View();
         }
 
-        public IActionResult Apply(int id)
+        public async Task<IActionResult> Apply(int id)
         {
             var returnAcction = "Apply";
             var returnController = "Vacancy";
@@ -68,6 +72,9 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             if (!IsSignedId())
                 return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
 
+            LoadUserModel();
+
+            await _vacancyService.ApplyVacancy(id, UserModel);
             return View();
         }
 
@@ -80,7 +87,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             if (!IsSignedId())
                 return RedirectToAction("LogIn", "Account", new { returnAcction, returnController, routeiD });
 
-            LodaUserModel();
+            LoadUserModel();
             var command = new AddFavouriteCommand()
             {
                 VacasnyId = id,
@@ -100,7 +107,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             if (!IsSignedId())
                 return RedirectToAction("LogIn", "Account", new { returnAcction, returnController, routeiD });
 
-            LodaUserModel();
+            LoadUserModel();
             var command = new RemoveFavouriteCommand()
             {
                 VacasnyId = id,
@@ -118,7 +125,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             if (!ModelState.IsValid)
                 return View();
 
-            LodaUserModel();
+            LoadUserModel();
 
             var command = new CreateVacancyCommand()
             {
