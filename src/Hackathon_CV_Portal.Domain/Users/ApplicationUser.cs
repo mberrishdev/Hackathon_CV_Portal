@@ -7,7 +7,7 @@ namespace Hackathon_CV_Portal.Domain.Users
 {
     public class ApplicationUser : IdentityUser<int>
     {
-        public ICollection<CV> CVs { get; set; }
+        public ICollection<CurriculumVitae> CVs { get; set; }
         public ICollection<Vacancy> Vacancies { get; set; }
 
         public DateTime CreateDate { get; private set; }

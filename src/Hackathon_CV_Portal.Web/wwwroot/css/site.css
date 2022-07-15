@@ -72,3 +72,249 @@ body {
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
 }
+
+/body {
+    background: #222222;
+    color: #222222;
+    font-family: "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 25px;
+}
+
+a {
+    color: #222222;
+    text-decoration: none;
+    -webkit-transition: all 0.35s;
+    -moz-transition: all 0.35s;
+    transition: all 0.35s;
+}
+
+    a:hover,
+    a:focus {
+        color: #009999;
+    }
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
+}
+
+.btn-download {
+    width: 100%;
+}
+
+.text-primary {
+    color: #009999;
+}
+
+.lead {
+    font-size: 25px;
+    margin-bottom: 0;
+}
+
+footer {
+    color: #999999;
+    font-size: 14px;
+    padding: 0;
+    margin: 15px 0;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.9);
+}
+
+.bg-primary {
+    background-color: #009999;
+}
+
+.media {
+    margin: 0;
+    margin-bottom: 10px;
+    margin-left: 27px;
+}
+
+    .media span {
+        color: #ffffff;
+        display: block;
+        font-size: 14px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        width: 30px;
+    }
+
+    .media .media-body {
+        color: rgba(34, 34, 34, 0.8);
+        font-size: 16px;
+        line-height: 30px;
+    }
+
+.progress {
+    background-color: rgba(34, 34, 34, 0.8);
+    border-radius: 0;
+    box-shadow: none;
+    height: 25px;
+    line-height: 25px;
+    padding: 0;
+    margin-bottom: 12px;
+}
+
+    .progress .progress-bar {
+        background-color: #009999;
+        box-shadow: none;
+        font-size: 17px;
+        line-height: 25px;
+    }
+
+hr {
+    border-color: rgba(34, 34, 34, 0.3);
+}
+/*!
+ **********************************************************
+ *
+ *	2.	LAYOUT DESIGN
+ *
+ **********************************************************
+ */
+
+.container {
+    max-width: 1024px;
+}
+
+    .container .wrapper {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+        padding: 25px 50px;
+    }
+
+@media (max-width: 600px) {
+    .container {
+        padding: 0;
+    }
+
+        .container .wrapper {
+            border-radius: 0;
+            padding: 20px;
+        }
+}
+/*!
+ **********************************************************
+ *
+ *	3.	SOCIAL NAV
+ *
+ **********************************************************
+ */
+
+nav {
+    margin: 10px 0 3px 0;
+    text-align: right;
+}
+
+    nav .pager {
+        padding: 0;
+        margin: 0;
+        margin-bottom: 6px;
+    }
+
+        nav .pager a,
+        nav .pager a:focus {
+            background-color: inherit;
+            border: none;
+            color: #999999;
+            font-size: 17px;
+            margin: 5px 12px;
+            padding: 0;
+            text-shadow: 0 1px rgba(0, 0, 0, 0.9);
+            -webkit-transition: all 0.35s;
+            -moz-transition: all 0.35s;
+            transition: all 0.35s;
+        }
+
+            nav .pager a:hover,
+            nav .pager a:focus:hover {
+                background-color: inherit !important;
+                color: #009999;
+                text-shadow: none;
+            }
+/*!
+ **********************************************************
+ *
+ *	4.	HEADER TITLE
+ *
+ **********************************************************
+ */
+
+header.main {
+    padding: 17px 0;
+    text-align: center;
+}
+
+    header.main h1 {
+        font-size: 50px;
+    }
+
+@media (max-width: 600px) {
+    header.main h1 {
+        font-size: 40px;
+    }
+
+    header.main p {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    header.main h1 {
+        font-size: 32.5px;
+    }
+}
+/*!
+ **********************************************************
+ *
+ *	5.	SECTIONS
+ *
+ **********************************************************
+ */
+
+section {
+    margin-bottom: 35px;
+}
+
+@media (max-width: 767px) {
+    section {
+        margin-bottom: 50px;
+    }
+}
+
+section h3 {
+    color: #222222;
+    font-size: 27px;
+    margin-bottom: 25px;
+}
+
+article {
+    margin-left: 25px;
+}
+
+    article p {
+        color: rgba(34, 34, 34, 0.8);
+        font-size: 16px;
+    }
+
+    article img.photo {
+        border: 5px solid #ffffff;
+        box-shadow: 0 0 5px 2px #ccc;
+    }
+
+@media (max-width: 767px) and (min-width: 480px) {
+    article img.photo {
+        max-width: 300px;
+        margin: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    article img.photo {
+        margin-bottom: 25px;
+    }
+}

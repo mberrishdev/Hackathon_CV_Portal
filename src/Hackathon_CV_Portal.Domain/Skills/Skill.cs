@@ -10,6 +10,6 @@ namespace Hackathon_CV_Portal.Domain.Skills
         [Required, MaxLength(50)]
         public string Title { get; set; }
 
-        public CV CV { get; set; }
+        public CurriculumVitae CV { get; set; }
     }
 }
