@@ -27,6 +27,10 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
         public DateTime DeadLine { get; set; }
         [Required, Column(TypeName = "NVARCHAR"), MaxLength(500)]
         public string Description { get; set; }
+        [Required, Column(TypeName = "NVARCHAR"), MaxLength(500)]
+        public string Responsibility { get; set; }
+        [Required, Column(TypeName = "NVARCHAR"), MaxLength(500)]
+        public string Qualifications { get; set; }
 
         public int UserId { get; set; }
         public int CategoryId { get; set; }

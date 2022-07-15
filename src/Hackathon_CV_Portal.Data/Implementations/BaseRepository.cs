@@ -48,10 +48,13 @@ namespace Hackathon_CV_Portal.Data.Implementations
             return result;
         }
 
-        public async Task<T> GetAsync(object key)
+        public async Task<T> GetAsync(Expression<Func<T, object>>[] includeProperties, Expression<Func<T, bool>> predicate)
         {
-            var obj = new object[1] { key };
-            return await _dbSet.FindAsync(obj);
+            IQueryable<T> query = _dbSet;
+
+            query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+
+            return await query.FirstOrDefaultAsync(predicate);
         }
 
         public async Task<T> GetForUpdateAsync(object key)
@@ -84,9 +87,9 @@ namespace Hackathon_CV_Portal.Data.Implementations
 
         public async Task RemoveAsync(params object[] key)
         {
-            var entity = await GetAsync(key);
-            _dbSet.Remove(entity);
-            await _context.SaveChangesAsync();
+            //var entity = await GetAsync(key);
+            //_dbSet.Remove(entity);
+            //await _context.SaveChangesAsync();
         }
 
         public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)

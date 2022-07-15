@@ -40,9 +40,8 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
         public async Task<IActionResult> Detail(int id)
         {
-            return View();
-
             var result = await _vacancyService.GetVacancyById(id);
+            return View(result);
         }
 
         public IActionResult Add()

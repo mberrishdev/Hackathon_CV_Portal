@@ -12,5 +12,7 @@
         public DateTime PublishDate { get; set; }
         public DateTime DeadLine { get; set; }
         public string Description { get; set; }
+        public string Responsibility { get; set; }
+        public string Qualifications { get; set; }
     }
 }

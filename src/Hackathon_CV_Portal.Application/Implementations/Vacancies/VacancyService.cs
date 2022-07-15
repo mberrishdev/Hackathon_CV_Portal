@@ -23,18 +23,22 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
 
         public async Task<VacancyModel> GetVacancyById(int id)
         {
-            var vm = await _baseRepository.GetAsync(id);
+            var vm = await _baseRepository.GetAsync(new Expression<Func<Vacancy, object>>[1] { x => x.Category }, x => x.Id == id);
 
             return new VacancyModel()
             {
                 Id = vm.Id,
                 Category = vm.Category.Name,
                 Title = vm.Title,
-                //Salary = vm.Salary,
-                //Currency = vm.Currency,
+                Location = vm.Location,
+                SalaryRange = vm.SalaryRange,
+                Type = vm.Type.ToString(),
+                CompanyName = vm.CompanyName,
                 PublishDate = vm.PublishDate,
                 DeadLine = vm.DeadLine,
                 Description = vm.Description,
+                Responsibility = vm.Responsibility,
+                Qualifications = vm.Qualifications,
             };
         }
 
@@ -59,6 +63,8 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                     PublishDate = x.PublishDate,
                     DeadLine = x.DeadLine,
                     Description = x.Description,
+                    Responsibility = "sdfs",
+                    Qualifications = "sadf",
                 }).ToList(),
                 TottalPages = vacancies.TotalPages
             };

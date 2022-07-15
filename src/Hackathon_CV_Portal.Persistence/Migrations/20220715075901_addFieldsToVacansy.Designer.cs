@@ -4,6 +4,7 @@ using Hackathon_CV_Portal.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hackathon_CV_Portal.Persistence.Migrations
 {
     [DbContext(typeof(CvPortalDbContext))]
-    partial class CvPortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220715075901_addFieldsToVacansy")]
+    partial class addFieldsToVacansy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
