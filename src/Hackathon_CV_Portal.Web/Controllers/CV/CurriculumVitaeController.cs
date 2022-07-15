@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Hackathon_CV_Portal.Application.Abstractions;
+﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Application.Implementations.Cv.Models;
-using Hackathon_CV_Portal.Web.Models.CvModels;
 using Hackathon_CV_Portal.Domain.CVs.Commands;
+using Hackathon_CV_Portal.Domain.Users;
+using Hackathon_CV_Portal.Web.Models.CvModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_CV_Portal.Web.Controllers.CV
 {
@@ -10,7 +12,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
     {
         private readonly ICvService _cvService;
 
-        public CurriculumVitaeController(ICvService cvService)
+        public CurriculumVitaeController(ICvService cvService, SignInManager<ApplicationUser> signInManager) : base(signInManager)
         {
             _cvService = cvService;
         }
