@@ -53,6 +53,12 @@ try
 
     var app = builder.Build();
 
+    var service = app.Services.GetService(typeof(IServiceScopeFactory)) as IServiceScopeFactory;
+    using (var db = service?.CreateScope().ServiceProvider
+        .GetService<CvPortalDbContext>())
+    {
+        db?.Database.Migrate();
+    }
     app.ConfigureMiddleware();
 
     app.Run();
