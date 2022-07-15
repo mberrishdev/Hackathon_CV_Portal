@@ -20,6 +20,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Categories
 
             return categories.Select(x => new CategoryVM()
             {
+                Id = x.Id,
                 Name = x.Name,
                 VacancyCount = x.Vacancies.Count
             }).ToList();

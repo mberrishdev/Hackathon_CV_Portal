@@ -65,7 +65,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
             var result = await _accountService.RegisterAsync(createAppilicationUserCommand, userType);
 
             // Crate Cv
-            if(userType == UserType.User && !result.Any())
+            if (userType == UserType.User && !result.Any())
             {
             }
 

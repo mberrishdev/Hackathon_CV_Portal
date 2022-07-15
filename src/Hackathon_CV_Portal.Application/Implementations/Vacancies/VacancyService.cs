@@ -98,5 +98,11 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
         {
             await _favouriteVacancyService.RemoveFavourite(command);
         }
+
+        public async Task Delete(int id)
+        {
+            var entity = await _baseRepository.GetAsync(predicate: x => x.Id == id);
+            await _baseRepository.RemoveAsync(entity);
+        }
     }
 }

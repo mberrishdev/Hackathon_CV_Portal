@@ -6,9 +6,9 @@ using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vcancies;
 using Hackathon_CV_Portal.Web.Models.VacancyModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
@@ -16,10 +16,13 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
     public class VacancyController : BaseController
     {
         private readonly IVacancyService _vacancyService;
+        private readonly ICategoryService _categoyService;
 
-        public VacancyController(IVacancyService vacancyService, SignInManager<ApplicationUser> signInManager) : base(signInManager)
+        public VacancyController(IVacancyService vacancyService, SignInManager<ApplicationUser> signInManager,
+            ICategoryService categoyService) : base(signInManager)
         {
             _vacancyService = vacancyService;
+            _categoyService = categoyService;
         }
 
         public async Task<IActionResult> Index(string searchCategory, string vacancyType, int page = 1, int companyId = 0)
@@ -73,8 +76,26 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return View(result);
         }
 
-        public IActionResult Add()
+        public async Task<IActionResult> Delete(int id)
         {
+            await _vacancyService.Delete(id);
+            return RedirectToAction("Index", "Vacancy");
+        }
+
+        public async Task<IActionResult> Add()
+        {
+            var returnAcction = "Add";
+            var returnController = "Vacancy";
+
+            if (!IsSignedId())
+                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
+
+            if (!IsInRole(UserRole.Company.ToString()))
+                return RedirectToAction("AccessDenied", "Account");
+
+            var categories = await _categoyService.GetCategories();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
+
             return View();
         }
 
@@ -118,11 +139,18 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return RedirectToAction("Index");
         }
 
-
         [HttpPost]
-        [Authorize(Roles = "Company")]
         public async Task<IActionResult> Add([FromForm] CreateVacancyDTO model)
         {
+            var returnAcction = "Add";
+            var returnController = "Vacancy";
+
+            if (!IsSignedId())
+                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
+
+            if (!IsInRole(UserRole.Company.ToString()))
+                return RedirectToAction("AccessDenied", "Account");
+
             if (!ModelState.IsValid)
                 return View();
 

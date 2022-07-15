@@ -50,6 +50,8 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
             PublishDate = DateTime.Now;
             DeadLine = command.DeadLine;
             Description = command.Description;
+            Qualifications = command.Qualifications;
+            Responsibility = command.Responsibility;
             CategoryId = command.CategoryId;
             UserId = command.UserModel.UserId;
             Type = command.Type;

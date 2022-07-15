@@ -86,11 +86,17 @@ namespace Hackathon_CV_Portal.Data.Implementations
             await _context.SaveChangesAsync();
         }
 
+        public async Task<T> GetAsyncByKey(object key)
+        {
+            var obj = new object[1] { key };
+            return await _dbSet.FindAsync(obj);
+        }
+
         public async Task RemoveAsync(params object[] key)
         {
-            //var entity = await GetAsync(key);
-            //_dbSet.Remove(entity);
-            //await _context.SaveChangesAsync();
+            var entity = await GetAsyncByKey(key);
+            _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)

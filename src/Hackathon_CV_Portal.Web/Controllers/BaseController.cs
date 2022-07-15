@@ -50,6 +50,14 @@ namespace Hackathon_CV_Portal.Web.Controllers
         {
             return _signInManager.IsSignedIn(User);
         }
+
+        protected bool IsInRole(string role)
+        {
+            if (User == null)
+                return false;
+
+            return User.IsInRole(role);
+        }
     }
 }
 
