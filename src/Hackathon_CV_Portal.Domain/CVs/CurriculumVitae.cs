@@ -11,25 +11,25 @@ namespace Hackathon_CV_Portal.Domain.CVs
     public class CurriculumVitae
     {
         [Key]
-        public int Id { get;  set; }
+        public int Id { get; set; }
 
         [Required, Column(TypeName = "NVARCHAR"), MaxLength(50)]
-        public string FirstName { get;  set; }
+        public string FirstName { get; set; }
         [Required, Column(TypeName = "NVARCHAR"), MaxLength(50)]
-        public string LastName { get;  set; }
+        public string LastName { get; set; }
         [Required]
-        public DateTime BirtDate { get;  set; }
+        public DateTime BirtDate { get; set; }
         public int Age { get { return DateTime.Now.Subtract(BirtDate).Days / 365; } }
         [Required, MaxLength(15)]
-        public string PhoneNumber { get;  set; }
+        public string PhoneNumber { get; set; }
         [Required, MaxLength(50)]
-        public string Email { get;  set; }
+        public string Email { get; set; }
         [Required, MaxLength(100)]
-        public string Address { get;  set; }
+        public string Address { get; set; }
         [Required, Column(TypeName = "NVARCHAR"), MaxLength(500)]
-        public string AboutMe { get;  set; }
+        public string AboutMe { get; set; }
         [Required, Column(TypeName = "varbinary")]
-        public string Image { get;  set; }
+        public string Image { get; set; }
 
         public int UserId { get; set; }
         public ApplicationUser User { get; set; }

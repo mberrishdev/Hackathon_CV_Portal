@@ -23,14 +23,21 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         public async Task<IActionResult> Index()
         {
             CvVM result = null;
-            LodaUserModel();
 
+            var returnAcction = "Index";
+            var returnController = "CurriculumVitae";
+
+            if (!IsSignedId())
+                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
+
+            LoadUserModel();
             if (UserModel != null)
             {
                 result = await _cvService.GetCV(UserModel.UserId);
             }
+
             if (result == null)
-                return RedirectToAction("Index", "NotFound");
+                return RedirectToAction("NotFound", "Home");
 
             return View(result);
         }
@@ -60,7 +67,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             if (!ModelState.IsValid)
                 return View();
 
-            LodaUserModel();
+            LoadUserModel();
 
             var command = new CreateCvCommand()
             {

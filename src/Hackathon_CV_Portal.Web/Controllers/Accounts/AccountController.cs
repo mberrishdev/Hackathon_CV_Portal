@@ -5,6 +5,7 @@ using Hackathon_CV_Portal.Domain.Users.Commands;
 using Hackathon_CV_Portal.Web.Models.UserAccountModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Accounts
 {
@@ -75,7 +76,18 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
         [HttpPost]
         public async Task<IActionResult> LogIn([FromForm] LogInDto model, string returnAcction, string returnController, string routeId)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.ContainsKey("{returnAcction}"))
+                ModelState["{returnAcction}"].Errors.Clear();
+
+            if (ModelState.ContainsKey("{returnController}"))
+                ModelState["{returnController}"].Errors.Clear();
+
+            if (ModelState.ContainsKey("{routeId}"))
+                ModelState["{routeId}"].Errors.Clear();
+
+            if (!ModelState.IsValid && (ModelState.Any(x => (x.Key == "მომხარებელი ან პაროლი არასწორია" && x.Value.ValidationState == ModelValidationState.Invalid) ||
+            ModelState.Any(x => (x.Key == "Password" && x.Value.ValidationState == ModelValidationState.Invalid) ||
+            (x.Key == "UserName" && x.Value.ValidationState == ModelValidationState.Invalid)))))
                 return View();
 
             var command = new LogInUserCommand()
@@ -95,7 +107,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
                 return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError("", "Username or password is incorrect");
+            ModelState.AddModelError("", "მომხარებელი ან პაროლი არასწორია");
 
 
             return View();

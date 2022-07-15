@@ -1,4 +1,5 @@
-﻿using Hackathon_CV_Portal.Domain.Categories;
+﻿using Hackathon_CV_Portal.Domain.AppliedCCVs;
+using Hackathon_CV_Portal.Domain.Categories;
 using Hackathon_CV_Portal.Domain.CVs;
 using Hackathon_CV_Portal.Domain.Educations;
 using Hackathon_CV_Portal.Domain.FavouriteVacancies;
@@ -20,7 +21,8 @@ namespace Hackathon_CV_Portal.Persistence.Context
 
         public DbSet<CurriculumVitae> CVs { get; set; }
         public DbSet<Education> Educations { get; set; }
-        public DbSet<FavouriteVacancy> FavouriteVacancies { get; set; }
+        public DbSet<FavouriteVacancy> AppliedCurriculumVitaes { get; set; }
+        public DbSet<AppliedCurriculumVitae> FavouriteVacancies { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<WorkingExperience> WorkignExperiences { get; set; }
         public DbSet<Vacancy> Vacancies { get; set; }
@@ -34,6 +36,11 @@ namespace Hackathon_CV_Portal.Persistence.Context
 
             modelBuilder.Entity<ApplicationUserRole>().HasOne(item => item.Role).WithMany(item => item.UserRoles).HasForeignKey(item => item.RoleId);
             modelBuilder.Entity<ApplicationUserRole>().HasOne(item => item.User).WithMany(item => item.UserRoles).HasForeignKey(item => item.UserId);
+
+
+            //modelBuilder.Entity<AppliedCurriculumVitae>().HasOne(item => item.Vacancy).WithMany(item => item.AppliedCurriculumVitaes).HasForeignKey(item => item.VacancyId);
+            //modelBuilder.Entity<AppliedCurriculumVitae>().HasOne(item => item.CurriculumVitae).WithMany(item => item.AppliedCurriculumVitaes).HasForeignKey(item => item.CVId);
+
 
             //modelBuilder.Entity<FavouriteVacancie>().HasOne(item => item.Vacancie).WithMany(item => item.FavouriteVacancies).HasForeignKey(item => item.VacansyId);
             //modelBuilder.Entity<FavouriteVacancie>().HasOne(item => item.User).WithMany(item => item.FavouriteVacancies).HasForeignKey(item => item.UserId);

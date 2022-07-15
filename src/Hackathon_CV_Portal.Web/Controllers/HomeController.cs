@@ -18,6 +18,11 @@ namespace Hackathon_CV_Portal.Web.Controllers
             return View();
         }
 
+        public IActionResult NotFound()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

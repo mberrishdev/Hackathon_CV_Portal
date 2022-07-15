@@ -29,7 +29,7 @@ namespace Hackathon_CV_Portal.Web.Controllers
             }
         }
 
-        protected void LodaUserModel()
+        protected void LoadUserModel()
         {
             if (User == null || User.FindFirstValue(ClaimTypes.Name) == null || User.FindFirstValue(ClaimTypes.NameIdentifier) == null)
             {

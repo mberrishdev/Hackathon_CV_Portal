@@ -3,6 +3,7 @@
     public class VacancyModel
     {
         public int Id { get; set; }
+        public int UserId { get; set; }
         public string Category { get; set; }
         public string Type { get; set; }
         public string CompanyName { get; set; }
