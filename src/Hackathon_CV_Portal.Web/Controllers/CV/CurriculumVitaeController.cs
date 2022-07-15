@@ -3,6 +3,7 @@ using Hackathon_CV_Portal.Application.Implementations.Cv.Models;
 using Hackathon_CV_Portal.Application.Implementations.Cv.Models.EducationVM;
 using Hackathon_CV_Portal.Application.Implementations.Cv.Models.SkillsVM;
 using Hackathon_CV_Portal.Application.Implementations.Cv.Models.WorkingExperienceVM;
+using Hackathon_CV_Portal.Application.Implementations.Cv.Queries;
 using Hackathon_CV_Portal.Domain.CVs.Commands;
 using Hackathon_CV_Portal.Domain.Educations.Commands;
 using Hackathon_CV_Portal.Domain.Skills.Commands;
