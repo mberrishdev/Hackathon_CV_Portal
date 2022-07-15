@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-//Log.Logger = new LoggerConfiguration()
-//    .WriteTo.Console()
-//    .CreateLogger();
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
 try
 {
@@ -59,6 +59,8 @@ try
     {
         db?.Database.Migrate();
     }
+
+    app.UseDeveloperExceptionPage();
     app.ConfigureMiddleware();
 
     app.Run();
