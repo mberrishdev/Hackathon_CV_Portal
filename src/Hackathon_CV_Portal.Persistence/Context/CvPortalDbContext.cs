@@ -21,8 +21,8 @@ namespace Hackathon_CV_Portal.Persistence.Context
 
         public DbSet<CurriculumVitae> CVs { get; set; }
         public DbSet<Education> Educations { get; set; }
-        public DbSet<FavouriteVacancy> AppliedCurriculumVitaes { get; set; }
-        public DbSet<AppliedCurriculumVitae> FavouriteVacancies { get; set; }
+        public DbSet<FavouriteVacancy> FavouriteVacancies { get; set; }
+        public DbSet<AppliedCurriculumVitae> AppliedCurriculumVitaes { get; set; }
         public DbSet<Skill> Skills { get; set; }
         public DbSet<WorkingExperience> WorkignExperiences { get; set; }
         public DbSet<Vacancy> Vacancies { get; set; }
