@@ -55,23 +55,23 @@
                                 <a  asp-area="" asp-controller="Category" asp-action="Index" class="dropdown-item">კატეგორიები</a>
                             </div>
                     </div>
-                            @if(User.Identity.IsAuthenticated && User.IsInRole("User"))
+                        @if(User.Identity.IsAuthenticated && User.IsInRole("User"))
                         {
-                              <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="Index">ჩემი CV</a>
-                               </li>
-                               <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="Create">CV-ს შექმნა</a>
-                               </li>
-                               <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="Skill">შენი უნარები</a>
-                               </li>
-                               <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="Education">შენი განათლება</a>
-                               </li>
-                               <li class="nav-item">
-                                   <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="WorkingExperience">შენი სამუშაო გამოცდილება</a>
-                               </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="Index">ჩემი CV</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="Create">CV-ს შექმნა</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="Skill">შენი უნარები</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="Education">შენი განათლება</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="CurriculumVitae" asp-action="WorkingExperience">შენი სამუშაო გამოცდილება</a>
+                            </li>
                         }
                     <a class="nav-link text-dark" asp-area="" asp-controller="About" asp-action="Index">ჩვენს შესახებ</a>
                     <a class="nav-link text-dark" asp-area="" asp-controller="Contact" asp-action="Index">კონტაქტი</a>
