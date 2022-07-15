@@ -10,7 +10,7 @@ namespace Hackathon_CV_Portal.Web.Models.EducationModel
         [Display(Name = "დასრულების თარიღი (არ არის აუცილებელი)")]
         public DateTime? EndDate { get; set; }
         [Required, MaxLength(100)]
-        [Display(Name = "სახელწყოდება")]
+        [Display(Name = "სახელწოდება")]
         public string Name { get; set; }
         [Required, MaxLength(200)]
         [Display(Name = "აღწერა")]

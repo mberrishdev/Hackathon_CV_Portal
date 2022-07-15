@@ -13,7 +13,10 @@
         <!-- title name cv-->
         <header class="main">
             <h1 class="text-uppercase text-center">@string.Concat(Model.FirstName," ",Model.LastName)</h1>
-            <p class="lead text-center">@Model.WorkingExperience.FirstOrDefault().Name</p>
+            @if (Model.WorkingExperience.Count > 0)
+            {
+                <p class="lead text-center">@Model.WorkingExperience.FirstOrDefault().Name</p>
+            }
         </header>
         <hr>
         <div class="row">
@@ -75,7 +78,7 @@
                     @foreach (var education in Model.Education)
                     {
                         <article>
-                            <h4>@education.Name at @education.University, @education.City </h4>
+                            <h4>@education.Name, @education.University, @education.City </h4>
                             @if (education.EndDate != null)
                             {
                                 <p><small class="text-primary">@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - @education.EndDate.Value.Month/@education.EndDate.Value.Day/@education.EndDate.Value.Year</small></p>
