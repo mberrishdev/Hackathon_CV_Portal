@@ -56,6 +56,7 @@ namespace Hackathon_CV_Portal.Domain.CVs
             WorkingExperience = command.WorkingExperiences;
             Skills = command.Skills;
             UserId = command.UserId;
+            Image = command.Image;
         }
     }
 }

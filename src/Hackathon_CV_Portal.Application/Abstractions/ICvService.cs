@@ -15,6 +15,7 @@ namespace Hackathon_CV_Portal.Application.Abstractions
     public interface ICvService
     {
         Task<CvVM> GetCV(GetCVQuery query);
+        Task UpdateCv(CreateCvCommand command, int userId);
         Task CreateCv(CreateCvCommand command);
         Task<CvModel> GetCVById(int cvId);
         Task<CvVM> GetCV(int userId); 

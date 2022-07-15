@@ -38,7 +38,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
                     Name = command.Name,
                     StartDate = command.StartDate,
                     EndDate = command.EndDate,
-                    Description = command.Description,  
+                    Description = command.Description,
                     City = command.City,
                     University = command.University,
                     CV = education
@@ -89,6 +89,25 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
         {
             await _baseRepository.CreateAsync(new CurriculumVitae(command));
         }
+
+        public async Task UpdateCv(CreateCvCommand command, int userId)
+        {
+            var cv = _context.CVs.Where(cv => cv.UserId == userId).FirstOrDefault();
+
+            if (cv != null)
+            {
+                cv.FirstName = command.FirstName;
+                cv.LastName = command.LastName;
+                cv.PhoneNumber = command.PhoneNumber;
+                cv.Address = command.Address;
+                cv.BirtDate = command.BirtDate;
+                cv.Email = command.Email;
+                cv.AboutMe = command.AboutMe;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
 
         public async Task DeleteEducation(int id)
         {

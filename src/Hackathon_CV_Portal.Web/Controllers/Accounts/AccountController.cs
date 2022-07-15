@@ -1,4 +1,5 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
+using Hackathon_CV_Portal.Domain.CVs.Commands;
 using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Users.Commands;
@@ -63,11 +64,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
                 userType = UserType.Company;
 
             var result = await _accountService.RegisterAsync(createAppilicationUserCommand, userType);
-
-            // Crate Cv
-            if(userType == UserType.User && !result.Any())
-            {
-            }
 
             if (!result.Any())
                 return RedirectToAction("Login");

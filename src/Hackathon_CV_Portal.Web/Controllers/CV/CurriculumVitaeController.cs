@@ -57,7 +57,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             return View(result);
         }
 
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Update()
         {
             CvVM result = null;
             LoadUserModel();
@@ -73,7 +73,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] CreateCvDTO model)
+        public async Task<IActionResult> Update([FromForm] CreateCvDTO model)
         {
             if (!ModelState.IsValid)
                 return View();
@@ -89,13 +89,10 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
                 Email = model.Email,
                 Address = model.Address,
                 AboutMe = model.AboutMe,
-                Educations = model.Educations,
-                WorkingExperiences = model.WorkingExperiences,
-                Skills = model.Skills,
                 UserId = UserModel.UserId
             };
 
-            await _cvService.CreateCv(command);
+            await _cvService.UpdateCv(command, UserModel.UserId);
 
             return RedirectToAction("Index");
         }

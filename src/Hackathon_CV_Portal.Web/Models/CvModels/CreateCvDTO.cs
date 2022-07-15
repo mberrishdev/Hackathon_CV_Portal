@@ -26,8 +26,5 @@ namespace Hackathon_CV_Portal.Web.Models.CvModels
         [Required, MaxLength(250)]
         public string AboutMe { get; set; }
 
-        public List<Education> Educations { get; set; }
-        public List<WorkingExperience> WorkingExperiences { get; set; }
-        public List<Skill> Skills { get; set; }
     }
 }

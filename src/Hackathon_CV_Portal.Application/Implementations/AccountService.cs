@@ -1,4 +1,6 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
+using Hackathon_CV_Portal.Application.Implementations.Cv;
+using Hackathon_CV_Portal.Domain.CVs.Commands;
 using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Users.Commands;
@@ -16,18 +18,21 @@ namespace Hackathon_CV_Portal.Application.Implementations
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IRoleService _roleService;
+        private readonly ICvService _cvService;
         private readonly ILogger<AccountService> _logger;
 
         public AccountService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IRoleService roleService,
+            ICvService cvService,
             ILogger<AccountService> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleService = roleService;
             _logger = logger;
+            _cvService = cvService;
         }
 
         public async Task<SignInStatus> LoginAsync(LogInUserCommand command, HttpContext httpContext)
@@ -87,6 +92,26 @@ namespace Hackathon_CV_Portal.Application.Implementations
             {
                 _logger.LogInformation("User created a new account with password.");
                 await _userManager.AddToRoleAsync(user, role);
+
+                // Create Cv
+                if (userType == UserType.User)
+                {
+                    CreateCvCommand cvCommand = new CreateCvCommand()
+                    {
+                        UserId = user.Id,
+                        FirstName = "Jhon",
+                        LastName = "Doe",
+                        AboutMe = "",
+                        BirtDate = DateTime.Now,
+                        Email = "",
+                        Educations = new List<Domain.Educations.Education>(),
+                        WorkingExperiences = new List<Domain.WorkignExperiences.WorkingExperience>(),
+                        Skills = new List<Domain.Skills.Skill>(),
+                        Address = "",
+                        PhoneNumber = "",
+                    };
+                    await _cvService.CreateCv(cvCommand);
+                }
             }
 
             return result.Errors;
