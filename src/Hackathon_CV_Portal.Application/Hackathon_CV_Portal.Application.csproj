@@ -19,4 +19,9 @@
     <ProjectReference Include="..\Hackathon_CV_Portal.Persistence\Hackathon_CV_Portal.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Implementations\Cv\Models\Education\" />
+    <Folder Include="Implementations\Cv\Models\WorkingExperience\" />
+  </ItemGroup>
+
 </Project>

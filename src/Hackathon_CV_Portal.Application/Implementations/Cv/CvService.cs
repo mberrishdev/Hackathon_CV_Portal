@@ -14,6 +14,9 @@ using Hackathon_CV_Portal.Domain.CVs.Commands;
 using Hackathon_CV_Portal.Domain.CVs;
 using Hackathon_CV_Portal.Data.Implementations;
 using System.Linq.Expressions;
+using Hackathon_CV_Portal.Domain.Educations.Commands;
+using Hackathon_CV_Portal.Domain.Skills.Commands;
+using Hackathon_CV_Portal.Domain.WorkignExperiences.Commands;
 
 namespace Hackathon_CV_Portal.Application.Implementations.Cv
 {
@@ -28,6 +31,30 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
             _context = context;
             _userManager = userManager;
             _baseRepository = baseRepository;
+        }
+
+        public Task AddEducationAsync(CreateEducationCommand command)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AddSkillAsync(CreateSkillCommand command)
+        {
+            var cv = _context.CVs.Where(cv => cv.UserId == command.UserId).FirstOrDefault();
+
+            if (cv != null)
+            {
+                await _context.Skills.AddAsync(new Domain.Skills.Skill()
+                {
+                    Title = command.Title,
+                    CV = cv
+                });
+            }
+        }
+
+        public Task AddWorkingExperienceAsync(CreateWorkingExperienceCommand command)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task CreateCv(CreateCvCommand command)
