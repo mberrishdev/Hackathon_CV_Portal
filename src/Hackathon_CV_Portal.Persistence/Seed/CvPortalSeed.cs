@@ -32,7 +32,7 @@ namespace Hackathon_CV_Portal.Persistence.Seed
             SeedUsers(context, ref seeded);
             //SeedCategories(context, ref seeded);
             //SeedCv(context, ref seeded);
-            SeedVacancies(context, ref seeded);
+            //SeedVacancies(context, ref seeded);
 
             if (seeded)
                 context.SaveChanges();

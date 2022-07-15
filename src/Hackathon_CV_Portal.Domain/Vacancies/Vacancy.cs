@@ -51,7 +51,7 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
             DeadLine = command.DeadLine;
             Description = command.Description;
             CategoryId = command.CategoryId;
-            UserId = command.UserId;
+            UserId = command.UserModel.UserId;
             Type = command.Type;
         }
     }
