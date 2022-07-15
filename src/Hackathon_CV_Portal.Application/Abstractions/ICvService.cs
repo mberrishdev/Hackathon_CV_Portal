@@ -19,5 +19,8 @@ namespace Hackathon_CV_Portal.Application.Abstractions
         Task AddSkillAsync(CreateSkillCommand command);
         Task AddWorkingExperienceAsync(CreateWorkingExperienceCommand command);
         Task AddEducationAsync(CreateEducationCommand command);
+        Task DeleteWorkingExperience(int id);
+        Task DeleteSkill(int id);
+        Task DeleteEducation(int id);
     }
 }

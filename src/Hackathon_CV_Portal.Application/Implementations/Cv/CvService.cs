@@ -33,9 +33,25 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
             _baseRepository = baseRepository;
         }
 
-        public Task AddEducationAsync(CreateEducationCommand command)
+        public async Task AddEducationAsync(CreateEducationCommand command)
         {
-            throw new NotImplementedException();
+            var education = _context.CVs.Where(cv => cv.UserId == command.UserId).FirstOrDefault();
+
+            if (education != null)
+            {
+                await _context.Educations.AddAsync(new Domain.Educations.Education()
+                {
+                    Name = command.Name,
+                    StartDate = command.StartDate,
+                    EndDate = command.EndDate,
+                    Description = command.Description,  
+                    City = command.City,
+                    University = command.University,
+                    CV = education
+                });
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task AddSkillAsync(CreateSkillCommand command)
@@ -50,16 +66,70 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
                     CV = cv
                 });
             }
+
+            await _context.SaveChangesAsync();
         }
 
-        public Task AddWorkingExperienceAsync(CreateWorkingExperienceCommand command)
+        public async Task AddWorkingExperienceAsync(CreateWorkingExperienceCommand command)
         {
-            throw new NotImplementedException();
+            var workingExperience = _context.CVs.Where(cv => cv.UserId == command.UserId).FirstOrDefault();
+
+            if (workingExperience != null)
+            {
+                await _context.WorkignExperiences.AddAsync(new Domain.WorkignExperiences.WorkingExperience()
+                {
+                    Name = command.Name,
+                    StartDate = command.StartDate,
+                    EndDate = command.EndDate,
+                    Description = command.Description,
+                    City = command.City,
+                    Company = command.Company,
+                    CV = workingExperience
+                });
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task CreateCv(CreateCvCommand command)
         {
             await _baseRepository.CreateAsync(new CurriculumVitae(command));
+        }
+
+        public async Task DeleteEducation(int id)
+        {
+            var education = _context.Educations.FirstOrDefault(x => x.Id == id);
+
+            if (education != null)
+            {
+                _context.Remove(education);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteSkill(int id)
+        {
+            var skill = _context.Skills.FirstOrDefault(x => x.Id == id);
+
+            if (skill != null)
+            {
+                _context.Remove(skill);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteWorkingExperience(int id)
+        {
+            var workingExperience = _context.WorkignExperiences.FirstOrDefault(x => x.Id == id);
+
+            if (workingExperience != null)
+            {
+                _context.Remove(workingExperience);
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<CvVM> GetCV(int userId)
@@ -84,7 +154,8 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
                     AboutMe = cv.AboutMe,
                     WorkingExperience = cv.WorkingExperience.ToList(),
                     Education = cv.Educations.ToList(),
-                    Skills = cv.Skills.ToList()
+                    Skills = cv.Skills.ToList(),
+                    UserId = cv.UserId,
                 };
 
                 return cvVm;

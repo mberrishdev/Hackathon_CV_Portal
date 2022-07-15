@@ -1,6 +1,8 @@
-﻿@model CreateSkillDTO
-@using Hackathon_CV_Portal.Web.Models.SkillsModel;
-
+﻿@using Hackathon_CV_Portal.Web.Models.SkillsModel;
+@model CreateSkillDTO
+@{
+    ViewData["Title"] = "დაამატე უნარი";
+}
 <div class="row text">
     <div class="col-md-8 offset-2">
         <p>
@@ -10,7 +12,6 @@
             <div class="col-md-8 offset-2">
                 <form asp-action="AddSkill" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
 
                     <div class="row">
                         <div class="form-group">
@@ -22,7 +23,7 @@
 
                     <div class="form-group">
                         <input type="submit" value="დამატება" class="btn btn-outline-success float-right" />
-                        <a class="btn btn-outline-secondary" asp-action="Create">უკან დაბრუნება</a>
+                        <a class="btn btn-outline-secondary" asp-controller="CurriculumVitae"  asp-action="Skill">უკან დაბრუნება</a>
                     </div>
                 </form>
             </div>

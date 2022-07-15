@@ -1,5 +1,8 @@
 ﻿@using Hackathon_CV_Portal.Application.Implementations.Cv.Models
 @model CvVM
+@{
+    ViewData["Title"] = "შენი CV";
+}
 
 <!-- container -->
 <div class="container">
@@ -20,7 +23,7 @@
                 <!-- about me -->
                 <section>
 
-                    <h3 class="text-uppercase">About Me</h3>
+                    <h3 class="text-uppercase">ჩემს შესახებ</h3>
                     <article>
                         <div class="row">
                             @*              <div class="col-sm-4 col-sm-push-8">
@@ -35,7 +38,7 @@
                 <!--/ about me -->
                 <!-- experiences -->
                 <section>
-                    <h3 class="text-uppercase">Work Experiences</h3>
+                    <h3 class="text-uppercase">სამუშაო გამოცდილება</h3>
                     <article>
                         <div class="row">
 
@@ -54,7 +57,7 @@
                                     }
                                 </div>
                                 <div class="col-sm-8">
-                                    <h4>@workingExperience.Name at @workingExperience.Company</h4>
+                                    <h4>@workingExperience.Name, კომპანია @workingExperience.Company</h4>
                                     <p>@workingExperience.Description</p>
                                 </div>
                             }
@@ -67,7 +70,7 @@
                 <!-- education -->
                 <section>
 
-                    <h3 class="text-uppercase">Education</h3>
+                    <h3 class="text-uppercase">განათლება</h3>
 
                     @foreach (var education in Model.Education)
                     {
@@ -97,14 +100,14 @@
                 <!-- contact -->
                 <section>
 
-                    <h3 class="text-uppercase">Contact</h3>
+                    <h3 class="text-uppercase">კონტაქტი</h3>
 
                     <article class="media">
 
                         <div class="pull-left">
                             <span class="text-primary"><i class="bi bi-telephone"></i></span>
                         </div>
-                        <div class="media-body"> Phone Number | @Model.PhoneNumber</div>
+                        <div class="media-body"> მობილურის ნომერი | @Model.PhoneNumber</div>
 
                     </article>
 
@@ -112,27 +115,27 @@
                         <div class="pull-left">
                             <span class="text-primary"><i class="bi bi-envelope"></i></span>
                         </div>
-                        <div class="media-body"> Email | @Model.Email</div>
+                        <div class="media-body"> მეილი | @Model.Email</div>
                     </article>
 
                     <article class="media">
                         <div class="pull-left">
                             <span class="text-primary"><i class="fa fa-map-marker"></i></span>
                         </div>
-                        <div class="media-body"> Address | @Model.Address</div>
+                        <div class="media-body"> მისამართი | @Model.Address</div>
                     </article>
                     <article class="media">
                         <div class="pull-left">
                             <span class="text-primary"><i class="bi bi-calendar"></i></span>
                         </div>
-                        <div class="media-body"> Age | @Model.Age</div>
+                        <div class="media-body"> ასაკი | @Model.Age</div>
                     </article>
                 </section>
                 <!--/ contact -->
                 <!-- Skills -->
                 <section>
 
-                    <h3 class="text-uppercase">Skills</h3>
+                    <h3 class="text-uppercase">უნარები</h3>
                     <article class="media">
                         <div class="media-body">
                             @foreach (var skill in @Model.Skills)
