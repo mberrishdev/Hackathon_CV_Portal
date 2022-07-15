@@ -4,13 +4,13 @@ using Hackathon_CV_Portal.Application.Implementations.Cv.Queries;
 using Hackathon_CV_Portal.Data.Abstractions;
 using Hackathon_CV_Portal.Domain.CVs;
 using Hackathon_CV_Portal.Domain.CVs.Commands;
+using Hackathon_CV_Portal.Domain.Educations.Commands;
+using Hackathon_CV_Portal.Domain.Skills.Commands;
 using Hackathon_CV_Portal.Domain.Users;
+using Hackathon_CV_Portal.Domain.WorkignExperiences.Commands;
 using Hackathon_CV_Portal.Persistence.Context;
 using Microsoft.AspNetCore.Identity;
 using System.Linq.Expressions;
-using Hackathon_CV_Portal.Domain.Educations.Commands;
-using Hackathon_CV_Portal.Domain.Skills.Commands;
-using Hackathon_CV_Portal.Domain.WorkignExperiences.Commands;
 
 namespace Hackathon_CV_Portal.Application.Implementations.Cv
 {
@@ -155,9 +155,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
                 bool exist = false;
                 foreach (var myVac in myVacs)
                 {
-                    var ac = _context.AppliedCurriculumVitaes.FirstOrDefault(x => x.VacansyId == myVac.Id);
-                    if (ac != null)
-                        exist = _context.CVs.Any(x => x.UserId == ac.UserId && x.Id == query.CvId);
+                    exist = _context.AppliedCurriculumVitaes.Any(x => x.VacancyId == myVac.Id && x.CurriculumVitaeId == query.CvId);
 
                     if (exist)
                         break;
