@@ -1,8 +1,12 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
+using Hackathon_CV_Portal.Application.Implementations.Vacancies.Queries;
 using Hackathon_CV_Portal.Domain.Enums;
+using Hackathon_CV_Portal.Domain.FavouriteVacancies.Commands;
+using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vcancies;
 using Hackathon_CV_Portal.Web.Models.VacancyModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 
@@ -12,7 +16,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
     {
         private readonly IVacancyService _vacancyService;
 
-        public VacancyController(IVacancyService vacancyService)
+        public VacancyController(IVacancyService vacancyService, SignInManager<ApplicationUser> signInManager) : base(signInManager)
         {
             _vacancyService = vacancyService;
         }
@@ -29,8 +33,15 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             {
                 expression = x => x.Type == Enum.Parse<VacancyType>(vacancyType);
             }
+            LodaUserModel();
+            var query = new ListVacancyQuery()
+            {
+                Page = page,
+                Expression = expression,
+                UserModel = UserModel,
+            };
 
-            var result = await _vacancyService.ListVacancyQuery(page, expression);
+            var result = await _vacancyService.ListVacancyQuery(query);
 
             if (result == null)
                 return RedirectToAction("Index", "NotFound");
@@ -48,6 +59,58 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
         {
             return View();
         }
+
+        public IActionResult Apply(int id)
+        {
+            var returnAcction = "Apply";
+            var returnController = "Vacancy";
+
+            if (!IsSignedId())
+                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
+
+            return View();
+        }
+
+        public async Task<IActionResult> AddFavourite(int id)
+        {
+            var returnAcction = "AddFavourite";
+            var returnController = "Vacancy";
+            var routeiD = id.ToString();
+
+            if (!IsSignedId())
+                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController, routeiD });
+
+            LodaUserModel();
+            var command = new AddFavouriteCommand()
+            {
+                VacasnyId = id,
+                UserModel = UserModel
+            };
+
+            await _vacancyService.AddFavourite(command);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> RemoveFavourite(int id)
+        {
+            var returnAcction = "Apply";
+            var returnController = "RemoveFavourite";
+            var routeiD = id.ToString();
+
+            if (!IsSignedId())
+                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController, routeiD });
+
+            LodaUserModel();
+            var command = new RemoveFavouriteCommand()
+            {
+                VacasnyId = id,
+                UserModel = UserModel
+            };
+
+            await _vacancyService.RemoveFavourite(command);
+            return RedirectToAction("Index");
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Add([FromForm] CreateVacancyDTO model)

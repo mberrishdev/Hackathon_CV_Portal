@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Hackathon_CV_Portal.Domain.FavouriteVacancies.Commands;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hackathon_CV_Portal.Domain.FavouriteVacancies
 {
@@ -13,5 +14,13 @@ namespace Hackathon_CV_Portal.Domain.FavouriteVacancies
 
         //public ApplicationUser User { get; private set; }
         //public Vacancie Vacancie { get; private set; }
+
+        public FavouriteVacancy() { }
+        public FavouriteVacancy(AddFavouriteCommand command)
+        {
+            UserId = command.UserModel.UserId;
+            VacansyId = command.VacasnyId;
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Application.Implementations;
+using Hackathon_CV_Portal.Application.Implementations.FavouriteVacancies;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace Hackathon_CV_Portal.Application
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IFavouriteVacancyService, FavouriteVacancyService>();
             services.AddScoped<IVacancyService, VacancyService>();
 
             return services;

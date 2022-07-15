@@ -1,7 +1,6 @@
 ﻿using Hackathon_CV_Portal.Application;
 using Hackathon_CV_Portal.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
 {
@@ -35,8 +34,9 @@ namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
 
 
             // Add services to the container.
-            services.AddControllersWithViews(options =>
-                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            //options =>
+            //        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
 
             services.AddRepository();
             services.AddApplication(configuration);

@@ -92,9 +92,9 @@ namespace Hackathon_CV_Portal.Data.Implementations
             //await _context.SaveChangesAsync();
         }
 
-        public Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.AnyAsync(predicate);
+            return await _dbSet.AnyAsync(predicate);
         }
     }
 }

@@ -68,7 +68,14 @@
                         </div>
                         <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                             <div class="d-flex mb-3">
-                                <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="AddFavourite" asp-route-id="@vacancy.Id"><i class="far fa-heart text-primary"></i></a>
+                                @if (@vacancy.IsFavourite)
+                                {
+                                    <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="RemoveFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary bi-suit-heart-fill" ></i></a>
+                                }
+                                else
+                                {
+                                    <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="AddFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary" ></i></a>
+                                }
                                 <a class="btn btn-primary me-2" asp-controller="Vacancy" asp-action="Apply" asp-route-id="@vacancy.Id">Apply Now</a>
                                 <a class="btn btn-info me-2" asp-controller="Vacancy" asp-action="Detail" asp-route-id="@vacancy.Id">დეტალები</a>
 

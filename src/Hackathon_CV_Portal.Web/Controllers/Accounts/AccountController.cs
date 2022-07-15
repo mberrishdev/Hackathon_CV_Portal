@@ -1,7 +1,9 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Domain.Enums;
+using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Users.Commands;
 using Hackathon_CV_Portal.Web.Models.UserAccountModel;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Accounts
@@ -10,7 +12,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
     {
         private readonly IAccountService _accountService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, SignInManager<ApplicationUser> signInManager) : base(signInManager)
         {
             _accountService = accountService;
         }
@@ -29,8 +31,13 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
             return View();
         }
 
-        public IActionResult LogIn()
+        public IActionResult LogIn(string returnAcction, string returnController, string routeId)
         {
+            ViewBag.ReturnAcction = returnAcction;
+            ViewBag.returnController = returnController;
+            ViewBag.routeId = routeId;
+            //if (!string.IsNullOrEmpty(returnAcction) && !string.IsNullOrEmpty(returnController))
+            //    return RedirectToAction(returnAcction, returnController);
             return View();
         }
 
@@ -66,9 +73,8 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
         }
 
         [HttpPost]
-        public async Task<IActionResult> LogIn([FromForm] LogInDto model)
+        public async Task<IActionResult> LogIn([FromForm] LogInDto model, string returnAcction, string returnController, string routeId)
         {
-
             if (!ModelState.IsValid)
                 return View();
 
@@ -81,10 +87,16 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
 
             var status = await _accountService.LoginAsync(command, HttpContext);
             if (status == SignInStatus.Success)
-                return RedirectToAction("", "");
-
+            {
+                if (!string.IsNullOrEmpty(returnAcction) && !string.IsNullOrEmpty(returnController) && !string.IsNullOrEmpty(routeId))
+                    return RedirectToAction(returnAcction, returnController, new { Id = int.Parse(routeId) });
+                if (!string.IsNullOrEmpty(returnAcction) && !string.IsNullOrEmpty(returnController))
+                    return RedirectToAction(returnAcction, returnController);
+                return RedirectToAction("Index", "Home");
+            }
 
             ModelState.AddModelError("", "Username or password is incorrect");
+
 
             return View();
         }

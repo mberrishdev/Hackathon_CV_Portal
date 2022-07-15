@@ -14,5 +14,6 @@
         public string Description { get; set; }
         public string Responsibility { get; set; }
         public string Qualifications { get; set; }
+        public bool IsFavourite { get; set; }
     }
 }
