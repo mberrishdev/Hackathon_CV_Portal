@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Hackathon_CV_Portal.Domain.WorkignExperiences
 {
-    public class WorkignExperience
+    public class WorkingExperience
     {
         [Key]
         public int Id { get; set; }
@@ -19,6 +19,6 @@ namespace Hackathon_CV_Portal.Domain.WorkignExperiences
         [Required, MaxLength(50)]
         public string City { get; set; }
 
-        public CV CV { get; set; }
+        public CurriculumVitae CV { get; set; }
     }
 }

@@ -20,6 +20,6 @@ namespace Hackathon_CV_Portal.Domain.Educations
         public string City { get; set; }
 
 
-        public CV CV { get; set; }
+        public CurriculumVitae CV { get; set; }
     }
 }

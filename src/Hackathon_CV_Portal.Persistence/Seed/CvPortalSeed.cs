@@ -4,6 +4,11 @@ using Hackathon_CV_Portal.Domain.Vcancies;
 using Hackathon_CV_Portal.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Hackathon_CV_Portal.Domain.Categories;
+using Hackathon_CV_Portal.Domain.CVs;
+using Hackathon_CV_Portal.Domain.Educations;
+using Hackathon_CV_Portal.Domain.WorkignExperiences;
+using Hackathon_CV_Portal.Domain.Skills;
 
 namespace Hackathon_CV_Portal.Persistence.Seed
 {
@@ -25,10 +30,130 @@ namespace Hackathon_CV_Portal.Persistence.Seed
 
             SeedRoles(context, ref seeded);
             SeedUsers(context, ref seeded);
-            SeedVacancies(context, ref seeded);
+            SeedCategories(context, ref seeded);
+            //SeedCv(context, ref seeded);
+            //SeedVacancies(context, ref seeded);
 
             if (seeded)
                 context.SaveChanges();
+        }
+
+        private static void SeedCv(CvPortalDbContext context, ref bool seeded)
+        {
+            var curriculumVitaes = new List<CurriculumVitae>()
+            {
+               new CurriculumVitae()
+               {
+                   FirstName = "Rati",
+                   LastName = "Tkhilaishvili",
+                   BirtDate = new DateTime((DateTime.Now - new TimeSpan(10,10,10,10)).Ticks),
+                   PhoneNumber = "568280025",
+                   Email = "ratitkhilaishvili@gmail.com",
+                   Address = "Nutsubidze str 139",
+                   AboutMe = "I am web developer",
+                   Educations = new List<Education>()
+                   {
+                       new Education() {
+                           StartDate = DateTime.Now,
+                           EndDate = DateTime.Now + new TimeSpan(10,10,10),
+                           Name = "Computer Science",
+                           Description = "I was Cs Student",
+                           University = "Caucasus university",
+                           City = "Tbilisi"
+                       },
+
+                       new Education() {
+                           StartDate = DateTime.Now,
+                           EndDate = DateTime.Now + new TimeSpan(10,10,10),
+                           Name = "Computer Science",
+                           Description = "I was Cs Student",
+                           University = "Caucasus university",
+                           City = "Tbilisi"
+                       }
+                   },
+                   WorkingExperience = new List<WorkingExperience>()
+                   {
+                       new WorkingExperience() {
+                           StartDate = DateTime.Now,
+                           EndDate = DateTime.Now + new TimeSpan(10,10,10),
+                           Name = "Computer Science",
+                           Description = "I was Cs Student",
+                           Company = "Smartsoft",
+                           City = "Tbilisi"
+                       },
+
+                       new WorkingExperience() {
+                           StartDate = DateTime.Now,
+                           EndDate = DateTime.Now + new TimeSpan(10,10,10),
+                           Name = "Computer Science",
+                           Description = "I was Cs Student",
+                           Company = "Smartsoft",
+                           City = "Tbilisi"
+                       },
+
+                       new WorkingExperience() {
+                           StartDate = DateTime.Now,
+                           EndDate = DateTime.Now + new TimeSpan(10,10,10),
+                           Name = "Computer Science",
+                           Description = "I was Cs Student",
+                           Company = "Smartsoft",
+                           City = "Tbilisi"
+                       },
+                   },
+                   Skills = new List<Skill>()
+                   {
+                       new Skill ()
+                       {
+                           Title = "C#"
+                       },
+
+                       new Skill ()
+                       {
+                           Title = "C#"
+                       },
+
+                       new Skill ()
+                       {
+                           Title = "C#"
+                       }
+                   },
+                   Image = "",
+                   UserId = 2,
+               }
+            };
+
+            foreach (var cv in curriculumVitaes)
+            {
+                if (!context.CVs.Any(item => item.Id == cv.Id))
+                {
+                    context.CVs.Add(cv);
+                    seeded = true;
+                }
+            }
+        }
+
+        private static void SeedCategories(CvPortalDbContext context, ref bool seeded)
+        {
+            var categories = new List<Category>()
+            {
+                new Category()
+                {
+                    Name = "IT",
+                },
+                new Category()
+                {
+                    Name = "Marketing",
+                },
+            };
+
+            foreach (var category in categories)
+            {
+                if (!context.Categories.Any(item => item.Id == category.Id))
+                {
+                    context.Categories.Add(category);
+                    seeded = true;
+                }
+            }
         }
 
         private static void SeedRoles(CvPortalDbContext context, ref bool seeded)
@@ -65,7 +190,11 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     UserName = "mberrish",
                     PasswordHash = "AQAAAAEAACcQAAAAENkqQwx7c2/It1LujA4mLx4wb/oW4ltrNPBEC2cgXPg3Uf6NqHBqbLY37KBIo+1IGg=="
                 },
-
+                new ApplicationUser()
+                {
+                    UserName = "rati_t",
+                    PasswordHash = "AQAAAAEAACcQAAAAEAShB0tfptCVEFl0XUy4moFAinxQutVQd0qoDNelMheh6zhzMBhJUx/oBJn9wxBklw=="
+                },
             };
 
             foreach (var user in users)
@@ -95,6 +224,8 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     Type = VacancyType.PartTime,
                     UserId = 1,
                     CategoryId = 1,
+                    Responsibility = "",
+                    Qualifications = "",
                 };
 
                 context.Vacancies.Add(vac);
@@ -114,6 +245,8 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     Type = VacancyType.FullTime,
                     UserId = 1,
                     CategoryId = 1,
+                    Responsibility = "",
+                    Qualifications = "",
                 };
 
                 context.Vacancies.Add(vac);

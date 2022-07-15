@@ -1,12 +1,4 @@
-﻿using Hackathon_CV_Portal.Application.Abstractions;
-using Hackathon_CV_Portal.Application.Implementations;
-using Hackathon_CV_Portal.Application.Implementations.FavouriteVacancies;
-using Hackathon_CV_Portal.Application.Implementations.Vacancies;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-
-namespace Hackathon_CV_Portal.Application
+﻿namespace Hackathon_CV_Portal.Application
 {
     public static class DependencyInjection
     {
@@ -18,6 +10,7 @@ namespace Hackathon_CV_Portal.Application
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IFavouriteVacancyService, FavouriteVacancyService>();
             services.AddScoped<IVacancyService, VacancyService>();
+            services.AddScoped<ICvService, CvService>();
 
             return services;
         }

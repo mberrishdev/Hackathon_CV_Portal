@@ -18,11 +18,11 @@ namespace Hackathon_CV_Portal.Persistence.Context
         }
 
 
-        public DbSet<CV> CVs { get; set; }
+        public DbSet<CurriculumVitae> CVs { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<FavouriteVacancy> FavouriteVacancies { get; set; }
         public DbSet<Skill> Skills { get; set; }
-        public DbSet<WorkignExperience> WorkignExperiences { get; set; }
+        public DbSet<WorkingExperience> WorkignExperiences { get; set; }
         public DbSet<Vacancy> Vacancies { get; set; }
         public DbSet<Category> Categories { get; set; }
 
@@ -52,25 +52,25 @@ namespace Hackathon_CV_Portal.Persistence.Context
                 .HasMany(v => v.Vacancies)
                 .WithOne(u => u.User);
 
-            modelBuilder.Entity<CV>()
+            modelBuilder.Entity<CurriculumVitae>()
                 .HasMany(e => e.Educations)
                 .WithOne(c => c.CV);
 
-            modelBuilder.Entity<CV>()
+            modelBuilder.Entity<CurriculumVitae>()
                 .HasMany(s => s.Skills)
                 .WithOne(c => c.CV);
 
-            modelBuilder.Entity<CV>()
-                .HasMany(w => w.WorkignExperiences)
+            modelBuilder.Entity<CurriculumVitae>()
+                .HasMany(w => w.WorkingExperience)
                 .WithOne(c => c.CV);
 
             modelBuilder.Entity<Education>()
                 .HasOne(c => c.CV)
                 .WithMany(e => e.Educations);
 
-            modelBuilder.Entity<WorkignExperience>()
+            modelBuilder.Entity<WorkingExperience>()
                .HasOne(c => c.CV)
-               .WithMany(w => w.WorkignExperiences);
+               .WithMany(w => w.WorkingExperience);
 
             modelBuilder.Entity<Skill>()
                .HasOne(c => c.CV)
