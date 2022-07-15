@@ -25,7 +25,7 @@ namespace Hackathon_CV_Portal.Persistence.Seed
 
             SeedRoles(context, ref seeded);
             SeedUsers(context, ref seeded);
-            // SeedVacancies(context, ref seeded);
+            SeedVacancies(context, ref seeded);
 
             if (seeded)
                 context.SaveChanges();
@@ -81,16 +81,37 @@ namespace Hackathon_CV_Portal.Persistence.Seed
         private static void SeedVacancies(CvPortalDbContext context, ref bool seeded)
         {
 
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 25; i++)
             {
                 var vac = new Vacancy()
                 {
                     Title = $"Vac{i}",
-                    Salary = 100 + i,
-                    Currency = "USD",
+                    SalaryRange = $"{100 + i}-{200 + i} $",
+                    CompanyName = $"Facebook {1}",
+                    Location = $"Tbilisi, Georgia {1}",
                     PublishDate = DateTime.Now,
                     DeadLine = DateTime.Now,
                     Description = "bla bla",
+                    Type = VacancyType.PartTime,
+                    UserId = 1,
+                    CategoryId = 1,
+                };
+
+                context.Vacancies.Add(vac);
+            }
+
+            for (int i = 0; i < 25; i++)
+            {
+                var vac = new Vacancy()
+                {
+                    Title = $"Vac{i}",
+                    SalaryRange = $"{100 + i}-{200 + i} $",
+                    CompanyName = $"Facebook {1}",
+                    Location = $"Tbilisi, Georgia {1}",
+                    PublishDate = DateTime.Now,
+                    DeadLine = DateTime.Now,
+                    Description = "bla bla",
+                    Type = VacancyType.FullTime,
                     UserId = 1,
                     CategoryId = 1,
                 };

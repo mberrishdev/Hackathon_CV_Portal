@@ -1,4 +1,5 @@
 ﻿using Hackathon_CV_Portal.Domain.Categories;
+using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using System.ComponentModel.DataAnnotations;
@@ -12,9 +13,14 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
         public int Id { get; set; }
         [Required, Column(TypeName = "NVARCHAR"), MaxLength(50)]
         public string Title { get; set; }
-        public int Salary { get; set; }
-        [MaxLength(15)]
-        public string Currency { get; set; }
+        [Required, MaxLength(50)]
+        public string SalaryRange { get; set; }
+        [Required, MaxLength(50)]
+        public string CompanyName { get; set; }
+        [Required, MaxLength(50)]
+        public string Location { get; set; }
+        [Required]
+        public VacancyType Type { get; set; }
         [Required]
         public DateTime PublishDate { get; set; }
         [Required]
@@ -35,13 +41,15 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
         public Vacancy(CreateVacancyCommand command)
         {
             Title = command.Title;
-            Salary = command.Salary;
-            Currency = command.Currency;
+            SalaryRange = command.SalaryRange;
+            CompanyName = command.CompanyName;
+            Location = command.Location;
             PublishDate = DateTime.Now;
             DeadLine = command.DeadLine;
             Description = command.Description;
             CategoryId = command.CategoryId;
             UserId = command.UserId;
+            Type = command.Type;
         }
     }
 }

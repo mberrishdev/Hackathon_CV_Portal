@@ -1,4 +1,5 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
+using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vcancies;
 using Hackathon_CV_Portal.Web.Models.VacancyModels;
@@ -16,13 +17,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             _vacancyService = vacancyService;
         }
 
-
-        public async Task<IActionResult> Index(int page = 1, string searchCategory = null)
+        public async Task<IActionResult> Index(string searchCategory, string vacancyType, int page = 1)
         {
             Expression<Func<Vacancy, bool>>? expression = null;
             if (!String.IsNullOrEmpty(searchCategory))
             {
                 expression = x => x.Category.Name.Contains(searchCategory);
+            }
+
+            if (!String.IsNullOrEmpty(vacancyType))
+            {
+                expression = x => x.Type == Enum.Parse<VacancyType>(vacancyType);
             }
 
             var result = await _vacancyService.ListVacancyQuery(page, expression);
@@ -36,6 +41,8 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
         public async Task<IActionResult> Detail(int id)
         {
             return View();
+
+            var result = await _vacancyService.GetVacancyById(id);
         }
 
         public IActionResult Add()
@@ -58,7 +65,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 DeadLine = model.DeadLine,
                 CategoryId = model.CategoryId,
                 Currency = model.Currency,
-                Salary = model.Salary,
+                //Salary = model.Salary,
                 UserId = UserModel.UserId,
                 UserName = UserModel.UserName
             };

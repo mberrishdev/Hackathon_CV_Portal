@@ -9,5 +9,6 @@ namespace Hackathon_CV_Portal.Application.Abstractions
     {
         Task<VacansyVM> ListVacancyQuery(int page, Expression<Func<Vacancy, bool>>? expression = null);
         Task CreateVacancy(CreateVacancyCommand command);
+        Task<VacancyModel> GetVacancyById(int id);
     }
 }
