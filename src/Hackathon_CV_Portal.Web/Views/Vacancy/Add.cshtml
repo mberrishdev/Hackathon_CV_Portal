@@ -34,7 +34,10 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Type"></label>
-                    <input asp-for="Type" class="form-control" type="number"/>
+                                           <select id="types" class=" form-control form-select" name="cars">
+                            <option class="dropdown-item" value="1">PartTime</option>
+                            <option value="2">FullTime</option>
+                        </select>
                     <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
                 <div class="form-group">
