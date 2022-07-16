@@ -5,15 +5,6 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
 <div class="row flex-lg-nowrap">
-  <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
-    <div class="card p-3">
-      <div class="e-navlist e-navlist--active-bg">
-        <ul class="nav">
-          <li class="nav-item"><a class="nav-link px-2 active" href="#"><i class="fa fa-fw fa-bar-chart mr-1"></i><span>Overview</span></a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
 
   <div class="col">
     <div class="e-tabs mb-3 px-3">
@@ -40,7 +31,9 @@
                       <th>Photo</th>*@
                       <th class="max-width">მომხარებლის სახელი</th>
                       <th class="sortable">შექმნის დრო</th>
-                      <th> დაბლოკვა/განბლოკვა </th>
+                      <th>როლები</th>
+                      <th></th>
+                      @*<th> დაბლოკვა/განბლოკვა </th>*@
                     </tr>
                   </thead>
                   <tbody>
@@ -58,14 +51,18 @@
                       </td>*@
                       <td class="text-nowrap align-middle">@usr.UserName</td>
                       <td class="text-nowrap align-middle"><span>@usr.CreateDate</span></td>
-                      @if(!@usr.IsBlocked)
+                      <td>@string.Join(" , ", @usr.Roles.ToList())</td>
+                        <td>
+                        <a class="btn btn-primary" asp-controller="UserRole" asp-action="Manage" asp-route-id="@usr.Id">როლების მართვა</a>
+                        </td>
+                      @*@if(!@usr.IsBlocked)
                         {
                         <td class="text-nowrap align-content-end"><a class="btn btn-danger" asp-controller="User" asp-action="UnBlock" asp-route-id="@usr.Id">განბლოკვა</a></td>
                         }
                         else
                         {
                         <td class="text-nowrap align-content-end"><a class="btn btn-primary" asp-controller="User" asp-action="Block" asp-route-id="@usr.Id">დაბლოკვა</a></td>
-                        } 
+                        } *@
                     </tr>
                     }
 
@@ -83,7 +80,7 @@
             <div class="e-navlist e-navlist--active-bold">
               <ul class="nav">
                 <li class="nav-item active"><a href="" class="nav-link"><span>All</span>&nbsp;<small>/&nbsp;@Model.UserCount</small></a></li>
-                <li class="nav-item"><a href="" class="nav-link"><span>Active</span>&nbsp;<small>/&nbsp;@Model.ActiveUsers</small></a></li>
+                @*<li class="nav-item"><a href="" class="nav-link"><span>Active</span>&nbsp;<small>/&nbsp;@Model.ActiveUsers</small></a></li>*@
               </ul>
             </div>
             <div>

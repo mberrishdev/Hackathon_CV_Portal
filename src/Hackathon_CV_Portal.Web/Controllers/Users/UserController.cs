@@ -17,6 +17,15 @@ namespace Hackathon_CV_Portal.Web.Controllers.Users
 
         public async Task<IActionResult> Index(string userName)
         {
+            var returnAcction = "Index";
+            var returnController = "User";
+
+            if (!IsSignedId())
+                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
+
+            if (!IsInRole(Domain.Enums.UserRole.Admin.ToString()))
+                return RedirectToAction("AccessDenied", "Account");
+
             var users = await _userService.ListUsers(userName);
 
             if (users == null)
