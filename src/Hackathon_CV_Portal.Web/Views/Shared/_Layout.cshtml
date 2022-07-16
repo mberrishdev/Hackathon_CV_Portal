@@ -84,6 +84,12 @@
                             <a class="nav-link text-dark" asp-controller="Vacancy" asp-action="Index" asp-route-companyId="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))">ჩემი ვაკანისები</a>    
                         </li>
                     }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Index">მომხარებლები</a>
+                        </li>
+                    }
                     <a class="nav-link text-dark" asp-area="" asp-controller="About" asp-action="Index">ჩვენს შესახებ</a>
                     <a class="nav-link text-dark" asp-area="" asp-controller="Contact" asp-action="Index">კონტაქტი</a>
                 </div>

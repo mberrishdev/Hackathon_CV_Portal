@@ -90,7 +90,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             if (!IsSignedId())
                 return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
 
-            if (!IsInRole(UserRole.Company.ToString()))
+            if (!IsInRole(Hackathon_CV_Portal.Domain.Enums.UserRole.Company.ToString()))
                 return RedirectToAction("AccessDenied", "Account");
 
             var categories = await _categoyService.GetCategories();
@@ -148,7 +148,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             if (!IsSignedId())
                 return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
 
-            if (!IsInRole(UserRole.Company.ToString()))
+            if (!IsInRole(Hackathon_CV_Portal.Domain.Enums.UserRole.Company.ToString()))
                 return RedirectToAction("AccessDenied", "Account");
 
             if (!ModelState.IsValid)
