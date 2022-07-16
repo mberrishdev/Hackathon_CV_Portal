@@ -1,6 +1,5 @@
 ﻿using Hackathon_CV_Portal.Application;
 using Hackathon_CV_Portal.Data;
-using Hackathon_CV_Portal.Persistence.Seed;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
