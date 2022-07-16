@@ -62,6 +62,8 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
             foreach (var item in vacancies.Items)
             {
                 var isFavoutire = query.UserModel == null ? false : await _favouriteVacancyService.AnyAsync(predicate: x => x.VacansyId == item.Id && x.UserId == query.UserModel.UserId);
+                if (query.WithFav && !isFavoutire)
+                    continue;
 
                 vacancyModels.Add(new VacancyModel()
                 {
@@ -81,6 +83,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                     UserId = item.UserId,
                 });
             }
+
             return new VacansyVM()
             {
                 VacancyModels = vacancyModels,

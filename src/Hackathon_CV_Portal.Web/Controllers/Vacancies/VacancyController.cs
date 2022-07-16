@@ -25,9 +25,10 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             _categoyService = categoyService;
         }
 
-        public async Task<IActionResult> Index(string searchCategory, string vacancyType, int page = 1, int companyId = 0)
+        public async Task<IActionResult> Index(string searchCategory, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
         {
             Expression<Func<Vacancy, bool>>? expression = null;
+
             if (!String.IsNullOrEmpty(searchCategory))
             {
                 if (companyId == 0)
@@ -57,12 +58,15 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 Page = page,
                 Expression = expression,
                 UserModel = UserModel,
+                WithFav = isFav,
             };
 
             var result = await _vacancyService.ListVacancyQuery(query);
 
             if (result == null)
                 return RedirectToAction("Index", "NotFound");
+
+            result.WithFil = withFiL;
 
             return View(result);
         }

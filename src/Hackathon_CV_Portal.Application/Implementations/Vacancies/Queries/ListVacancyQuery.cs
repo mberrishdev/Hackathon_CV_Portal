@@ -10,5 +10,6 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies.Queries
         public Expression<Func<Vacancy, bool>>? Expression { get; set; }
         public UserModel? UserModel { get; set; }
         public int CompanyId { get; set; }
+        public bool WithFav { get; set; }
     }
 }

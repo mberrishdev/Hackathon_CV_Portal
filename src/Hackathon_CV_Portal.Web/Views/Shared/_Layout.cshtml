@@ -55,6 +55,10 @@
                         <div class="dropdown-menu rounded-0 m-0">
                             <a asp-area="" asp-controller="Vacancy" asp-action="Index" class="dropdown-item">ვაკანსიები</a>
                             <a asp-area="" asp-controller="Category" asp-action="Index" class="dropdown-item">კატეგორიები</a>
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
+                            {
+                                <a asp-area="" asp-controller="Vacancy" asp-action="Index" asp-route-withFiL="@false" asp-route-isFav="@true" class="dropdown-item">ფავორიტი ვაკანსიები</a>
+                            }
                         </div>
                     </div>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
