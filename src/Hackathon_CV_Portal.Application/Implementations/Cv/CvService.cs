@@ -150,13 +150,13 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
             CurriculumVitae cv;
             if (query.CvId != 0)
             {
-                var myVacs = _context.Vacancies.Where(x => x.UserId == query.UserModel.UserId);
+                var myVacs = _context.Vacancies.Where(x => x.UserId == query.UserModel.UserId).ToList();
+                var ac = _context.AppliedCurriculumVitaes.Where(x => x.CurriculumVitaeId == query.CvId).ToList();
 
                 bool exist = false;
                 foreach (var myVac in myVacs)
                 {
-                    exist = _context.AppliedCurriculumVitaes.Any(x => x.VacancyId == myVac.Id && x.CurriculumVitaeId == query.CvId);
-
+                    exist = ac.Any(x => x.VacancyId == myVac.Id && x.CurriculumVitaeId == query.CvId);
                     if (exist)
                         break;
                 }
