@@ -1,0 +1,32 @@
+﻿@using Hackathon_CV_Portal.Web.Models.CategoryModel
+@model CreateCategoryDto
+@{
+    ViewData["Title"] = "დაამატე კატეგორია";
+}
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1 class="text-center">დაამატე კატეგორია</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="AddCategory" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="დამატება" class="btn btn-outline-success float-right" />
+                        <a class="btn btn-outline-secondary" asp-controller="Category"  asp-action="Index">უკან დაბრუნება</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

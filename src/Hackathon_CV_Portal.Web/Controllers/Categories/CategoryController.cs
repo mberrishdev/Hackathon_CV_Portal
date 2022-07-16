@@ -1,7 +1,9 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Domain.Users;
+using Hackathon_CV_Portal.Web.Models.CategoryModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Hackathon_CV_Portal.Domain.Categories.command;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Categories
 {
@@ -23,64 +25,33 @@ namespace Hackathon_CV_Portal.Web.Controllers.Categories
             return View(result);
         }
 
+        public IActionResult AddCategory()
+        {
+            return View();
+        }
 
-        //public IActionResult Category()
-        //{
-        //    LoadUserModel();
+        [HttpPost]
+        public async Task<IActionResult> AddCategory([FromForm] CreateCategoryDto model)
+        {
+            if (!ModelState.IsValid)
+                return View();
 
-        //    var skillModels = _categoryService.GetCV(UserModel.UserId).Result.Cate;
+            LoadUserModel();
 
-        //    SkillVM skillVm = new SkillVM()
-        //    {
-        //        SkillModels = skillModels.Select(n => new SkillModel()
-        //        {
-        //            Id = n.Id,
-        //            Title = n.Title,
-        //        }).ToList()
-        //    };
+            var command = new CreateCategoryCommand()
+            {
+                Name = model.Name,
+            };
+            await _categoryService.AddCategory(command);
 
-        //    return View(skillVm);
-        //}
+            return RedirectToAction("Index");
+        }
 
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            await _categoryService.DeleteCategory(id);
 
-        //public IActionResult AddCategory()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public async Task<IActionResult> AddCategory([FromForm] CreateSkillDTO model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return View();
-
-        //    LoadUserModel();
-
-        //    var command = new CreateSkillCommand()
-        //    {
-        //        Title = model.Title,
-        //        UserId = UserModel.UserId,
-        //    };
-        //    await _categoryService.AddSkillAsync(command);
-
-        //    return RedirectToAction("Skill");
-        //}
-
-        //public async Task<IActionResult> DeleteCategory(int id)
-        //{
-        //    LoadUserModel();
-
-        //    var cv = await _categoryService.GetCV(UserModel.UserId);
-
-        //    if (cv != null)
-        //    {
-        //        if (cv.UserId == UserModel.UserId)
-        //        {
-        //            await _cvService.DeleteSkill(id);
-        //        }
-        //    }
-
-        //    return RedirectToAction("Skill");
-        //}
+            return RedirectToAction("Index");
+        }
     }
 }

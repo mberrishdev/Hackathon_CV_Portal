@@ -119,7 +119,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
             }
             else
             {
-                return RedirectToAction("LogOut");
+                return RedirectToAction("LogIn");
             }
         }
     }
