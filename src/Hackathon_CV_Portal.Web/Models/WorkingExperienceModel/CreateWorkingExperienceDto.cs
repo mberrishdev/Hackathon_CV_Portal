@@ -5,9 +5,9 @@ namespace Hackathon_CV_Portal.Web.Models.WorkingExperienceModel
     public class CreateWorkingExperienceDto
     {
         [Required]
-        [Display(Name = "სამსახურის დაწყების დრო")]
+        [Display(Name = "სამსახურის დაწყების თარიღი")]
         public DateTime StartDate { get; set; }
-        [Display(Name = "სამსახურის დასრულების დრო")]
+        [Display(Name = "სამსახურის დასრულების თარიღი")]
         public DateTime? EndDate { get; set; }
         [Required, MaxLength(100)]
         [Display(Name = "სახელწოდება")]
