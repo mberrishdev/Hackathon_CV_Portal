@@ -3,6 +3,7 @@
     public enum SignInStatus
     {
         Success,
-        Failure
+        Failure,
+        Blocked,
     }
 }

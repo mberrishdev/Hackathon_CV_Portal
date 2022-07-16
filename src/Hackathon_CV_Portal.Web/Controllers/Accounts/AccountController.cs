@@ -5,7 +5,6 @@ using Hackathon_CV_Portal.Domain.Users.Commands;
 using Hackathon_CV_Portal.Web.Models.UserAccountModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Accounts
 {
@@ -34,8 +33,10 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
             ViewBag.ReturnAcction = returnAcction;
             ViewBag.returnController = returnController;
             ViewBag.routeId = routeId;
-            //if (!string.IsNullOrEmpty(returnAcction) && !string.IsNullOrEmpty(returnController))
-            //    return RedirectToAction(returnAcction, returnController);
+            ModelState["returnAcction"].Errors.Clear();
+            ModelState["returnController"].Errors.Clear();
+            ModelState["routeId"].Errors.Clear();
+
             return View();
         }
 
@@ -73,18 +74,12 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
         [HttpPost]
         public async Task<IActionResult> LogIn([FromForm] LogInDto model, string returnAcction, string returnController, string routeId)
         {
-            if (ModelState.ContainsKey("{returnAcction}"))
-                ModelState["{returnAcction}"].Errors.Clear();
+            ModelState["returnAcction"].Errors.Clear();
+            ModelState["returnController"].Errors.Clear();
+            ModelState["routeId"].Errors.Clear();
 
-            if (ModelState.ContainsKey("{returnController}"))
-                ModelState["{returnController}"].Errors.Clear();
-
-            if (ModelState.ContainsKey("{routeId}"))
-                ModelState["{routeId}"].Errors.Clear();
-
-            if (!ModelState.IsValid && (ModelState.Any(x => (x.Key == "მომხარებელი ან პაროლი არასწორია" && x.Value.ValidationState == ModelValidationState.Invalid) ||
-            ModelState.Any(x => (x.Key == "Password" && x.Value.ValidationState == ModelValidationState.Invalid) ||
-            (x.Key == "UserName" && x.Value.ValidationState == ModelValidationState.Invalid)))))
+            if (!ModelState.IsValid && !ModelState.Any(x => x.Key == "returnAcction") && !ModelState.Any(x => x.Key == "returnController")
+                && !ModelState.Any(x => x.Key == "routeId"))
                 return View();
 
             var command = new LogInUserCommand()
@@ -95,6 +90,11 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
             };
 
             var status = await _accountService.LoginAsync(command, HttpContext);
+            if (status == SignInStatus.Blocked)
+            {
+                ModelState.AddModelError("", "თქვენი ანგარიში დაბლოკილია, სცადეთ მოგვიანებით");
+                return View();
+            }
             if (status == SignInStatus.Success)
             {
                 if (!string.IsNullOrEmpty(returnAcction) && !string.IsNullOrEmpty(returnController) && !string.IsNullOrEmpty(routeId))

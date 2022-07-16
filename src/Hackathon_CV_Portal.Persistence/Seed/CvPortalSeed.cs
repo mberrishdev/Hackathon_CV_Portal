@@ -20,7 +20,7 @@ namespace Hackathon_CV_Portal.Persistence.Seed
             using var scope = serviceProvider.CreateScope();
             var database = scope.ServiceProvider.GetRequiredService<CvPortalDbContext>();
 
-            Migrate(database);
+            //Migrate(database);
             Seed(database);
         }
 
@@ -30,9 +30,9 @@ namespace Hackathon_CV_Portal.Persistence.Seed
 
             SeedRoles(context, ref seeded);
             SeedUsers(context, ref seeded);
-            //SeedCategories(context, ref seeded);
-            //SeedCv(context, ref seeded);
-            //SeedVacancies(context, ref seeded);
+            SeedCategories(context, ref seeded);
+            SeedCv(context, ref seeded);
+            SeedVacancies(context, ref seeded);
 
             if (seeded)
                 context.SaveChanges();
