@@ -31,8 +31,8 @@ namespace Hackathon_CV_Portal.Persistence.Seed
             SeedRoles(context, ref seeded);
             SeedUsers(context, ref seeded);
             SeedCategories(context, ref seeded);
-            SeedCv(context, ref seeded);
-            SeedVacancies(context, ref seeded);
+            //SeedCv(context, ref seeded);
+            //SeedVacancies(context, ref seeded);
 
             if (seeded)
                 context.SaveChanges();
@@ -138,11 +138,15 @@ namespace Hackathon_CV_Portal.Persistence.Seed
             {
                 new Category()
                 {
-                    Name = "IT",
+                    Name = ".Net Developer",
                 },
                 new Category()
                 {
                     Name = "Marketing",
+                },
+                new Category()
+                {
+                    Name = "Lector",
                 },
             };
 
@@ -188,24 +192,25 @@ namespace Hackathon_CV_Portal.Persistence.Seed
         }
         private static void SeedUsers(CvPortalDbContext context, ref bool seeded)
         {
+            //Coding_123
             var users = new List<ApplicationUser>()
             {
                 new ApplicationUser()
                 {
-                    UserName = "mberrish",
-                    PasswordHash = "AQAAAAEAACcQAAAAENkqQwx7c2/It1LujA4mLx4wb/oW4ltrNPBEC2cgXPg3Uf6NqHBqbLY37KBIo+1IGg=="
-                },
-                new ApplicationUser()
-                {
-                    UserName = "rati_t",
+                    UserName = "appUser",
                     PasswordHash = "AQAAAAEAACcQAAAAEAShB0tfptCVEFl0XUy4moFAinxQutVQd0qoDNelMheh6zhzMBhJUx/oBJn9wxBklw=="
                 },
                 new ApplicationUser()
                 {
-                    UserName = "superDuperAdmin",
-                    PasswordHash = "AQAAAAEAACcQAAAAEK+EFpjp0wgxJXapELklnUWSLDMhwYmMNmiFwJdPzoQLLoDplZ26bzH/pEi28EfYnw=="
+                    UserName = "appCat",
+                    PasswordHash = "AQAAAAEAACcQAAAAEAShB0tfptCVEFl0XUy4moFAinxQutVQd0qoDNelMheh6zhzMBhJUx/oBJn9wxBklw=="
                 },
-            };  
+                new ApplicationUser()
+                {
+                    UserName = "appAdm",
+                    PasswordHash = "AQAAAAEAACcQAAAAEAShB0tfptCVEFl0XUy4moFAinxQutVQd0qoDNelMheh6zhzMBhJUx/oBJn9wxBklw=="
+                },
+            };
 
             foreach (var user in users)
             {
