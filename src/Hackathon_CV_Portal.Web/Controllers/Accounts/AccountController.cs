@@ -28,11 +28,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
             return View();
         }
 
-        public IActionResult Profile()
-        {
-            return View();
-        }
-
         public IActionResult LogIn(string returnAcction, string returnController, string routeId)
         {
             ViewBag.ReturnAcction = returnAcction;
