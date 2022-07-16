@@ -116,14 +116,14 @@
 
 
 
-<nav aria-label="Page navigation example" class="text-center ">
-  <ul class="pagination">
-      @for(int i=1; i<=Model.TottalPages; i++)
-      {
-          <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
-      }
-  </ul>
-</nav>
+    <div aria-label="Page navigation example" class="">
+      <ul  class="pagination justify-content-center">
+          @for(int i=1; i<=Model.TottalPages; i++)
+          {
+              <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
+          }
+      </ul>
+    </div>
 
 </div>
 
