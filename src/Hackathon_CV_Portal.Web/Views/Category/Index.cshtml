@@ -1,4 +1,6 @@
 ﻿@using Hackathon_CV_Portal.Application.Categories.Vacancies.Models
+@using System.Security.Claims
+@using Hackathon_CV_Portal.Domain.Enums
 
 @model ICollection<CategoryVM>
 
@@ -7,37 +9,62 @@
     <h1 class="display-3 text-center  mb-3 animated slideInDown">კატეგორიები</h1>
     <nav aria-label="breadcrumb">
     </nav>
-    <div class="form-group">
-    <a class="btn btn-outline-success float-right" asp-controller="Category" asp-action="AddCategory">დაამატე კატეგორია</a>
+    @if (User.HasClaim(ClaimTypes.Role, UserRole.Admin.ToString()))
+    {
+        <div class="form-group">
+            <a class="btn btn-outline-success float-right" asp-controller="Category" asp-action="AddCategory">დაამატე კატეგორია</a>
+        </div>
+    }
 </div>
-</div>
 
 
 
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="row g-4">
-            @foreach (var category in Model)
-            {
-                <div class="job-item p-3 mb-2 bg-light text-dark">
-                    <div class="row g-4">
-                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                            <div class="text-start ps-4">
-                                <a class="p-4" asp-controller="Vacancy" asp-action="Index" asp-route-searchCategory="@category.Name"><i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i></a>
-                                <h5 class="mb-3 text-center">@category.Name</h5>
-                            </div>
-                        </div>
-                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
-                        {
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-danger me-2" asp-controller="Category" asp-action="DeleteCategory" asp-route-id="@category.Id">წაშლა</a>
+@if (User.HasClaim(ClaimTypes.Role, UserRole.Admin.ToString()))
+{
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                @foreach (var category in Model)
+                {
+                    <div class="job-item p-3 mb-2 bg-light text-dark">
+                        <div class="row g-4">
+                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                <div class="text-start ps-4">
+                                    <a class="p-4" asp-controller="Vacancy" asp-action="Index" asp-route-searchCategory="@category.Name"><i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i></a>
+                                    <h5 class="mb-3 text-center">@category.Name</h5>
                                 </div>
                             </div>
-                        }
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <a class="btn btn-danger me-2" asp-controller="Category" asp-action="DeleteCategory" asp-route-id="@category.Id">წაშლა</a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                @foreach (var category in Model)
+                {
+                    <div class="col-lg-3 col-sm-6 wow fadeInUp">
+                        <a class="cat-item rounded p-4" asp-controller="Vacancy" asp-action="Index" asp-route-searchCategory="@category.Name">
+                            <i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i>
+                            <h6 class="mb-3">@category.Name</h6>
+                            <p class="mb-0">@category.VacancyCount</p>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
