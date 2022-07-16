@@ -22,5 +22,65 @@ namespace Hackathon_CV_Portal.Web.Controllers.Categories
 
             return View(result);
         }
+
+
+        //public IActionResult Category()
+        //{
+        //    LoadUserModel();
+
+        //    var skillModels = _categoryService.GetCV(UserModel.UserId).Result.Cate;
+
+        //    SkillVM skillVm = new SkillVM()
+        //    {
+        //        SkillModels = skillModels.Select(n => new SkillModel()
+        //        {
+        //            Id = n.Id,
+        //            Title = n.Title,
+        //        }).ToList()
+        //    };
+
+        //    return View(skillVm);
+        //}
+
+
+        //public IActionResult AddCategory()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddCategory([FromForm] CreateSkillDTO model)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return View();
+
+        //    LoadUserModel();
+
+        //    var command = new CreateSkillCommand()
+        //    {
+        //        Title = model.Title,
+        //        UserId = UserModel.UserId,
+        //    };
+        //    await _categoryService.AddSkillAsync(command);
+
+        //    return RedirectToAction("Skill");
+        //}
+
+        //public async Task<IActionResult> DeleteCategory(int id)
+        //{
+        //    LoadUserModel();
+
+        //    var cv = await _categoryService.GetCV(UserModel.UserId);
+
+        //    if (cv != null)
+        //    {
+        //        if (cv.UserId == UserModel.UserId)
+        //        {
+        //            await _cvService.DeleteSkill(id);
+        //        }
+        //    }
+
+        //    return RedirectToAction("Skill");
+        //}
     }
 }

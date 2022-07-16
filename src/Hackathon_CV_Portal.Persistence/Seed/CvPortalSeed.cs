@@ -170,6 +170,11 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     Name =  UserRole.Company.ToString(),
                     NormalizedName  = UserRole.Company.ToString(),
                 },
+                new ApplicationRole()
+                {
+                    Name =  UserRole.Admin.ToString(),
+                    NormalizedName  = UserRole.Admin.ToString(),
+                },
             };
 
             foreach (var role in roles)
@@ -195,7 +200,12 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     UserName = "rati_t",
                     PasswordHash = "AQAAAAEAACcQAAAAEAShB0tfptCVEFl0XUy4moFAinxQutVQd0qoDNelMheh6zhzMBhJUx/oBJn9wxBklw=="
                 },
-            };
+                new ApplicationUser()
+                {
+                    UserName = "superDuperAdmin",
+                    PasswordHash = "AQAAAAEAACcQAAAAEK+EFpjp0wgxJXapELklnUWSLDMhwYmMNmiFwJdPzoQLLoDplZ26bzH/pEi28EfYnw=="
+                },
+            };  
 
             foreach (var user in users)
             {

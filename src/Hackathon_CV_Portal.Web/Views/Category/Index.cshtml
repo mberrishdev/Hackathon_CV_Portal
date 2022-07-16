@@ -1,16 +1,16 @@
 ﻿@using Hackathon_CV_Portal.Application.Categories.Vacancies.Models
 
 @model ICollection<CategoryVM>
-    
-
-    <div class="container my-5 pt-5 pb-4">
-        <h1 class="display-3  mb-3 animated slideInDown">კატეგორიები</h1>
-        <nav aria-label="breadcrumb">
-        </nav>
-    </div>
 
 
-  <div class="container-xxl py-5">
+<div class="container my-5 pt-5 pb-4">
+    <h1 class="display-3  mb-3 animated slideInDown">კატეგორიები</h1>
+    <nav aria-label="breadcrumb">
+    </nav>
+</div>
+
+
+<div class="container-xxl py-5">
     <div class="container">
         <div class="row g-4">
             @foreach (var category in Model)
@@ -20,6 +20,12 @@
                         <i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i>
                         <h6 class="mb-3">@category.Name</h6>
                         <p class="mb-0">@category.VacancyCount</p>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <div class="d-flex mb-3">
+                                <a class="btn btn-danger me-2" asp-controller="Category" asp-action="DeleteCategory" asp-route-id="@category.Id">წაშლა</a>
+                            </div>
+                        }
                     </a>
                 </div>
             }
