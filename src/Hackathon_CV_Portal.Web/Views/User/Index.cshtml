@@ -1,0 +1,110 @@
+﻿@using Hackathon_CV_Portal.Application.Implementations.Users.Models
+@model UsersVM
+
+<div class="bg #f8f8f8">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+<div class="row flex-lg-nowrap">
+
+  <div class="col">
+    <div class="e-tabs mb-3 px-3">
+      <ul class="nav nav-tabs">
+        <li class="nav-item"><a class="nav-link active" href="#">Users</a></li>
+      </ul>
+    </div>
+
+    <div class="row flex-lg-nowrap">
+      <div class="col mb-3">
+        <div class="e-panel card">
+          <div class="card-body">
+            <div class="e-table">
+              <div class="table-responsive table-lg mt-3">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+@*                      <th class="align-top">
+                        <div class="custom-control custom-control-inline custom-checkbox custom-control-nameless m-0">
+                          <input type="checkbox" class="custom-control-input" id="all-items">
+                          <label class="custom-control-label" for="all-items"></label>
+                        </div>
+                      </th>
+                      <th>Photo</th>*@
+                      <th class="max-width">მომხარებლის სახელი</th>
+                      <th class="sortable">შექმნის დრო</th>
+                      <th>როლები</th>
+                      <th></th>
+                      @*<th> დაბლოკვა/განბლოკვა </th>*@
+                    </tr>
+                  </thead>
+                  <tbody>
+                       @foreach (var usr in Model.UserModels)
+                    {
+                    <tr>
+@*                      <td class="align-middle">
+                        <div class="custom-control custom-control-inline custom-checkbox custom-control-nameless m-0 align-top">
+                          <input type="checkbox" class="custom-control-input" id="item-1">
+                          <label class="custom-control-label" for="item-1"></label>
+                        </div>
+                      </td>
+                      <td class="align-middle text-center">
+                        <div class="bg-light d-inline-flex justify-content-center align-items-center align-top" style="width: 35px; height: 35px; border-radius: 3px;"><i class="fa fa-fw fa-photo" style="opacity: 0.8;"></i></div>
+                      </td>*@
+                      <td class="text-nowrap align-middle">@usr.UserName</td>
+                      <td class="text-nowrap align-middle"><span>@usr.CreateDate</span></td>
+                      <td>@string.Join(" , ", @usr.Roles.ToList())</td>
+                        <td>
+                        <a class="btn btn-primary" asp-controller="UserRole" asp-action="Manage" asp-route-id="@usr.Id">როლების მართვა</a>
+                        </td>
+                      @*@if(!@usr.IsBlocked)
+                        {
+                        <td class="text-nowrap align-content-end"><a class="btn btn-danger" asp-controller="User" asp-action="UnBlock" asp-route-id="@usr.Id">განბლოკვა</a></td>
+                        }
+                        else
+                        {
+                        <td class="text-nowrap align-content-end"><a class="btn btn-primary" asp-controller="User" asp-action="Block" asp-route-id="@usr.Id">დაბლოკვა</a></td>
+                        } *@
+                    </tr>
+                    }
+
+                  </tbody>
+                </table>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-3 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="e-navlist e-navlist--active-bold">
+              <ul class="nav">
+                <li class="nav-item active"><a href="" class="nav-link"><span>All</span>&nbsp;<small>/&nbsp;@Model.UserCount</small></a></li>
+                @*<li class="nav-item"><a href="" class="nav-link"><span>Active</span>&nbsp;<small>/&nbsp;@Model.ActiveUsers</small></a></li>*@
+              </ul>
+            </div>
+            <div>
+              <div class="form-group">
+                   @using (Html.BeginForm("Index", "User", FormMethod.Get)){
+                   
+                <p >
+                    მომხარებლის სახელით ძებნა:
+                    <div class="col-md-10">
+                        @Html.TextBox("userName", ViewBag.CurrentFilter as string, "მომხარებლისსახელი")
+                    </div>
+                </p>
+                <div class="col-md-13 text-center">
+                        <input type="submit" class="form-control border-0" value="ძებნა" />
+                </div>
+                }
+              </div>
+            </div>
+            <hr class="my-3">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>

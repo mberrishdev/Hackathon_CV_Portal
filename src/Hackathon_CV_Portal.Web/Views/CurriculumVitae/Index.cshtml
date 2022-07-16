@@ -49,14 +49,14 @@
                             {
 
                                 <div class="col-sm-4">
-                                    <h4>@workingExperience.City</h4>
+                                    <h4><i class="fa fa-map-marker-alt text-primary me-2"></i> @workingExperience.City</h4>
                                     @if (workingExperience.EndDate != null)
                                     {
-                                        <p><small class="text-primary">@workingExperience.StartDate.Month/@workingExperience.StartDate.Day/@workingExperience.StartDate.Year - @workingExperience.EndDate.Value.Month/@workingExperience.EndDate.Value.Day/@workingExperience.EndDate.Value.Year</small></p>
+                                        <p><small class="text-primary"><i class="fa fa-calendar-marker-alt text-primary me-2"></i> @workingExperience.StartDate.Month/@workingExperience.StartDate.Day/@workingExperience.StartDate.Year - @workingExperience.EndDate.Value.Month/@workingExperience.EndDate.Value.Day/@workingExperience.EndDate.Value.Year</small></p>
                                     }
                                     @if (workingExperience.EndDate == null)
                                     {
-                                        <p><small class="text-primary">@workingExperience.StartDate.Month/@workingExperience.StartDate.Day/@workingExperience.StartDate.Year - Now</small></p>
+                                        <p><small class="text-primary"><i class="bi bi-calendar text-primary me-2"></i> @workingExperience.StartDate.Month/@workingExperience.StartDate.Day/@workingExperience.StartDate.Year - Now</small></p>
                                     }
                                 </div>
                                 <div class="col-sm-8">
@@ -78,14 +78,15 @@
                     @foreach (var education in Model.Education)
                     {
                         <article>
-                            <h4>@education.Name, @education.University, @education.City </h4>
+                            <h4><i class="fa fa-map-marker-alt text-primary me-2"></i> @education.City</h4>
+                            <h4>@education.Name, @education.University</h4>
                             @if (education.EndDate != null)
                             {
                                 <p><small class="text-primary">@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - @education.EndDate.Value.Month/@education.EndDate.Value.Day/@education.EndDate.Value.Year</small></p>
                             }
                             @if (education.EndDate == null)
                             {
-                                <p><small class="text-primary">@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - now</small></p>
+                                <p><small class="text-primary">sa@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - now</small></p>
                             }
                             <p>@education.Description</p>
                             <hr>

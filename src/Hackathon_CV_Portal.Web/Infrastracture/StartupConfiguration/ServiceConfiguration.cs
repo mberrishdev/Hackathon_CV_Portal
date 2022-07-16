@@ -41,7 +41,7 @@ namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
             services.AddRepository();
             services.AddApplication(configuration);
 
-            // CvPortalSeed.Initialize(services.BuildServiceProvider());
+            //CvPortalSeed.Initialize(services.BuildServiceProvider());
 
             //services.AddIdentity<IdentityUser, IdentityRole>()
             //    .AddEntityFrameworkStores<CvPortalDbContext>();

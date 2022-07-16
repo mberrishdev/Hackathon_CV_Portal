@@ -1,5 +1,4 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
-using Hackathon_CV_Portal.Application.Implementations.Cv;
 using Hackathon_CV_Portal.Domain.CVs.Commands;
 using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.Users;
@@ -42,6 +41,9 @@ namespace Hackathon_CV_Portal.Application.Implementations
             if (user != null)
             {
                 var signInResult = await _signInManager.PasswordSignInAsync(command.UserName, command.Password, command.RememberMe, false);
+
+                if (signInResult.IsLockedOut)
+                    return SignInStatus.Blocked;
 
                 if (signInResult.Succeeded)
                 {
