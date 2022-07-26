@@ -3,11 +3,13 @@ using Hackathon_CV_Portal.Application.Exceptions;
 using Hackathon_CV_Portal.Application.Implementations.AppliedCurriculumVitaes.Models;
 using Hackathon_CV_Portal.Application.Implementations.AppliedCurriculumVitaes.Queries;
 using Hackathon_CV_Portal.Domain.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_CV_Portal.Web.Controllers.AppliedCurriculumVitaes
 {
+    [Authorize]
     public class AppliedCurriculumVitaeController : BaseController
     {
         private readonly IAppliedCurriculumVitaeService _appliedCurriculumVitaeService;
@@ -17,16 +19,11 @@ namespace Hackathon_CV_Portal.Web.Controllers.AppliedCurriculumVitaes
             _appliedCurriculumVitaeService = appliedCurriculumVitaeService;
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Index(int vacancyId = 0)
         {
             if (vacancyId == 0)
                 return RedirectToAction("Index", "NotFound");
-
-            var returnAcction = "Index";
-            var returnController = "AppliedCurriculumVitae";
-
-            if (!IsSignedId())
-                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController, vacancyId });
 
             LoadUserModel();
 
@@ -57,14 +54,9 @@ namespace Hackathon_CV_Portal.Web.Controllers.AppliedCurriculumVitaes
             return View(result);
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Apply(int id)
         {
-            var returnAcction = "Apply";
-            var returnController = "AppliedCurriculumVitae";
-
-            if (!IsSignedId())
-                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
-
             LoadUserModel();
 
             await _appliedCurriculumVitaeService.ApplyVacancy(id, UserModel);

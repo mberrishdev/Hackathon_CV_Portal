@@ -21,7 +21,8 @@ try
     builder.ConfigureService();
 
     builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-                    .AddEntityFrameworkStores<CvPortalDbContext>();
+                    .AddEntityFrameworkStores<CvPortalDbContext>()
+                    .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider); ;
 
     //services.AddIdentity<ApplicationUser, ApplicationRole>()
     //    .AddEntityFrameworkStores<ApplicationDbContext>()

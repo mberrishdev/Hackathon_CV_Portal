@@ -7,6 +7,7 @@ using Hackathon_CV_Portal.Application.Implementations.FavouriteVacancies;
 using Hackathon_CV_Portal.Application.Implementations.UserRoles;
 using Hackathon_CV_Portal.Application.Implementations.Users;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies;
+using Hackathon_CV_Portal.Application.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ namespace Hackathon_CV_Portal.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
             services.RegisterMaps();
 
             services.Configure<IdentityOptions>(opts =>
