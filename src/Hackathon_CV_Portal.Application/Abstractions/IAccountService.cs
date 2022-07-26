@@ -10,5 +10,6 @@ namespace Hackathon_CV_Portal.Application.Abstractions
         Task<IEnumerable<IdentityError>> RegisterAsync(CreateAppilicationUserCommand command, UserType userType);
         Task<SignInStatus> LoginAsync(LogInUserCommand command, HttpContext httpContext);
         Task LogOutAsync(HttpContext httpContext);
+        Task<(SignInStatus Status, IdentityResult Result)> ExternalRegistration(ExternalCreateAppilicationUserCommand command);
     }
 }

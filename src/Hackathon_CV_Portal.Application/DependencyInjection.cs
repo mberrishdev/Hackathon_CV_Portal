@@ -3,6 +3,7 @@ using Hackathon_CV_Portal.Application.Implementations;
 using Hackathon_CV_Portal.Application.Implementations.AppliedCurriculumVitaes;
 using Hackathon_CV_Portal.Application.Implementations.Categories;
 using Hackathon_CV_Portal.Application.Implementations.Cv;
+using Hackathon_CV_Portal.Application.Implementations.EmailService;
 using Hackathon_CV_Portal.Application.Implementations.FavouriteVacancies;
 using Hackathon_CV_Portal.Application.Implementations.UserRoles;
 using Hackathon_CV_Portal.Application.Implementations.Users;
@@ -28,6 +29,8 @@ namespace Hackathon_CV_Portal.Application
                 opts.Lockout.MaxFailedAccessAttempts = 3;
             });
 
+            services.AddScoped<IExternalLoginAuthInfoProvider, ExternalLoginAuthInfoProvider>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IFavouriteVacancyService, FavouriteVacancyService>();

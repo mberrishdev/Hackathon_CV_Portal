@@ -1,4 +1,7 @@
-﻿@using Hackathon_CV_Portal.Web.Models.UserAccountModel
+﻿@using Hackathon_CV_Portal.Domain.Users
+@using Hackathon_CV_Portal.Web.Models.UserAccountModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
 
 @model LogInDto
 @{
@@ -11,6 +14,7 @@
     <div class="col-md-6 offset-lg-3 offset-md-2">
         <div class="row">
             <div class="col-md-8 offset-lg-2 offset-md-1">*@
+
 <section class="vh-100 gradient-custom">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -41,17 +45,32 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input class="btn btn-outline-success float-right" type="submit" value="ავტორიზაცია" />
+                                    <input class="btn btn-outline-success float-right text-white" type="submit" value="ავტორიზაცია" />
                                 </div>
 
                             </form>
-                            <div class="d-flex justify-content-center text-center mt-4 pt-1">
-                                <a href="#!" class="text-white"><i class="fab fa-facebook-f fa-lg"></i></a>
-                                <a href="#!" class="text-white"><i class="fab fa-twitter fa-lg mx-4 px-2"></i></a>
-                                <a href="#!" class="text-white"><i class="fab fa-google fa-lg"></i></a>
-                            </div>
+                            @{
+                                var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+                                <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                                    <div class="">
+                                        <p>
+                                            @foreach (var provider in loginProviders)
+                                            {
+                                                <button type="submit" class="btn text-white" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                                    <i class="fab fa-lg fa-@provider.Name.ToLower()"></i>
+                                                </button>
+                                            }
+                                        </p>
+                                    </div>
+                                </form>
+                            }
+
                         </div>
                         <div>
+                            <p class="mb-2">
+                                დაგავიწყდათ პაროლი? <a asp-controller="Account" asp-action="ForgotPassword" class="text-white-50 fw-bold">პაროლის აღდგენა</a>
+                            </p>
                             <p class="mb-0">
                                 არ გაქვთ ანგარიში? <a asp-controller="Account" asp-action="Register" class="text-white-50 fw-bold">რეგისტრაცია</a>
                             </p>

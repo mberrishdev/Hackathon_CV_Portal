@@ -7,6 +7,17 @@ namespace Hackathon_CV_Portal.Domain.Users
 {
     public class ApplicationUser : IdentityUser<int>
     {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? DisplayName { get; set; }
+
+        public string? FacebookUserId { get; set; }
+
+        public string? GoogleUserId { get; set; }
+
+        public string? GoogleProfilePageUrl { get; set; }
+
+        public string? ProfileUrl { get; set; }
         public ICollection<CurriculumVitae> CVs { get; set; }
         public ICollection<Vacancy> Vacancies { get; set; }
 

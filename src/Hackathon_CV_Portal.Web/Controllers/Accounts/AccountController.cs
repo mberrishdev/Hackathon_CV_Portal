@@ -7,23 +7,35 @@ using Hackathon_CV_Portal.Web.Models.UserAccountModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Accounts
 {
     public class AccountController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IRoleService _roleService;
         private readonly IEmailSender _emailSender;
         private readonly IAccountService _accountService;
         private readonly ICvService _cvService;
 
-        public AccountController(IAccountService accountService, SignInManager<ApplicationUser> signInManager, ICvService cvService, UserManager<ApplicationUser> userManager) : base(signInManager)
+        public AccountController(IAccountService accountService,
+            SignInManager<ApplicationUser> signInManager,
+            ICvService cvService,
+            UserManager<ApplicationUser> userManager,
+            IRoleService roleService,
+            IEmailSender emailSender) : base(signInManager)
         {
             _accountService = accountService;
-            _cvService = _cvService;
             _userManager = userManager;
+            _cvService = cvService;
+            _emailSender = emailSender;
+            _roleService = roleService;
+            _emailSender = emailSender;
         }
+
+        [TempData]
+        public string ErrorMessage { get; set; }
 
         public IActionResult AccessDenied()
         {
@@ -69,6 +81,77 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
             return View();
         }
 
+        #endregion
+
+        #region ExternalLogIn
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string provider, string? returnUrl = null)
+        {
+            // Request a redirect to the external login provider.
+            var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return Challenge(properties, provider);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null, string? remoteError = null)
+        {
+            if (remoteError != null)
+            {
+                ErrorMessage = $"Error from external provider: {remoteError}";
+                return RedirectToAction(nameof(LogIn));
+            }
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(LogIn));
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if (result.Succeeded)
+            {
+                return RedirectToLocal(returnUrl);
+            }
+            if (result.IsLockedOut)
+            {
+                return RedirectToAction(nameof(Lockout));
+            }
+            else
+            {
+                // If the user does not have an account, then ask the user to create an account.
+                ViewData["ReturnUrl"] = returnUrl;
+                ViewData["LoginProvider"] = info.LoginProvider;
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginViewModel model, string? returnUrl = null)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var command = new ExternalCreateAppilicationUserCommand()
+            {
+                Email = model.Email,
+                HttpContext = HttpContext
+            };
+
+            var (Status, Result) = await _accountService.ExternalRegistration(command);
+
+            if (Status == SignInStatus.Success)
+                return RedirectToLocal(returnUrl);
+            else if (Status == SignInStatus.Failure)
+                AddErrors(Result);
+
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(nameof(ExternalLogin), model);
+        }
         #endregion
 
         #region Register
@@ -140,23 +223,22 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null)
-                {
-                    return RedirectToAction("NotFound", "Home");
-                }
+            if (!ModelState.IsValid)
+                return View(model);
 
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                return RedirectToAction(nameof(ForgotPasswordConfirmation));
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return RedirectToAction("NotFound", "Home");
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+            await _emailSender.SendEmailAsync(model.Email, "პაროლის აღდგენა",
+               $"დააჭირეთ პაროლის აღსადგენად: <a href='{callbackUrl}'>ლინკი</a>");
+
+            return RedirectToAction(nameof(ForgotPasswordConfirmation));
+
         }
 
         [HttpGet]
@@ -175,12 +257,13 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ResetPassword(string code = null)
+        public IActionResult ResetPassword(string? code = null)
         {
             if (code == null)
             {
                 throw new ApplicationException("A code must be supplied for password reset.");
             }
+
             var model = new ResetPasswordViewModel { Code = code };
             return View(model);
         }
@@ -197,7 +280,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.Accounts
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
             {
-                // Don't reveal that the user does not exist
                 return RedirectToAction(nameof(ResetPasswordConfirmation));
             }
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
