@@ -1,7 +1,4 @@
-﻿using Hackathon_CV_Portal.Persistence.Context;
-using Microsoft.EntityFrameworkCore;
-
-namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
+﻿namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
 {
     public static class MiddlewareConfiguration
     {
@@ -15,11 +12,11 @@ namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
                 app.UseHsts();
             }
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var dataContext = scope.ServiceProvider.GetRequiredService<CvPortalDbContext>();
-                dataContext.Database.Migrate();
-            }
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var dataContext = scope.ServiceProvider.GetRequiredService<CvPortalDbContext>();
+            //    dataContext.Database.Migrate();
+            //}
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
