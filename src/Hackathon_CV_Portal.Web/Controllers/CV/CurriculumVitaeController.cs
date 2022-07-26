@@ -13,12 +13,13 @@ using Hackathon_CV_Portal.Web.Models.CvModels;
 using Hackathon_CV_Portal.Web.Models.EducationModel;
 using Hackathon_CV_Portal.Web.Models.SkillsModel;
 using Hackathon_CV_Portal.Web.Models.WorkingExperienceModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Hackathon_CV_Portal.Web.Controllers.CV
 {
+    [Authorize]
     public class CurriculumVitaeController : BaseController
     {
         private readonly ICvService _cvService;
@@ -28,15 +29,10 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             _cvService = cvService;
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Index(int cvId = 0)
         {
             CvVM result = null;
-
-            var returnAcction = "Index";
-            var returnController = "CurriculumVitae";
-
-            if (!IsSignedId())
-                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
 
             LoadUserModel();
 
@@ -57,6 +53,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             return View(result);
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Update()
         {
             CvVM result = null;
@@ -73,6 +70,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Update([FromForm] CreateCvDTO model)
         {
             if (!ModelState.IsValid)
@@ -98,7 +96,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         }
 
         // Skill
-
+        [Authorize(Roles = "User")]
         public IActionResult Skill()
         {
             LoadUserModel();
@@ -116,13 +114,14 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
 
             return View(skillVm);
         }
-    
 
+        [Authorize(Roles = "User")]
         public IActionResult AddSkill()
         {
             return View();
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> AddSkill([FromForm] CreateSkillDTO model)
         {
@@ -141,6 +140,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             return RedirectToAction("Skill");
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteSkill(int id)
         {
             LoadUserModel();
@@ -159,15 +159,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         }
 
         // - Skill
-       
+
 
         // Education
+        [Authorize(Roles = "User")]
         public IActionResult AddEducation()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddEducation([FromForm] CreateEducationDto model)
         {
 
@@ -191,6 +193,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             return RedirectToAction("Education");
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteEducation(int id)
         {
             LoadUserModel();
@@ -208,6 +211,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             return RedirectToAction("Education");
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Education()
         {
             LoadUserModel();
@@ -236,15 +240,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
 
         // Working Experience
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddWorkingExperience()
         {
             return View();
         }
 
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> AddWorkingExperience([FromForm] CreateWorkingExperienceDto model)
         {
-                if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return RedirectToAction("AddWorkingExperience");
 
             LoadUserModel();
@@ -264,6 +270,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             return RedirectToAction("WorkingExperience");
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> WorkingExperience()
         {
             LoadUserModel();
@@ -287,6 +294,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             return View(workingExperienceVM);
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteWorkingExperience(int id)
         {
             LoadUserModel();

@@ -1,11 +1,12 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Domain.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Users
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
@@ -17,15 +18,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.Users
 
         public async Task<IActionResult> Index(string userName)
         {
-            var returnAcction = "Index";
-            var returnController = "User";
-
-            if (!IsSignedId())
-                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
-
-            if (!IsInRole(Domain.Enums.UserRole.Admin.ToString()))
-                return RedirectToAction("AccessDenied", "Account");
-
             var users = await _userService.ListUsers(userName);
 
             if (users == null)

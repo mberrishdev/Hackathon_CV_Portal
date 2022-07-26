@@ -19,6 +19,7 @@ namespace Hackathon_CV_Portal.Application.Implementations
         private readonly IRoleService _roleService;
         private readonly ICvService _cvService;
         private readonly ILogger<AccountService> _logger;
+        private readonly IExternalLoginAuthInfoProvider _authInfoProvider;
 
         public AccountService(
             UserManager<ApplicationUser> userManager,
@@ -127,6 +128,60 @@ namespace Hackathon_CV_Portal.Application.Implementations
                  CookieAuthenticationDefaults.AuthenticationScheme);
 
             _logger.LogInformation("User logged out.");
+        }
+
+        public async Task<(SignInStatus Status, IdentityResult Result)> ExternalRegistration(ExternalCreateAppilicationUserCommand command)
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+                throw new ApplicationException("Error loading external login information during confirmation.");
+
+            var user = new ApplicationUser
+            {
+                UserName = command.Email,
+                Email = command.Email ?? info.Principal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value,
+            };
+
+            var result = await _userManager.CreateAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, UserRole.User.ToString());
+                result = await _userManager.AddLoginAsync(user, info);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    var userRoles = await _roleService.GetUserRoleAsync(user.Id);
+                    var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, user.UserName),
+                            new Claim(ClaimTypes.Email, user.Email),
+                            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                        };
+
+
+                    foreach (var userRole in userRoles)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, userRole));
+                    }
+
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+
+                    await command.HttpContext.SignInAsync(
+                                        CookieAuthenticationDefaults.AuthenticationScheme,
+                                        new ClaimsPrincipal(identity));
+
+                    return (SignInStatus.Success, result);
+                }
+
+
+                _authInfoProvider.PopulateUser(info, user);
+                return (SignInStatus.Failure, result);
+            }
+
+            return (SignInStatus.Failure, null);
         }
     }
 }

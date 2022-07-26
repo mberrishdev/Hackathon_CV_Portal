@@ -13,6 +13,9 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
+    var services = builder.Services;
+    var configuration = builder.Configuration;
+
     builder.Services.AddDbContext<CvPortalDbContext>(options =>
     {
         options.UseSqlServer(builder.Configuration.GetConnectionString("HackathonCvPortalContextConnection"));
@@ -21,7 +24,21 @@ try
     builder.ConfigureService();
 
     builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-                    .AddEntityFrameworkStores<CvPortalDbContext>();
+                    .AddEntityFrameworkStores<CvPortalDbContext>()
+                    .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider); ;
+
+    services.AddAuthentication()
+        .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+            })
+        .AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+            })
+        ;
 
     //services.AddIdentity<ApplicationUser, ApplicationRole>()
     //    .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -54,6 +71,7 @@ try
     var app = builder.Build();
 
     var service = app.Services.GetService(typeof(IServiceScopeFactory)) as IServiceScopeFactory;
+
     //using (var db = service?.CreateScope().ServiceProvider
     //    .GetService<CvPortalDbContext>())
     //{

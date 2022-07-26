@@ -6,6 +6,7 @@ using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vcancies;
 using Hackathon_CV_Portal.Web.Models.VacancyModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -13,6 +14,7 @@ using System.Linq.Expressions;
 
 namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 {
+    [Authorize]
     public class VacancyController : BaseController
     {
         private readonly IVacancyService _vacancyService;
@@ -25,6 +27,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             _categoyService = categoyService;
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string searchCategory, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
         {
             Expression<Func<Vacancy, bool>>? expression = null;
@@ -71,6 +74,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return View(result);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Detail(int id)
         {
             var result = await _vacancyService.GetVacancyById(id);
@@ -80,38 +84,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return View(result);
         }
 
+
+        [Authorize(Roles = "Company, Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             await _vacancyService.Delete(id);
             return RedirectToAction("Index", "Vacancy");
         }
 
-        public async Task<IActionResult> Add()
-        {
-            var returnAcction = "Add";
-            var returnController = "Vacancy";
-
-            if (!IsSignedId())
-                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
-
-            if (!IsInRole(Hackathon_CV_Portal.Domain.Enums.UserRole.Company.ToString()))
-                return RedirectToAction("AccessDenied", "Account");
-
-            var categories = await _categoyService.GetCategories();
-            ViewBag.Categories = new SelectList(categories, "Id", "Name");
-
-            return View();
-        }
-
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AddFavourite(int id)
         {
-            var returnAcction = "AddFavourite";
-            var returnController = "Vacancy";
-            var routeiD = id.ToString();
-
-            if (!IsSignedId())
-                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController, routeiD });
-
             LoadUserModel();
             var command = new AddFavouriteCommand()
             {
@@ -123,15 +106,9 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> RemoveFavourite(int id)
         {
-            var returnAcction = "emoveFavourite";
-            var returnController = "Vacancy";
-            var routeiD = id.ToString();
-
-            if (!IsSignedId())
-                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController, routeiD });
-
             LoadUserModel();
             var command = new RemoveFavouriteCommand()
             {
@@ -143,7 +120,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Company")]
+        public async Task<IActionResult> Add()
+        {
+            var categories = await _categoyService.GetCategories();
+            ViewBag.Categories = new SelectList(categories, "Id", "Name");
+
+            return View();
+        }
+
         [HttpPost]
+        [Authorize(Roles = "Company")]
         public async Task<IActionResult> Add([FromForm] CreateVacancyDTO model)
         {
             var returnAcction = "Add";
