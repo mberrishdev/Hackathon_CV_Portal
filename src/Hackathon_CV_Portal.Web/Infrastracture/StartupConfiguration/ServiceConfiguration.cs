@@ -1,6 +1,10 @@
 ﻿using Hackathon_CV_Portal.Application;
 using Hackathon_CV_Portal.Data;
+using Hackathon_CV_Portal.Domain.Users;
+using Hackathon_CV_Portal.Persistence.Context;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
 {
@@ -11,44 +15,21 @@ namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
             IServiceCollection services = builder.Services;
             IConfiguration configuration = builder.Configuration;
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-            .AddCookie(option =>
+            builder.Services.AddDbContext<CvPortalDbContext>(options =>
             {
-                option.LoginPath = new PathString("/Account/Login");
-                option.AccessDeniedPath = new PathString("/Auth/AccessDenied");
-                option.Events = new CookieAuthenticationEvents
-                {
-                    OnSignedIn = async ctx =>
-                    {
-                        ctx.HttpContext.User = ctx.Principal;
-                    }
-                };
+                options.UseSqlServer(configuration.GetConnectionString("HackathonCvPortalContextConnection"));
             });
 
-            //services.AddAntiforgery(options =>
-            //{
-            //    options.FormFieldName = "AntiforgeryFieldname";
-            //    options.HeaderName = "X-CSRF-TOKEN-HEADERNAME";
-            //    options.SuppressXFrameOptionsHeader = false;
-            //});
-
-
-            // Add services to the container.
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            //options =>
-            //        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute())
 
             services.AddRepository();
             services.AddApplication(configuration);
 
             //CvPortalSeed.Initialize(services.BuildServiceProvider());
 
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<CvPortalDbContext>();
-
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<CvPortalDbContext>();
-
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+                   .AddEntityFrameworkStores<CvPortalDbContext>()
+                   .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider); ;
 
             services.AddAuthorization(opts =>
             {
@@ -58,6 +39,53 @@ namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
                 });
             });
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                 .AddCookie(option =>
+                 {
+                     option.LoginPath = new PathString("/Account/Login");
+                     option.AccessDeniedPath = new PathString("/Auth/AccessDenied");
+                     option.Events = new CookieAuthenticationEvents
+                     {
+                         OnSignedIn = async ctx =>
+                         {
+                             ctx.HttpContext.User = ctx.Principal;
+                         }
+                     };
+                 })
+                .AddGoogle(googleOptions =>
+                {
+                    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+                    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+                })
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = configuration["Authentication:Facebook:AppId"];
+                    facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+                })
+                ;
+
+            builder.Services.AddRazorPages();
+
+            builder.Services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
             return builder;
         }
     }
