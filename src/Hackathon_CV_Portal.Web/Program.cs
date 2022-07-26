@@ -1,8 +1,4 @@
-using Hackathon_CV_Portal.Domain.Users;
-using Hackathon_CV_Portal.Persistence.Context;
 using Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -13,70 +9,9 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    var services = builder.Services;
-    var configuration = builder.Configuration;
-
-    builder.Services.AddDbContext<CvPortalDbContext>(options =>
-    {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("HackathonCvPortalContextConnection"));
-    });
-
     builder.ConfigureService();
 
-    builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-                    .AddEntityFrameworkStores<CvPortalDbContext>()
-                    .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>(TokenOptions.DefaultProvider); ;
-
-    services.AddAuthentication()
-        .AddGoogle(googleOptions =>
-            {
-                googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
-                googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
-            })
-        .AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
-            })
-        ;
-
-    //services.AddIdentity<ApplicationUser, ApplicationRole>()
-    //    .AddEntityFrameworkStores<ApplicationDbContext>()
-    //    .AddDefaultUI()
-    //    .AddDefaultTokenProviders();
-
-    builder.Services.AddRazorPages();
-
-    builder.Services.Configure<IdentityOptions>(options =>
-    {
-        // Password settings.
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireNonAlphanumeric = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequiredLength = 6;
-        options.Password.RequiredUniqueChars = 1;
-
-        // Lockout settings.
-        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-        options.Lockout.MaxFailedAccessAttempts = 5;
-        options.Lockout.AllowedForNewUsers = true;
-
-        // User settings.
-        options.User.AllowedUserNameCharacters =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-        options.User.RequireUniqueEmail = false;
-    });
-
     var app = builder.Build();
-
-    var service = app.Services.GetService(typeof(IServiceScopeFactory)) as IServiceScopeFactory;
-
-    //using (var db = service?.CreateScope().ServiceProvider
-    //    .GetService<CvPortalDbContext>())
-    //{
-    //    db?.Database.Migrate();
-    //}
 
     app.UseDeveloperExceptionPage();
     app.ConfigureMiddleware();

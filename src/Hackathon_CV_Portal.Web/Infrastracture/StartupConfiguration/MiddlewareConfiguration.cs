@@ -1,4 +1,7 @@
-﻿namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
+﻿using Hackathon_CV_Portal.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
+
+namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
 {
     public static class MiddlewareConfiguration
     {
@@ -10,6 +13,12 @@
                 app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dataContext = scope.ServiceProvider.GetRequiredService<CvPortalDbContext>();
+                dataContext.Database.Migrate();
             }
 
             app.UseHttpsRedirection();
