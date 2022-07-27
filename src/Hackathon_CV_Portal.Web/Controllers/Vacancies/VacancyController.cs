@@ -18,38 +18,44 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
     public class VacancyController : BaseController
     {
         private readonly IVacancyService _vacancyService;
-        private readonly ICategoryService _categoyService;
+        private readonly ICategoryService _categoryService;
 
         public VacancyController(IVacancyService vacancyService, SignInManager<ApplicationUser> signInManager,
-            ICategoryService categoyService) : base(signInManager)
+            ICategoryService categoryService) : base(signInManager)
         {
             _vacancyService = vacancyService;
-            _categoyService = categoyService;
+            _categoryService = categoryService;
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string searchCategory, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
+        public async Task<IActionResult> Index(string searchKeyword, int categoryId, string locationId, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
         {
             Expression<Func<Vacancy, bool>>? expression = null;
 
-            if (!String.IsNullOrEmpty(searchCategory))
-            {
-                if (companyId == 0)
-                    expression = x => x.Category.Name.Contains(searchCategory);
-                else
-                    expression = x => x.Category.Name.Contains(searchCategory) && x.UserId == companyId;
-            }
-
-            if (!String.IsNullOrEmpty(vacancyType))
-            {
-                if (companyId == 0)
-                    expression = x => x.Type == Enum.Parse<VacancyType>(vacancyType);
-                else
-                    expression = x => x.Category.Name.Contains(searchCategory) && x.UserId == companyId;
-            }
-
-            if (String.IsNullOrEmpty(searchCategory) && String.IsNullOrEmpty(vacancyType) && companyId != 0)
-                expression = x => x.UserId == companyId;
+            expression = x =>
+                !string.IsNullOrEmpty(searchKeyword)
+                        ? companyId == 0
+                            ? x.CompanyName.Contains(searchKeyword) || x.Description.Contains(searchKeyword) || x.Responsibility.Contains(searchKeyword) || x.Qualifications.Contains(searchKeyword)
+                            : x.UserId == companyId && (x.CompanyName.Contains(searchKeyword) || x.Description.Contains(searchKeyword) || x.Responsibility.Contains(searchKeyword) || x.Qualifications.Contains(searchKeyword))
+                        : true
+                && categoryId > 0
+                        ? companyId == 0
+                            ? x.Category.Id == categoryId
+                            : x.Category.Id == categoryId && x.UserId == companyId
+                        : true
+                //&& locationId > 0
+                //        ? locationId == 0
+                //            ? x.Location.Id == locationId
+                //            : x.Location.Id == locationId && x.UserId == companyId
+                //        : true
+                && !String.IsNullOrEmpty(vacancyType)
+                    ? companyId == 0
+                        ? x.Type == Enum.Parse<VacancyType>(vacancyType)
+                        : x.Category.Id == categoryId && x.UserId == companyId
+                    : true
+                && categoryId <= 0 && String.IsNullOrEmpty(vacancyType) && companyId != 0
+                    ? x.UserId == companyId
+                    : true;
 
             LoadUserModel();
 
@@ -70,6 +76,9 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 return RedirectToAction("Index", "NotFound");
 
             result.WithFil = withFiL;
+
+            var categories = await _categoryService.GetCategories();
+            result.Categories = categories;
 
             return View(result);
         }
@@ -123,7 +132,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> Add()
         {
-            var categories = await _categoyService.GetCategories();
+            var categories = await _categoryService.GetCategories();
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
 
             return View();

@@ -1,4 +1,6 @@
-﻿namespace Hackathon_CV_Portal.Application.Implementations.Vacancies.Models
+﻿using Hackathon_CV_Portal.Application.Categories.Vacancies.Models;
+
+namespace Hackathon_CV_Portal.Application.Implementations.Vacancies.Models
 {
     public class VacansyVM
     {
@@ -6,5 +8,6 @@
         public int TottalPages { get; set; }
         public bool IsEmpty { get; set; }
         public bool WithFil { get; set; }
+        public List<CategoryVM> Categories { get; set; }
     }
 }

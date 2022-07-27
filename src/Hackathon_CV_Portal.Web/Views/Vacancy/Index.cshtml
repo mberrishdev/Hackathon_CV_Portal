@@ -4,41 +4,56 @@
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @inject SignInManager<ApplicationUser> SignInManager
-@model VacansyVM
+@model VacansyVM;
 
-<div class="container-xxl py-5">
+@{
+    ViewBag.User = User;
+}
+
+<div class="container-xxl py-5" id="Div">
     <div class="container">
-        @*<h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">ვაკანსიები</h1>*@
-        <h1 class="display-3 text-center mb-3 animated slideInDown">ვაკანსიები</h1>
-
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-
             @if (@Model.WithFil)
             {
-                @using (Html.BeginForm("Index", "Vacancy", FormMethod.Get))
-                {
-                    <div class="container-xxl bg-white p-0" bgcolor="#800000">
-                        <div class="container-fluid mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="">
-                                        <div class="row">
-                                            <div class="">
-                                                <p>კატეგორია</p>
-                                                <p>
-                                                    @Html.TextBox("searchCategory", ViewBag.CurrentFilter as string, "კატეგორია")
-                                                </p>
-                                                <input type="submit" class="form-control border-0 bg-primary" value="ძებნა" />
-                                            </div>
-                                        </div>
+                <!-- Search Start -->
+                <div class="container-fluid bg-primary mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+                    <div class="container">
+                        <div class="row g-2">
+                            <div class="col-md-10">
+                                <div class="row g-2">
+                                    <div class="col-md-4">
+                                        <input type="text" id="KeywordInput" class="form-control border-0" placeholder="ტექსტი" />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select id="CategoryInput" class="form-select border-0">
+                                            <option value="0" selected>კატეგორიები</option>
+                                            @foreach (var category in Model.Categories)
+                                            {
+                                                <option value="@category.Id">@category.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <select id="LocationInput" class="form-select border-0">
+                                            <option selected value="0">მოსამართი</option>
+                                            @* @foreach (var location in Model.Locations)
+                                        {
+                                        <option value="@location.Id">@location.Name</option>
+                                        } *@
+                                        </select>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-2">
+                                <button onclick="GetVacances()" class="btn btn-dark border-0 w-100">ძებნა</button>
+                            </div>
                         </div>
                     </div>
-                }
-                <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
-                    <li class="nav-item">
+                </div>
+                <!-- Search End -->
+            }
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+                <li class="nav-item">
                     <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
                         <h6 class="mt-n1 mb-0"><a class="page-link" href="?vacancyType=FullTime">Full Time</a></h6>
                     </a>
@@ -49,8 +64,7 @@
                     </a>
                 </li>
             </ul>
-            }
-            <div class="tab-content">
+            <div class="tab-content" id="Test">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     @if (Model.IsEmpty)
                     {    @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
@@ -142,5 +156,32 @@
     </ul>
 </nav>
 
-</div>
+<script type="text/javascript">
+    function GetVacances() {
+
+
+        var a = Boolean(@User.HasClaim("Role", "User").ToString().ToLower());
+        var v = Boolean(@User.HasClaim("role", "company").ToString().ToLower())
+        var keyword = document.getElementById("KeywordInput").value;
+        var cateogry = document.getElementById("CategoryInput").value;
+        var location = document.getElementById("LocationInput").value;
+        var SetData = $("#Test");
+        SetData.html("");
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/Index",
+            data: {
+                searchKeyword: keyword,
+                categoryId: cateogry,
+                locationId: location,
+            },
+
+             success: function(response) {
+              var seachDiv =  $($.parseHTML(response)).find("#Div").html();
+              document.getElementById("Div").innerHTML = seachDiv;
+            }
+
+        })
+    }
+</script>
 
