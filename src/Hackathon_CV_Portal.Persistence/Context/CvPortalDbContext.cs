@@ -54,11 +54,13 @@ namespace Hackathon_CV_Portal.Persistence.Context
 
             modelBuilder.Entity<Category>()
                 .HasMany(V => V.Vacancies)
-                .WithOne(c => c.Category);
+                .WithOne(c => c.Category)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Location>()
                 .HasMany(V => V.Vacancies)
-                .WithOne(l => l.Location);
+                .WithOne(l => l.Location)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(v => v.Vacancies)
