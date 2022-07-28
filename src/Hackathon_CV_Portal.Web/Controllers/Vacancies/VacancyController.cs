@@ -98,7 +98,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return View(result);
         }
 
-
         [Authorize(Roles = "Company, Admin")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -150,17 +149,15 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
         [Authorize(Roles = "Company")]
         public async Task<IActionResult> Add([FromForm] CreateVacancyDTO model)
         {
-            var returnAcction = "Add";
-            var returnController = "Vacancy";
-
-            if (!IsSignedId())
-                return RedirectToAction("LogIn", "Account", new { returnAcction, returnController });
-
-            if (!IsInRole(Hackathon_CV_Portal.Domain.Enums.UserRole.Company.ToString()))
-                return RedirectToAction("AccessDenied", "Account");
-
             if (!ModelState.IsValid)
-                return View();
+            {
+                var categories = await _categoryService.GetCategories();
+                ViewBag.Categories = new SelectList(categories, "Id", "Name");
+
+                var locations = await _locationService.GetLocations();
+                ViewBag.Locations = new SelectList(locations, "Id", "City");
+                return View(model);
+            }
 
             LoadUserModel();
 
