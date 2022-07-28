@@ -12,6 +12,11 @@ a {
     color: #0366d6;
 }
 
+.requierd-symbol {
+    color: red;
+    font-size: 14px !important;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;

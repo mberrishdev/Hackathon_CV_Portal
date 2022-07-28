@@ -36,6 +36,9 @@ namespace Hackathon_CV_Portal.Web.Models.VacancyModels
         [Required(ErrorMessage = "მოთხოვნების შეყვანა აუცილებელია")]
         [Display(Name = "მოთხოვნები")]
         public string Qualifications { get; set; }
+        [EmailAddress(ErrorMessage = "საკონტაქტო მეილი არასწორია")]
+        [Display(Name = "საკონტაქტო მეილი")]
+        public string Email { get; set; }
     }
 
     public class CheckDateRangeAttribute : ValidationAttribute
