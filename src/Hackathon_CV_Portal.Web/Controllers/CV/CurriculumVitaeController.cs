@@ -48,10 +48,46 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             }
 
             if (result == null)
-                return RedirectToAction("NotFound", "Home");
+                return RedirectToAction("Create", "CurriculumVitae");
 
             return View(result);
         }
+
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Create()
+        {
+            CvVM tmpCvVM = new CvVM();
+
+            return View(tmpCvVM);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Create([FromForm] CreateCvDTO model)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            LoadUserModel();
+
+            var command = new CreateCvCommand()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                BirtDate = model.BirtDate,
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
+                Address = model.Address,
+                AboutMe = model.AboutMe,
+                UserId = UserModel.UserId
+            };
+
+            await _cvService.CreateCv(command);
+
+            return RedirectToAction("Index");
+        }
+
 
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Update()
@@ -63,6 +99,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             {
                 result = await _cvService.GetCV(UserModel.UserId);
             }
+
             if (result == null)
                 return RedirectToAction("Index", "NotFound");
 
@@ -137,7 +174,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             };
             await _cvService.AddSkillAsync(command);
 
-            return RedirectToAction("Skill");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "User")]
@@ -155,7 +192,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
                 }
             }
 
-            return RedirectToAction("Skill");
+            return RedirectToAction("Index");
         }
 
         // - Skill
@@ -190,7 +227,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             };
             await _cvService.AddEducationAsync(command);
 
-            return RedirectToAction("Education");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "User")]
@@ -208,7 +245,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
                 }
             }
 
-            return RedirectToAction("Education");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "User")]
@@ -267,7 +304,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             };
             await _cvService.AddWorkingExperienceAsync(command);
 
-            return RedirectToAction("WorkingExperience");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "User")]
@@ -309,7 +346,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
                 }
             }
 
-            return RedirectToAction("WorkingExperience");
+            return RedirectToAction("Index");
         }
 
         // - Working Experience
