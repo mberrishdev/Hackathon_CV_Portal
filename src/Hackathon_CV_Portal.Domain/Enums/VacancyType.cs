@@ -5,4 +5,10 @@
         FullTime = 1,
         PartTime = 2
     }
+
+    public class VacancyTypeClass
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }

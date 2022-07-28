@@ -53,11 +53,11 @@ namespace Hackathon_CV_Portal.Web.Models.VacancyModels
     }
 
     public class RequiredGreaterThanZero : ValidationAttribute
-{
-    public override bool IsValid(object value)
     {
-        int i;
-        return value != null && int.TryParse(value.ToString(), out i) && i > 0;
+        public override bool IsValid(object value)
+        {
+            int i;
+            return value != null && int.TryParse(value.ToString(), out i) && i > 0;
+        }
     }
-}
 }

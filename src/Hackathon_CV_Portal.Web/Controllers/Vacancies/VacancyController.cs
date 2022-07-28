@@ -143,6 +143,8 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             var locations = await _locationService.GetLocations();
             ViewBag.Locations = new SelectList(locations, "Id", "City");
 
+            ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Name = "სრული განაკვეთ" }, new VacancyTypeClass() { Id = 2, Name = "ნახევარი განაკვეთ" } }, "Id", "Name");
+
             return View();
         }
 
@@ -157,8 +159,14 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
                 var locations = await _locationService.GetLocations();
                 ViewBag.Locations = new SelectList(locations, "Id", "City");
+
+                ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Name = "სრული განაკვეთ" }, new VacancyTypeClass() { Id = 2, Name = "ნახევარი განაკვეთ" } }, "Id", "Name");
                 return View(model);
             }
+
+
+            if (model.SalaryRange == null)
+                model.SalaryRange = "შეთანხმებით";
 
             LoadUserModel();
 

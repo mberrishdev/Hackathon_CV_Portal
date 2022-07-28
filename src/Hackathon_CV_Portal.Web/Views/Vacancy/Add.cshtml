@@ -32,11 +32,9 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="Type"></label>
-                        <select id="types" class=" form-control form-select" name="cars">
-                            <option value="0">აირჩიეთ ტიპი</option>
-                            <option class="dropdown-item" value="1">სრული განაკვეთი</option>
-                            <option class="dropdown-item" value="2">ნახევარი განაკვეთი</option>
-                        </select>
+                    <select asp-for="Type" class="form-control form-select"  asp-items="ViewBag.Types">
+                        <option value="0">აირჩიეთ ტიპი</option>
+                     </select>
                     <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -47,9 +45,9 @@
                     <span asp-validation-for="CategoryId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="SalaryRange"></label>
+                    <label asp-for="SalaryRange"></label><h7>   მაგ: 1000-2000 ₾ </h7>
                     <input asp-for="SalaryRange" class="form-control"/>
-                    <span asp-validation-for="SalaryRange" class="text-danger"></span>
+                    <h7>თუ არ შეავსებთ მიენიჭება მნიშვნელობა : შეთანხმებით</h7>
                 </div>
                 <div class="form-group">
                     <label asp-for="DeadLine"></label>
