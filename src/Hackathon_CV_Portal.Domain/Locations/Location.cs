@@ -1,4 +1,5 @@
-﻿using Hackathon_CV_Portal.Domain.Vcancies;
+﻿using Hackathon_CV_Portal.Domain.Locations.Commands;
+using Hackathon_CV_Portal.Domain.Vcancies;
 using System.ComponentModel.DataAnnotations;
 
 namespace Hackathon_CV_Portal.Domain.Locations
@@ -13,5 +14,12 @@ namespace Hackathon_CV_Portal.Domain.Locations
         public string City { get; set; }
 
         public ICollection<Vacancy> Vacancies { get; set; }
+
+        public Location() { }
+        public Location(CreateLocationCommand command)
+        {
+            Country = command.Country;
+            City = command.City;
+        }
     }
 }

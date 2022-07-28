@@ -29,7 +29,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.Categories
         }
 
         [Authorize(Roles = "Admin")]
-
         public IActionResult AddCategory()
         {
             return View();
@@ -40,7 +39,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Categories
         public async Task<IActionResult> AddCategory([FromForm] CreateCategoryDto model)
         {
             if (!ModelState.IsValid)
-                return View();
+                return View(model);
 
             LoadUserModel();
 
