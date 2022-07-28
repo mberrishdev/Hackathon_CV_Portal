@@ -5,6 +5,7 @@ using Hackathon_CV_Portal.Application.Implementations.Categories;
 using Hackathon_CV_Portal.Application.Implementations.Cv;
 using Hackathon_CV_Portal.Application.Implementations.EmailService;
 using Hackathon_CV_Portal.Application.Implementations.FavouriteVacancies;
+using Hackathon_CV_Portal.Application.Implementations.Locations;
 using Hackathon_CV_Portal.Application.Implementations.UserRoles;
 using Hackathon_CV_Portal.Application.Implementations.Users;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies;
@@ -38,6 +39,7 @@ namespace Hackathon_CV_Portal.Application
             services.AddScoped<ICvService, CvService>();
             services.AddScoped<IAppliedCurriculumVitaeService, AppliedCurriculumVitaeService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ILocationService, LocationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRolesService, UserRolesService>();
 

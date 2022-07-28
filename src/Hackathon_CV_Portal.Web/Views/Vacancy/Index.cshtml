@@ -21,12 +21,12 @@
                         <div class="row g-2">
                             <div class="col-md-10">
                                 <div class="row g-2">
-                                    <div class="col-md-4">
-                                        <input type="text" id="KeywordInput" class="form-control border-0" placeholder="ტექსტი" />
-                                    </div>
+                                    @* <div class="col-md-4">
+                                <input type="text" id="KeywordInput" class="form-control border-0" placeholder="ტექსტი" />
+                                </div> *@
                                     <div class="col-md-4">
                                         <select id="CategoryInput" class="form-select border-0">
-                                            <option value="0" selected>კატეგორიები</option>
+                                            <option value="0" selected>ყველა კატეგორია</option>
                                             @foreach (var category in Model.Categories)
                                             {
                                                 <option value="@category.Id">@category.Name</option>
@@ -35,17 +35,20 @@
                                     </div>
                                     <div class="col-md-4">
                                         <select id="LocationInput" class="form-select border-0">
-                                            <option selected value="0">მოსამართი</option>
-                                            @* @foreach (var location in Model.Locations)
-                                        {
-                                        <option value="@location.Id">@location.Name</option>
-                                        } *@
+                                            <option selected value="0">ყველა მისამართი</option>
+                                            @foreach (var location in Model.Locations)
+                                            {
+                                                <option value="@location.Id">@location.Country, @location.City</option>
+                                            }
                                         </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" id="KeywordInput" class="form-control border-0" placeholder="ტექსტი" />
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-2">
-                                <button onclick="GetVacances()" class="btn btn-dark border-0 w-100">ძებნა</button>
+                                <button onclick="GetVacancesBySearch()" class=" border-start-0 rounded-pill ms-n3 btn btn-dark border-0 w-50"><i class="fa fa-search"></i></button>
                             </div>
                         </div>
                     </div>
@@ -55,16 +58,16 @@
             <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
                 <li class="nav-item">
                     <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
-                        <h6 class="mt-n1 mb-0"><a class="page-link" href="?vacancyType=FullTime">Full Time</a></h6>
+                        <h6 class="mt-n1 mb-0"><button class="page-link" onclick="GetVacancesByType('FullTime')">Full Time</button></h6>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
-                        <h6 class="mt-n1 mb-0"><a class="page-link" href="?vacancyType=PartTime">Part Time</a></h6>
+                        <h6 class="mt-n1 mb-0"><button class="page-link" onclick="GetVacancesByType('PartTime')">Part Time</button></h6>
                     </a>
                 </li>
             </ul>
-            <div class="tab-content" id="Test">
+            <div class="tab-content" id="VacancyList">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     @if (Model.IsEmpty)
                     {    @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
@@ -133,7 +136,7 @@
                                                 </div>
                                             }
                                         </div>
-                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>@vacancy.DeadLine</small>
+                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>@vacancy.PublishDate.ToString("dd/MM/yyyy") - @vacancy.DeadLine.ToString("dd/MM/yyyy")</small>
                                     </div>
                                 </div>
                             </div>
@@ -141,32 +144,57 @@
                     }
                 </div>
             </div>
+
+            <ul id="pagination" class="pagination">
+                @if (!Model.IsEmpty)
+                {
+                    @for (int i = 1; i <= Model.TottalPages; i++)
+                    {
+                        <li class="page-item d-flex align-items-center text-start mx-3 pb-3"><button class="page-link" onclick="GetVacancesByPage(@i)">@i</button></li>
+                    }
+                }
+            </ul>
         </div>
     </div>
 </div>
 
 
-
-<nav aria-label="Page navigation example" class="text-center ">
-    <ul class="pagination">
-        @for (int i = 1; i <= Model.TottalPages; i++)
-        {
-            <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
-        }
-    </ul>
-</nav>
-
 <script type="text/javascript">
-    function GetVacances() {
+    $('#CategoryInput').change(function() {
+        var categoryId = parseInt(jQuery(this).val());
 
+        GetVacancesByCategory(categoryId);
+    });
 
-        var a = Boolean(@User.HasClaim("Role", "User").ToString().ToLower());
-        var v = Boolean(@User.HasClaim("role", "company").ToString().ToLower())
+    function GetVacancesByCategory(categoryId) {
+        var keyword = document.getElementById("KeywordInput").value;
+        var location = document.getElementById("LocationInput").value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/Index",
+            data: {
+                searchKeyword: keyword,
+                categoryId: categoryId,
+                locationId: location,
+            },
+
+            success: function(response) {
+                var seachDiv = $($.parseHTML(response)).find("#VacancyList").html();
+                document.getElementById("VacancyList").innerHTML = seachDiv;
+
+                var pagination = $($.parseHTML(response)).find("#pagination").html();
+                document.getElementById("pagination").innerHTML = pagination;
+            }
+
+        })
+    }
+
+    function GetVacancesBySearch() {
         var keyword = document.getElementById("KeywordInput").value;
         var cateogry = document.getElementById("CategoryInput").value;
         var location = document.getElementById("LocationInput").value;
-        var SetData = $("#Test");
-        SetData.html("");
+
         $.ajax({
             type: "POST",
             url: "/Vacancy/Index",
@@ -176,9 +204,62 @@
                 locationId: location,
             },
 
-             success: function(response) {
-              var seachDiv =  $($.parseHTML(response)).find("#Div").html();
-              document.getElementById("Div").innerHTML = seachDiv;
+            success: function(response) {
+                var seachDiv = $($.parseHTML(response)).find("#VacancyList").html();
+                document.getElementById("VacancyList").innerHTML = seachDiv;
+
+                var pagination = $($.parseHTML(response)).find("#pagination").html();
+                document.getElementById("pagination").innerHTML = pagination;
+            }
+
+        })
+    }
+
+    function GetVacancesByPage(page) {
+        var keyword = document.getElementById("KeywordInput").value;
+        var cateogry = document.getElementById("CategoryInput").value;
+        var location = document.getElementById("LocationInput").value;
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/Index",
+            data: {
+                searchKeyword: keyword,
+                categoryId: cateogry,
+                locationId: location,
+                page: page
+            },
+
+            success: function(response) {
+                var seachDiv = $($.parseHTML(response)).find("#VacancyList").html();
+                document.getElementById("VacancyList").innerHTML = seachDiv;
+
+                                var pagination = $($.parseHTML(response)).find("#pagination").html();
+                document.getElementById("pagination").innerHTML = pagination;
+            }
+
+        })
+    }
+
+    function GetVacancesByType(vacancyType) {
+        var keyword = document.getElementById("KeywordInput").value;
+        var cateogry = document.getElementById("CategoryInput").value;
+        var location = document.getElementById("LocationInput").value;
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/Index",
+            data: {
+                searchKeyword: keyword,
+                categoryId: cateogry,
+                locationId: location,
+                vacancyType: vacancyType
+            },
+
+            success: function(response) {
+                var seachDiv = $($.parseHTML(response)).find("#VacancyList").html();
+                document.getElementById("VacancyList").innerHTML = seachDiv;
+
+                                var pagination = $($.parseHTML(response)).find("#pagination").html();
+                document.getElementById("pagination").innerHTML = pagination;
             }
 
         })

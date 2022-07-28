@@ -1,5 +1,6 @@
 ﻿using Hackathon_CV_Portal.Domain.Categories;
 using Hackathon_CV_Portal.Domain.Enums;
+using Hackathon_CV_Portal.Domain.Locations;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using System.ComponentModel.DataAnnotations;
@@ -17,8 +18,6 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
         public string SalaryRange { get; set; }
         [Required, MaxLength(50)]
         public string CompanyName { get; set; }
-        [Required, MaxLength(50)]
-        public string Location { get; set; }
         [Required]
         public VacancyType Type { get; set; }
         [Required]
@@ -34,8 +33,10 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
 
         public int UserId { get; set; }
         public int CategoryId { get; set; }
+        public int LocationId { get; set; }
         public ApplicationUser User { get; set; }
         public Category Category { get; set; }
+        public Location Location { get; set; }
 
         public Vacancy()
         {
@@ -46,12 +47,12 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
             Title = command.Title;
             SalaryRange = command.SalaryRange;
             CompanyName = command.CompanyName;
-            Location = command.Location;
             PublishDate = DateTime.Now;
             DeadLine = command.DeadLine;
             Description = command.Description;
             Qualifications = command.Qualifications;
             Responsibility = command.Responsibility;
+            LocationId = command.LocationId;
             CategoryId = command.CategoryId;
             UserId = command.UserModel.UserId;
             Type = command.Type;

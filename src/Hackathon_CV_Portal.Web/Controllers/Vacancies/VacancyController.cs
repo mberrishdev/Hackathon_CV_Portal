@@ -19,16 +19,18 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
     {
         private readonly IVacancyService _vacancyService;
         private readonly ICategoryService _categoryService;
+        private readonly ILocationService _locationService;
 
         public VacancyController(IVacancyService vacancyService, SignInManager<ApplicationUser> signInManager,
-            ICategoryService categoryService) : base(signInManager)
+            ICategoryService categoryService, ILocationService locationService) : base(signInManager)
         {
             _vacancyService = vacancyService;
             _categoryService = categoryService;
+            _locationService = locationService;
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index(string searchKeyword, int categoryId, string locationId, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
+        public async Task<IActionResult> Index(string searchKeyword, int categoryId, int locationId, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
         {
             Expression<Func<Vacancy, bool>>? expression = null;
 
@@ -43,11 +45,11 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                             ? x.Category.Id == categoryId
                             : x.Category.Id == categoryId && x.UserId == companyId
                         : true
-                //&& locationId > 0
-                //        ? locationId == 0
-                //            ? x.Location.Id == locationId
-                //            : x.Location.Id == locationId && x.UserId == companyId
-                //        : true
+                && locationId > 0
+                        ? locationId == 0
+                            ? x.Location.Id == locationId
+                            : x.Location.Id == locationId && x.UserId == companyId
+                        : true
                 && !String.IsNullOrEmpty(vacancyType)
                     ? companyId == 0
                         ? x.Type == Enum.Parse<VacancyType>(vacancyType)
@@ -79,6 +81,9 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
             var categories = await _categoryService.GetCategories();
             result.Categories = categories;
+
+            var locations = await _locationService.GetLocations();
+            result.Locations = locations;
 
             return View(result);
         }
@@ -135,6 +140,9 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             var categories = await _categoryService.GetCategories();
             ViewBag.Categories = new SelectList(categories, "Id", "Name");
 
+            var locations = await _locationService.GetLocations();
+            ViewBag.Locations = new SelectList(locations, "Id", "City");
+
             return View();
         }
 
@@ -161,7 +169,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 CategoryId = model.CategoryId,
                 Type = (VacancyType)model.Type,
                 CompanyName = model.CompanyName,
-                Location = model.Location,
+                LocationId = model.LocationId,
                 Title = model.Title,
                 SalaryRange = model.SalaryRange,
                 DeadLine = model.DeadLine,

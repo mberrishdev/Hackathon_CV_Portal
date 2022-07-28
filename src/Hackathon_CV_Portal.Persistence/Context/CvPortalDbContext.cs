@@ -3,6 +3,7 @@ using Hackathon_CV_Portal.Domain.Categories;
 using Hackathon_CV_Portal.Domain.CVs;
 using Hackathon_CV_Portal.Domain.Educations;
 using Hackathon_CV_Portal.Domain.FavouriteVacancies;
+using Hackathon_CV_Portal.Domain.Locations;
 using Hackathon_CV_Portal.Domain.Skills;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vcancies;
@@ -54,6 +55,10 @@ namespace Hackathon_CV_Portal.Persistence.Context
             modelBuilder.Entity<Category>()
                 .HasMany(V => V.Vacancies)
                 .WithOne(c => c.Category);
+
+            modelBuilder.Entity<Location>()
+                .HasMany(V => V.Vacancies)
+                .WithOne(l => l.Location);
 
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(v => v.Vacancies)
