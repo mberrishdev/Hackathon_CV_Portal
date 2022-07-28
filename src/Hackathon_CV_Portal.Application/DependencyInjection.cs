@@ -1,6 +1,7 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Application.Implementations;
 using Hackathon_CV_Portal.Application.Implementations.AppliedCurriculumVitaes;
+using Hackathon_CV_Portal.Application.Implementations.Captchs;
 using Hackathon_CV_Portal.Application.Implementations.Categories;
 using Hackathon_CV_Portal.Application.Implementations.Cv;
 using Hackathon_CV_Portal.Application.Implementations.EmailService;
@@ -21,6 +22,7 @@ namespace Hackathon_CV_Portal.Application
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+            services.Configure<CaptchSettings>(configuration.GetSection("CaptchSettings"));
             services.RegisterMaps();
 
             services.Configure<IdentityOptions>(opts =>
@@ -32,6 +34,7 @@ namespace Hackathon_CV_Portal.Application
 
             services.AddScoped<IExternalLoginAuthInfoProvider, ExternalLoginAuthInfoProvider>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<ICaptchService, CaptchService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IFavouriteVacancyService, FavouriteVacancyService>();

@@ -3,10 +3,8 @@
     public class EmailSettings
     {
         public string FromName { get; set; }
-        public string FromAddress { get; set; }
-        public string ToEmail { get; set; }
-        public string CcEmail { get; set; }
-        public string BccEmail { get; set; }
+        public string PlatformMailAddress { get; set; }
+        public string ContactUsMailAddress { get; set; }
         public string ServerAddress { get; set; }
         public int ServerPort { get; set; }
         public bool ServerUseSsl { get; set; }
