@@ -57,7 +57,8 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                     : true
                 && categoryId <= 0 && String.IsNullOrEmpty(vacancyType) && companyId != 0
                     ? x.UserId == companyId
-                    : true;
+                    : true
+                && x.DeadLine <= DateTime.Now;
 
             LoadUserModel();
 
