@@ -107,5 +107,14 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
             var entity = await _baseRepository.GetAsync(predicate: x => x.Id == id);
             await _baseRepository.RemoveAsync(entity);
         }
+
+        public async Task CleanVacancies()
+        {
+            var list = await _baseRepository.GetListAsync(x => DateTime.Now > x.DeadLine);
+            foreach (var item in list)
+            {
+                await _baseRepository.RemoveAsync(item);
+            }
+        }
     }
 }

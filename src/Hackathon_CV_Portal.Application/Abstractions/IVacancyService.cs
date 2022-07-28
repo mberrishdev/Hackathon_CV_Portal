@@ -12,6 +12,7 @@ namespace Hackathon_CV_Portal.Application.Abstractions
         Task<VacancyModel> GetVacancyById(int id);
         Task AddFavourite(AddFavouriteCommand command);
         Task RemoveFavourite(RemoveFavouriteCommand command);
+        Task CleanVacancies();
         Task Delete(int id);
     }
 }
