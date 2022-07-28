@@ -5,46 +5,33 @@
     ViewData["Title"] = "მისამართების მართვა";
 }
 
-<div class="panel panel-default">
-    <table class="table ">
-        <tr>
-            <th>
-                ქვეყანა
-            </th>
-            <th>
-                ქალაქი
-            </th>
-            <th>
-            <div class="form-group">
-                <a class="btn float-center" asp-controller="Location" asp-action="AddLocation"><i class="bi bi-plus-square-fill fa-2x indigo-text pr-3"></i></a>
-            </div>
-            </th>
-            @* <th>@Html.NoEncodeActionLink("<span class='glyphicon glyphicon-plus'></span>", "Add", "Create", "Addresses", routeValues: new { PersonId = ViewBag.PersonID }, htmlAttributes: new { data_modal = "", @class = "btn btn-primary pull-right" })</th> *@
-        </tr>
+<div class="row text">
+    <div class="col-md-8 offset-md-2">
+        <p>
+            <h1 class="text-center">ლოკაციები</h1>
+        </p>
+
+         <div class="row container mt-5 mb-4">
+                <a class="btn btn-primary col-md-4 float-center" asp-controller="Location" asp-action="AddLocation"><h4 class="text-white">ლოკაციის დამატება</h4></a>
+         </div>
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Country)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.City)
-                </td>
-                @* <td>
-                     <a class="btn  me-2" asp-controller="Location" asp-action="DeleteLocation" asp-route-id="@item.Id"> <i class="bi bi-pencil fa-2x amber-text pr-3"></i></a>
-                </td> *@
-                <td>
-                     <a class="btn  me-2" asp-controller="Location" asp-action="DeleteLocation" asp-route-id="@item.Id"><i class='bi bi-trash fa-2x icon-red'></i></a>
-                </td>
-            </tr>
+            <div class="job-item p-3 mb-2 bg-light text-dark border">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3">ქვეყანა: @Html.DisplayFor(modelItem => item.Country)</h5>
+                            <h5 class="mb-3">ქალაქი: @Html.DisplayFor(modelItem => item.City)</h5>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                        <div class="d-flex mb-3">
+                            <a class="btn btn-danger me-2" asp-controller="Location" asp-action="DeleteLocation" asp-route-id="@item.Id"><h5 class="text-white">წაშლა</h5></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    </table>
-</div>
-@* @foreach (var item in Model)
-{
-    <div>
-        @item.Country
-        <hr />
     </div>
-} *@
+</div>

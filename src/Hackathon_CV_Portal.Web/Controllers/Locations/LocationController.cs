@@ -17,7 +17,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Locations
             _locationService = locationService;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var result = await _locationService.GetLocations();
@@ -54,7 +54,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Locations
             return RedirectToAction("Index");
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteLocation(int id)
         {
             await _locationService.DeleteLocation(id);
