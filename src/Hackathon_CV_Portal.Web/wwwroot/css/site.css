@@ -1,6 +1,15 @@
 /* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+@font-face {
+    font-family: 'firago';
+    src: url('../font/firago/FiraGO-Regular.ttf');
+}
+
+html {
+    font-family: 'firago';
+}
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -81,7 +90,6 @@ body {
 /body {
     background: #222222;
     color: #222222;
-    font-family: "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
     font-size: 18px;
     font-weight: 400;
     line-height: 25px;
