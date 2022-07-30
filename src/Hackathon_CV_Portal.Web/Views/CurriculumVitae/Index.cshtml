@@ -10,8 +10,16 @@
 <div class="container">
 
     <!-- wrapper -->
-    <div class="wrapper">
+    <div class="wrapper mt-4">
         <hr>
+
+        @if (Model.Image != "" && Model.Image != null)
+        {
+            <div class="d-flex align-items-center justify-content-center mt-3 mb-3">
+                <img class="img-thumbnail bg-primary" style="width:25rem; border-radius: 50%" src="@Model.Image" />
+            </div>
+        }
+
         <!-- title name cv-->
         <header class="main">
             <h1 class="text-uppercase text-center">@string.Concat(Model.FirstName," ",Model.LastName)</h1>
@@ -32,8 +40,8 @@
                     <hr />
                     <article>
                         <div class="row">
-                            @*              <div class="col-sm-4 col-sm-push-8">
-                                <img src="http://lorempixel.com/500/500/people/" class="img-responsive img-circle photo">
+                            @* <div class="col-sm-4 col-sm-push-8">
+                                <img class="img-responsive img-circle photo">
                                 </div>*@
                             <div class="col-xs-12 col-sm-8 col-sm-pull-4">
                                 @Model.AboutMe
@@ -83,7 +91,7 @@
                         {
                             <div class="row container-fluid">
                                 <div>
-                                    <a class="btn btn-primary text-white rounded-pill float-right" asp-controller="CurriculumVitae" asp-action="AddWorkingExperience">+</a>
+                                    <a class="btn btn-primary text-white border-radius-2 float-right" asp-controller="CurriculumVitae" asp-action="AddWorkingExperience">+</a>
                                 </div>
                             </div>
                         }
@@ -108,15 +116,15 @@
                                     <h4>@education.Name, @education.University</h4>
                                 </div>
                                 <div class="col-sm-8">
-                                @if (education.EndDate != null)
-                                {
-                                    <p><small class="text-primary">@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - @education.EndDate.Value.Month/@education.EndDate.Value.Day/@education.EndDate.Value.Year</small></p>
-                                }
-                                @if (education.EndDate == null)
-                                {
-                                    <p><small class="text-primary">sa@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - now</small></p>
-                                }
-                                <p>@education.Description</p>
+                                    @if (education.EndDate != null)
+                                    {
+                                        <p><small class="text-primary">@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - @education.EndDate.Value.Month/@education.EndDate.Value.Day/@education.EndDate.Value.Year</small></p>
+                                    }
+                                    @if (education.EndDate == null)
+                                    {
+                                        <p><small class="text-primary">sa@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - now</small></p>
+                                    }
+                                    <p>@education.Description</p>
                                 </div>
 
                                 @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) && @Model.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
@@ -134,7 +142,7 @@
                     {
                         <div class="row container-fluid">
                             <div>
-                                <a class="btn btn-primary text-white rounded-pill float-right" asp-controller="CurriculumVitae" asp-action="AddEducation">+</a>
+                                <a class="btn btn-primary text-white border-radius-2 float-right" asp-controller="CurriculumVitae" asp-action="AddEducation">+</a>
                             </div>
                         </div>
                     }
@@ -210,7 +218,7 @@
                     {
                         <div class="row container-fluid">
                             <div>
-                                <a class="btn btn-primary text-white rounded-pill float-right" asp-controller="CurriculumVitae" asp-action="AddSkill">+</a>
+                                <a class="btn btn-primary text-white border-radius-2 float-right" asp-controller="CurriculumVitae" asp-action="AddSkill">+</a>
                             </div>
                         </div>
                     }
@@ -233,3 +241,28 @@
     }
 
 </div>
+
+<script>
+       function encodeImageFileAsURL() {
+
+      var filesSelected = document.getElementById("inputFileToLoad").files;
+      if (filesSelected.length > 0) {
+        var fileToLoad = filesSelected[0];
+
+        var fileReader = new FileReader();
+
+        fileReader.onload = function(fileLoadedEvent) {
+
+          var srcData = fileLoadedEvent.target.result; // <--- data: base64
+
+          var newImage = document.createElement('img');
+          newImage.src = srcData;
+
+          document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+          alert("Converted Base64 version is " + document.getElementById("imgTest").innerHTML);
+          console.log("Converted Base64 version is " + document.getElementById("imgTest").innerHTML);
+        }
+        fileReader.readAsDataURL(fileToLoad);
+      }
+    }
+</script>

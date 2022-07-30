@@ -93,9 +93,9 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("NVARCHAR(50)");
 
-                    b.Property<byte[]>("Image")
+                    b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("varbinary");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()

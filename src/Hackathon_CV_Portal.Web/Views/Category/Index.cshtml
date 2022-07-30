@@ -57,10 +57,10 @@ else
                 @foreach (var category in Model)
                 {
                     <div class="col-lg-3 col-sm-6 wow fadeInUp">
-                        <a class="cat-item rounded p-4" asp-controller="Vacancy" asp-action="Index" asp-route-searchCategory="@category.Name">
-                            <i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i>
-                            <h6 class="mb-3">@category.Name</h6>
-                            <p class="mb-0">@category.VacancyCount</p>
+                        <a class="cat-item p-4 border-primary border-radius-0_3" asp-controller="Vacancy" asp-action="Index" asp-route-searchCategory="@category.Name">
+                            <i class="fa fa-boxes fa-3x text-primary mb-4"></i>
+                            <p class="mb-3 text-dark">სახელწოება | ვაკანსიების რაოდენობა</p>
+                            <p class="mb-3 text-primary">@category.Name | @category.VacancyCount</p>
                         </a>
                     </div>
                 }

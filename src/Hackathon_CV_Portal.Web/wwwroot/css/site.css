@@ -321,3 +321,42 @@ section h3 {
         margin-bottom: 25px;
     }
 }
+
+#imgTest img {
+    width: 20rem;
+}
+.border-radius-0_1 {
+    border-radius: 1% !important;
+}
+
+.border-radius-0_2 {
+    border-radius: 2% !important;
+}
+
+.border-radius-0_3 {
+    border-radius: 3% !important;
+}
+
+.border-radius-0_5 {
+    border-radius: 5% !important;
+}
+
+.border-radius-1 {
+    border-radius: 10% !important;
+}
+
+.border-radius-2 {
+    border-radius: 20% !important;
+}
+
+.border-radius-3 {
+    border-radius: 30% !important;
+}
+
+.border-radius-4 {
+    border-radius: 40% !important;
+}
+
+.border-radius-5 {
+    border-radius: 50% !important;
+}

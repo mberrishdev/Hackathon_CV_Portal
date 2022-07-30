@@ -5,17 +5,66 @@
 }
 
 <div class="row">
-    <div class="col-md-8 offset-2">
+    <div class="col-md-8 offset-md-2 offset-lg-2 offset-xl-2">
         <p>
             <h4 class="text-center">დაარედაქტირე CV</h4>
         </p>
 
+
+
         <div class="row">
-            <div class="col-md-8 offset-2">
+            <div class="col-md-8 offset-md-2 offset-lg-2 offset-xl-2">
                 <form asp-action="Update" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="row">
+                    <div class="row mt-5">
+                        <div class="text-center border mb-3">
+                            <h5>ფოტო</h5>
+                            <div class="d-flex justify-content-center align-items-center mb-2">
+                                <div style="width:300px" class="text-center" id="imgTestDiv">
+                                    @if (Model != null)
+                                    {
+                                        @if (Model.Image != null && Model.Image != "")
+                                        {
+                                            <img src="@Model.Image" id="imgTest" class="img-thumbnail bg-primary mb-2 mt-2" style="border-radius: 50%" />
+                                        }
+                                        else
+                                        {
+                                            <img src="" id="imgTest" class="img-thumbnail bg-primary mb-2 mt-2" style="display:none; border-radius: 50%"/>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <img src="" id="imgTest" class="img-thumbnail bg-primary mb-2 mt-2" style="display:none; border-radius: 50%" />
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center align-items-center mb-2">
+                                <input asp-for="Image" id="inputFileToLoadString" style="display:none" />
+                                <input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" name="avatar" accept="image/png, image/jpeg" />
+                                @if (Model != null)
+                                {
+                                    @if (Model.Image != null && Model.Image != "")
+                                    {
+                                        <a id="removePhotoButton" class="btn btn-danger col-5 text-white" onclick="removeImage()">ფოტოს წაშლა</a>
+                                    }
+                                    else
+                                    {
+                                        <a id="removePhotoButton" class="btn btn-danger col-5 text-white" onclick="removeImage()" style="display:none">ფოტოს წაშლა</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a id="removePhotoButton" class="btn btn-danger col-5 text-white" onclick="removeImage()" style="display:none">ფოტოს წაშლა</a>
+                                }
+
+                            </div>
+                            <div>
+                                <p>ატვირთეთ PNG/JPG ფაილები მაქსიმუმ 350 კილობაიტის ზომის</p>
+                            </div>
+                        </div>
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="FirstName" class="control-label"></label>
@@ -46,11 +95,11 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label asp-for="Address" class="control-label"></label>
-                                 <input asp-for="Address" class="form-control" />
+                                <input asp-for="Address" class="form-control" />
                                 <span asp-validation-for="Address" class="text-danger"></span>
                             </div>
 
-                           
+
 
                         </div>
                         <div class="col-md-12">
@@ -62,7 +111,7 @@
                         </div>
                     </div>
 
-                     <div class="form-group">
+                    <div class="form-group">
                         <input type="submit" value="შენახვა" class="btn btn-outline-success float-right" />
                     </div>
                 </form>
@@ -71,3 +120,35 @@
 
     </div>
 </div>
+
+<script>
+    function removeImage() {
+        var newImage = document.getElementById('imgTest');
+        newImage.style.display = "none";
+        document.getElementById("inputFileToLoadString").value = "";
+        document.getElementById("removePhotoButton").style.display = "none";
+    }
+
+    function encodeImageFileAsURL() {
+             var filesSelected = document.getElementById("inputFileToLoad").files;
+             if (filesSelected.length > 0) {
+               var fileToLoad = filesSelected[0];
+
+               var fileReader = new FileReader();
+
+               fileReader.onload = function(fileLoadedEvent) {
+                 var srcData = fileLoadedEvent.target.result; // <--- data: base64
+
+                 var newImage = document.getElementById('imgTest');
+                 newImage.src = srcData;
+
+                 newImage.style.display = "block";
+
+                 document.getElementById("imgTestDiv").innerHTML = newImage.outerHTML;
+                document.getElementById("inputFileToLoadString").value = srcData;
+                  document.getElementById("removePhotoButton").style.display = "block";
+               }
+               fileReader.readAsDataURL(fileToLoad);
+             }
+           }
+</script>

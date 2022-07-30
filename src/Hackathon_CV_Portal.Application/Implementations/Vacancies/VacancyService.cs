@@ -30,7 +30,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
 
         public async Task<VacancyModel> GetVacancyById(int id)
         {
-            var vm = await _baseRepository.GetAsync(new Expression<Func<Vacancy, object>>[1] { x => x.Category }, x => x.Id == id);
+            var vm = await _baseRepository.GetAsync(new Expression<Func<Vacancy, object>>[2] { x => x.Category, x => x.Location }, x => x.Id == id);
 
             return new VacancyModel()
             {
@@ -53,7 +53,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
         public async Task<VacansyVM> ListVacancyQuery(ListVacancyQuery query)
         {
             var vacancies = await _baseRepository.GetAllAsyncByPage(query.Page, expression: query.Expression,
-                includeProperties: new Expression<Func<Vacancy, object>>[1] { x => x.Category });
+                includeProperties: new Expression<Func<Vacancy, object>>[2] { x => x.Category, x => x.Location });
 
             if (vacancies == null)
                 return null;

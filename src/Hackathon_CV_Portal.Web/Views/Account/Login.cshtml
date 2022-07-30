@@ -12,27 +12,27 @@
 
 @*<div class="row">
     <div class="col-md-6 offset-lg-3 offset-md-2">
-        <div class="row">
-            <div class="col-md-8 offset-lg-2 offset-md-1">*@
+    <div class="row">
+    <div class="col-md-8 offset-lg-2 offset-md-1">*@
 
 <section class="vh-100 gradient-custom">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card bg-primary text-white" style="border-radius: 1rem;">
                     <div class="card-body p-5 text-center">
 
-                        <div class="mb-md-5 mt-md-4 pb-5">
+                        <div class="">
 
                             <form asp-action="LogIn" method="post" asp-route-returnUrl="@ViewData["ReturnUrl"]">
                                 <div asp-validation-summary="All" class="text-danger"></div>
                                 <div class="form-group form-white mb-4">
-                                    <label asp-for="UserName"></label>
+                                    <label class="mb-2" asp-for="UserName"></label>
                                     <input asp-for="UserName" class="form-control" />
                                     <span asp-validation-for="UserName" class="text-danger"></span>
                                 </div>
                                 <div class="form-group form-white mb-4">
-                                    <label asp-for="Password"></label>
+                                    <label class="mb-2" asp-for="Password"></label>
                                     <input asp-for="Password" class="form-control" />
                                     <span asp-validation-for="Password" class="text-danger"></span>
                                 </div>
@@ -44,27 +44,31 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <input class="btn btn-outline-success float-right text-white" type="submit" value="ავტორიზაცია" />
+                                <div class="d-flex justify-content-center">
+                                    <input class="btn btn-outline-success mt-4 mb-4 float-right text-white btn-primary btn-lg" type="submit" value="ავტორიზაცია" />
                                 </div>
 
                             </form>
-                            @{
-                                var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-                                <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-                                    <div class="">
-                                        <p>
-                                            @foreach (var provider in loginProviders)
-                                            {
-                                                <button type="submit" class="btn text-white" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
-                                                    <i class="fab fa-lg fa-@provider.Name.ToLower()"></i>
-                                                </button>
-                                            }
-                                        </p>
-                                    </div>
-                                </form>
-                            }
+                            <div>
+                                @{
+                                    var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+                                    <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                                        <div class="">
+                                            <div>
+                                                @foreach (var provider in loginProviders)
+                                                {
+                                                    <button type="submit" class="btn text-white" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                                        <i class="fab fa-lg fa-@provider.Name.ToLower()"></i>
+                                                    </button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </form>
+                                }
+                            </div>
+
 
                         </div>
                         <div>
@@ -84,5 +88,5 @@
 </section>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+<partial name="_ValidationScriptsPartial" />
 }

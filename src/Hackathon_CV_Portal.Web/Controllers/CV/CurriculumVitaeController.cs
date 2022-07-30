@@ -75,11 +75,12 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                BirtDate = model.BirtDate,
+                BirtDate = model.BirthDate,
                 PhoneNumber = model.PhoneNumber,
                 Email = model.Email,
                 Address = model.Address,
                 AboutMe = model.AboutMe,
+                Image = model.Image ?? "",
                 UserId = UserModel.UserId
             };
 
@@ -119,11 +120,12 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                BirtDate = model.BirtDate,
+                BirtDate = model.BirthDate,
                 PhoneNumber = model.PhoneNumber,
                 Email = model.Email,
                 Address = model.Address,
                 AboutMe = model.AboutMe,
+                Image = model.Image ?? "",
                 UserId = UserModel.UserId
             };
 
