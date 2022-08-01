@@ -8,7 +8,7 @@ namespace Hackathon_CV_Portal.Application.Abstractions
     public interface IVacancyService
     {
         Task<VacansyVM> ListVacancyQuery(ListVacancyQuery query);
-        Task CreateVacancy(CreateVacancyCommand command);
+        Task<int> CreateVacancy(CreateVacancyCommand command);
         Task<VacancyModel> GetVacancyById(int id);
         Task AddFavourite(AddFavouriteCommand command);
         Task RemoveFavourite(RemoveFavouriteCommand command);

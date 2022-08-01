@@ -30,12 +30,6 @@ namespace Hackathon_CV_Portal.Web.Models.VacancyModels
         [Required(ErrorMessage = "აღწერის შეყვანა აუცილებელია")]
         [Display(Name = "აღწერა")]
         public string Description { get; set; }
-        [Required(ErrorMessage = "მოვალეობების შეყვანა აუცილებელია")]
-        [Display(Name = "მოვალეობები")]
-        public string Responsibility { get; set; }
-        [Required(ErrorMessage = "მოთხოვნების შეყვანა აუცილებელია")]
-        [Display(Name = "მოთხოვნები")]
-        public string Qualifications { get; set; }
         [EmailAddress(ErrorMessage = "საკონტაქტო მეილი არასწორია")]
         [Display(Name = "საკონტაქტო მეილი")]
         public string Email { get; set; }

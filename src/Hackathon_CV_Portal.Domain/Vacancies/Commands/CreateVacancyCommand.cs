@@ -12,8 +12,6 @@ namespace Hackathon_CV_Portal.Domain.Vacancies.Commands
         public string SalaryRange { get; set; }
         public DateTime DeadLine { get; set; }
         public string Description { get; set; }
-        public string Responsibility { get; set; }
-        public string Qualifications { get; set; }
         public UserModel UserModel { get; set; }
     }
 }

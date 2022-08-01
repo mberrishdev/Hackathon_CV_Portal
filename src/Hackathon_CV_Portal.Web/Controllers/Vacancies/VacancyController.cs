@@ -2,6 +2,8 @@
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Queries;
 using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.FavouriteVacancies.Commands;
+using Hackathon_CV_Portal.Domain.Qualifications.Commands;
+using Hackathon_CV_Portal.Domain.Responsibilities.Commands;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vcancies;
@@ -20,27 +22,33 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
         private readonly IVacancyService _vacancyService;
         private readonly ICategoryService _categoryService;
         private readonly ILocationService _locationService;
+        private readonly IQualificationService _qualificationService;
+        private readonly IResponsibilityService _responsibilityService;
 
         public VacancyController(IVacancyService vacancyService, SignInManager<ApplicationUser> signInManager,
-            ICategoryService categoryService, ILocationService locationService) : base(signInManager)
+            ICategoryService categoryService, ILocationService locationService, IQualificationService qualificationService,
+            IResponsibilityService responsibilityService) : base(signInManager)
         {
             _vacancyService = vacancyService;
             _categoryService = categoryService;
             _locationService = locationService;
+            _qualificationService = qualificationService;
+            _responsibilityService = responsibilityService;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index(string searchKeyword, int categoryId, int locationId, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
         {
             Expression<Func<Vacancy, bool>>? expression = null;
-
+            //ToDo
             expression = x =>
-                !string.IsNullOrEmpty(searchKeyword)
-                        ? companyId == 0
-                            ? x.CompanyName.Contains(searchKeyword) || x.Description.Contains(searchKeyword) || x.Responsibility.Contains(searchKeyword) || x.Qualifications.Contains(searchKeyword)
-                            : x.UserId == companyId && (x.CompanyName.Contains(searchKeyword) || x.Description.Contains(searchKeyword) || x.Responsibility.Contains(searchKeyword) || x.Qualifications.Contains(searchKeyword))
-                        : true
-                && categoryId > 0
+                //!string.IsNullOrEmpty(searchKeyword)
+                //        ? companyId == 0
+                //            ? x.CompanyName.Contains(searchKeyword) || x.Description.Contains(searchKeyword) || x.Responsibility.Contains(searchKeyword) || x.Qualifications.Contains(searchKeyword)
+                //            : x.UserId == companyId && (x.CompanyName.Contains(searchKeyword) || x.Description.Contains(searchKeyword) || x.Responsibility.Contains(searchKeyword) || x.Qualifications.Contains(searchKeyword))
+                //        : true
+                //&&
+                categoryId > 0
                         ? companyId == 0
                             ? x.Category.Id == categoryId
                             : x.Category.Id == categoryId && x.UserId == companyId
@@ -169,7 +177,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 model.SalaryRange = "შეთანხმებით";
 
             LoadUserModel();
-
+            //ToDo
             var command = new CreateVacancyCommand()
             {
                 CategoryId = model.CategoryId,
@@ -180,14 +188,73 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 SalaryRange = model.SalaryRange,
                 DeadLine = model.DeadLine,
                 Description = model.Description,
-                Responsibility = model.Responsibility,
-                Qualifications = model.Qualifications,
+                //Responsibility = model.Responsibility,
+                //Qualifications = model.Qualifications,
                 UserModel = UserModel
             };
 
-            await _vacancyService.CreateVacancy(command);
+            var id = await _vacancyService.CreateVacancy(command);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("AddVacancyDetail", new { vacancyId = id });
+        }
+
+        [Authorize(Roles = "Company")]
+        public async Task<IActionResult> AddVacancyDetail(int vacancyId)
+        {
+            var qualifications = await _qualificationService.GetByVacancyId(vacancyId);
+            var responsibilities = await _responsibilityService.GetByVacancyId(vacancyId);
+            var model = new AddVacancyDetailModel()
+            {
+                VacancyId = vacancyId,
+                Qualifications = qualifications,
+                Responsibilities = responsibilities,
+            };
+
+            return View(model);
+        }
+
+
+        [Authorize(Roles = "Company")]
+        [HttpPost]
+        public async Task<IActionResult> AddQualification(string responsibilityName, int vacancyId)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            LoadUserModel();
+
+            var command = new AddQualificationCommand()
+            {
+                QualificationName = responsibilityName,
+                VacancyId = vacancyId,
+                UserModel = UserModel,
+            };
+
+            await _qualificationService.AddQualification(command);
+
+
+            return RedirectToAction("AddVacancyDetail", new { vacancyId = vacancyId });
+        }
+
+        [Authorize(Roles = "Company")]
+        [HttpPost]
+        public async Task<IActionResult> AddResponsibility(string responsibilityName, int vacancyId)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            LoadUserModel();
+
+            var command = new AddResponsibilityCommand()
+            {
+                ResponsibilityName = responsibilityName,
+                VacancyId = vacancyId,
+                UserModel = UserModel,
+            };
+
+            await _responsibilityService.AddResponsibility(command);
+
+            return Json(new { redirectToUrl = Url.Action("AddVacancyDetail", "Vacancy", new { vacancyId = vacancyId }) });
         }
     }
 }

@@ -8,6 +8,8 @@ using Hackathon_CV_Portal.Application.Implementations.Cv;
 using Hackathon_CV_Portal.Application.Implementations.EmailService;
 using Hackathon_CV_Portal.Application.Implementations.FavouriteVacancies;
 using Hackathon_CV_Portal.Application.Implementations.Locations;
+using Hackathon_CV_Portal.Application.Implementations.Qualifications;
+using Hackathon_CV_Portal.Application.Implementations.Responsibilities;
 using Hackathon_CV_Portal.Application.Implementations.UserRoles;
 using Hackathon_CV_Portal.Application.Implementations.Users;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies;
@@ -47,6 +49,8 @@ namespace Hackathon_CV_Portal.Application
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRolesService, UserRolesService>();
             services.AddScoped<IAboutService, AboutService>();
+            services.AddScoped<IQualificationService, QualificationService>();
+            services.AddScoped<IResponsibilityService, ResponsibilityService>();
 
             return services;
         }

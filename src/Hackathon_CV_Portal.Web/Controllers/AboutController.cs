@@ -1,11 +1,10 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Application.Implementations.AboutUs.Models;
+using Hackathon_CV_Portal.Domain.AboutUs.Commands;
 using Hackathon_CV_Portal.Domain.Users;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Hackathon_CV_Portal.Domain.AboutUs.Commands;
 
 namespace Hackathon_CV_Portal.Web.Controllers
 {
