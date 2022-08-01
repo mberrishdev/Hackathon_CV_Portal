@@ -89,6 +89,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                 VacancyModels = vacancyModels,
                 TottalPages = vacancies.TotalPages,
                 IsEmpty = vacancies.IsEmpty,
+                CurrentPageIndex = query.Page
             };
         }
 

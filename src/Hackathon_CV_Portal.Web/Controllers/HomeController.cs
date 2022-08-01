@@ -1,4 +1,6 @@
-﻿using Hackathon_CV_Portal.Web.Models;
+﻿using Hackathon_CV_Portal.Application.Abstractions;
+using Hackathon_CV_Portal.Application.Implementations.AboutUs.Models;
+using Hackathon_CV_Portal.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,15 +9,24 @@ namespace Hackathon_CV_Portal.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IAboutService _aboutService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IAboutService aboutService)
         {
+            _aboutService = aboutService;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var aboutUs = await _aboutService.GetAboutUs();
+
+            AboutVM aboutUsVM = new AboutVM()
+            {
+                Content = aboutUs.Content
+            };
+
+            return View(aboutUsVM);
         }
 
         public IActionResult NotFound()

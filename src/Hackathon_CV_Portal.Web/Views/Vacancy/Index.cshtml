@@ -150,13 +150,17 @@
                 </div>
             </div>
 
-            <ul id="pagination" class="pagination">
+            <ul id="pagination" class="pagination d-flex justify-content-center">
                 @if (!Model.IsEmpty)
                 {
-                    @for (int i = 1; i <= Model.TottalPages; i++)
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex - 10 > 0 ? Model.CurrentPageIndex - 10 : 1)"><i class="fas fa-angle-double-left"></i></button></li>
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex - 5 > 0 ? Model.CurrentPageIndex - 5 : 1)"><i class="fas fa-angle-left"></i></button></li>
+                    @for (int i = Model.CurrentPageIndex - 1 >= 1 ? Model.CurrentPageIndex - 1 : 1; i <= (Model.CurrentPageIndex + 1 < Model.TottalPages ? Model.CurrentPageIndex + 1 : Model.TottalPages); i++)
                     {
-                        <li class="page-item d-flex align-items-center text-start mx-3 pb-3"><button class="page-link" onclick="GetVacancesByPage(@i)">@i</button></li>
+                        <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@i)">@i</button></li>
                     }
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 5 <= Mode.TottalPages - 1 ? Model.CurrentPageIndex + 5 : Mode.TottalPages - 1)"><i class="fas fa-angle-right"></i></button></li>
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 10 <= Mode.TottalPages - 1 ? Model.CurrentPageIndex + 10 : Mode.TottalPages - 1)"><i class="fas fa-angle-double-right"></i></button></li>
                 }
             </ul>
         </div>

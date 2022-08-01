@@ -28,9 +28,9 @@ namespace Hackathon_CV_Portal.Persistence.Seed
         {
             var seeded = false;
 
-            SeedRoles(context, ref seeded);
-            SeedUsers(context, ref seeded);
-            SeedCategories(context, ref seeded);
+            //SeedRoles(context, ref seeded);
+            //SeedUsers(context, ref seeded);
+            //SeedCategories(context, ref seeded);
             //SeedCv(context, ref seeded);
             //SeedVacancies(context, ref seeded);
 
@@ -232,7 +232,7 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     Title = $"Vac{i}",
                     SalaryRange = $"{100 + i}-{200 + i} $",
                     CompanyName = $"Facebook {1}",
-                    //LocationId = 1,
+                    LocationId = 1,
                     PublishDate = DateTime.Now,
                     DeadLine = DateTime.Now,
                     Description = "bla bla",
