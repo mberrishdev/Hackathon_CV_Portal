@@ -5,6 +5,10 @@
     {
       "library": "bootstrap@5.2.0",
       "destination": "wwwroot/bootstrap/"
+    },
+    {
+      "library": "jquery.markitup@1.1.15",
+      "destination": "wwwroot/lib/jquery.markitup/"
     }
   ]
 }

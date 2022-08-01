@@ -1,85 +1,98 @@
 ﻿@using Hackathon_CV_Portal.Web.Models.UserAccountModel
+@using Microsoft.AspNetCore.Identity
+@using Hackathon_CV_Portal.Domain.Users
+@inject SignInManager<ApplicationUser> SignInManager
 
 @model RegisterDto
 @{
     ViewData["Title"] = "Register";
 }
 
- <section class="vh-100" style="background-color: #eee;">
-  <div class="container h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-lg-8 col-xl-6">
-        <div class="card text-black" style="border-radius: 25px;">
-          <div class="card-body bg-primary text-white p-md-5" style="border-radius: 1rem;">
-            <div class="row justify-content-center">
-              <div class="col-md-10 col-lg-10 col-xl-12 order-2 order-lg-1">
+<section class="vh-100" style="background-color: #eee;">
+    <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-8 col-xl-6">
+                <div class="card text-black" style="border-radius: 25px;">
+                    <div class="card-body bg-primary text-white p-md-5" style="border-radius: 1rem;">
+                        <div class="row justify-content-center">
+                            <div class="col-md-10 col-lg-10 col-xl-12 order-2 order-lg-1">
 
-                <form class="mx-1 mx-md-4" asp-action="Register" method="post">
-                    <div asp-validation-summary="All" class="text-danger"></div>
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label asp-for="UserName" class="control-label"></label>
-                        <input asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                  </div>
+                                <form class="mx-1 mx-md-4" asp-action="Register" method="post">
+                                    <div asp-validation-summary="All" class="text-danger"></div>
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <i class="fas fa-user fa-lg me-3 fa-fw" style="margin-top: 2rem;"></i>
+                                        <div class="form-outline flex-fill mb-0">
+                                            <label asp-for="UserName" class="control-label"></label>
+                                            <input asp-for="UserName" class="form-control" />
+                                            <span asp-validation-for="UserName" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
-                  </div>
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <i class="fas fa-envelope fa-lg me-3 fa-fw" style="margin-top: 2rem;"></i>
+                                        <div class="form-outline flex-fill mb-0">
+                                            <label asp-for="Email" class="control-label"></label>
+                                            <input asp-for="Email" class="form-control" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label asp-for="Password" class="control-label"></label>
-                        <input asp-for="Password" class="form-control" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                  </div>
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <i class="fas fa-lock fa-lg me-3 fa-fw" style="margin-top: 2rem;"></i>
+                                        <div class="form-outline flex-fill mb-0">
+                                            <label asp-for="Password" class="control-label"></label>
+                                            <input asp-for="Password" class="form-control" />
+                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
-                  <div class="d-flex flex-row align-items-center mb-4">
-                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                    <div class="form-outline flex-fill mb-0">
-                        <label asp-for="ConfirmPassword" class="control-label"></label>
-                        <input asp-for="ConfirmPassword" class="form-control" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
-                  </div>
+                                    <div class="d-flex flex-row align-items-center mb-4">
+                                        <i class="fas fa-key fa-lg me-3 fa-fw" style="margin-top: 2rem;"></i>
+                                        <div class="form-outline flex-fill mb-0">
+                                            <label asp-for="ConfirmPassword" class="control-label"></label>
+                                            <input asp-for="ConfirmPassword" class="form-control" />
+                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        </div>
+                                    </div>
 
-                    <div class="form-group mt-1">
-                        <div class="checkbox">
-                            <label asp-for="IsCompany">
-                                <input asp-for="IsCompany" />
-                                @Html.DisplayNameFor(m => m.IsCompany)
-                            </label>
+                                    <div class="form-group mt-1">
+                                        <div class="checkbox" style="margin-left: 2.5rem;">
+                                            <label asp-for="IsCompany">
+                                                <input asp-for="IsCompany" />
+                                                @Html.DisplayNameFor(m => m.IsCompany)
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                        <input class="btn border mt-4 btn-primary btn-lg" type="submit" value="რეგისტრაცია" />
+                                    </div>
+                                </form>
+
+                                <div class="text-center">
+                                        @{
+                                            var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+                                            <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+                                                <div class="">
+                                                    <div>
+                                                        @foreach (var provider in loginProviders)
+                                                        {
+                                                            <button type="submit" class="btn text-white" name="provider" value="@provider.Name" title="დარეგისტრირება @provider.DisplayName ანგარიშით">
+                                                                <i class="fab fa-lg fa-@provider.Name.ToLower()"></i>
+                                                            </button>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        }
+                                    </div>
+                            </div>
                         </div>
                     </div>
-                  <div class="form-group mt-1">
-                    <div class="checkbox">
-                        <label asp-for="AggreeTOS">
-                                <input asp-for="AggreeTOS" />
-                                @Html.DisplayNameFor(m => m.AggreeTOS)
-                        </label>
-                    </div>
-                  </div>
-                  <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <input class="btn border mt-4 btn-primary btn-lg" type="submit" value="რეგისტრაცია" />
-                  </div>
-                </form>
-
-              </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 </section>
 
 @section Scripts {

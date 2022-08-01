@@ -1,5 +1,6 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Application.Implementations;
+using Hackathon_CV_Portal.Application.Implementations.AboutUs;
 using Hackathon_CV_Portal.Application.Implementations.AppliedCurriculumVitaes;
 using Hackathon_CV_Portal.Application.Implementations.Captchs;
 using Hackathon_CV_Portal.Application.Implementations.Categories;
@@ -45,6 +46,7 @@ namespace Hackathon_CV_Portal.Application
             services.AddScoped<ILocationService, LocationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRolesService, UserRolesService>();
+            services.AddScoped<IAboutService, AboutService>();
 
             return services;
         }

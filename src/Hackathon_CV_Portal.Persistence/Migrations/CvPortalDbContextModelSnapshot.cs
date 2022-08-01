@@ -22,6 +22,23 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Hackathon_CV_Portal.Domain.AboutUs.About", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("About");
+                });
+
             modelBuilder.Entity("Hackathon_CV_Portal.Domain.AppliedCCVs.AppliedCurriculumVitae", b =>
                 {
                     b.Property<int>("Id")

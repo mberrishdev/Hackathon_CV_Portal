@@ -59,7 +59,7 @@
                                             <div>
                                                 @foreach (var provider in loginProviders)
                                                 {
-                                                    <button type="submit" class="btn text-white" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                                    <button  title="ავტორიზაცია @provider.DisplayName ანგარიშით" type="submit" class="btn text-white" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
                                                         <i class="fab fa-lg fa-@provider.Name.ToLower()"></i>
                                                     </button>
                                                 }
