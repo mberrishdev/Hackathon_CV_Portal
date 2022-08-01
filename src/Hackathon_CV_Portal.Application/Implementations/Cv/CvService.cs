@@ -92,13 +92,6 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
 
         public async Task UpdateCv(CreateCvCommand command, int userId)
         {
-          
-
-            if (command.Image != "" && command.Image != null)
-            {
-                ValidateImage(command.Image);
-            }
-            
             var cv = _context.CVs.Where(cv => cv.UserId == userId).FirstOrDefault();
 
             if (cv != null)
@@ -262,39 +255,6 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
 
             return cvModel;
 
-        }
-
-        public bool ValidateImage(string image)
-        {
-            int maxFileLengthInBytes = 350000;
-
-            if (!IsBase64String(image.Substring(image.IndexOf(',') + 1)))
-                throw new ApplicationException("invalid file encoding");
-
-            if (!IsPngOrJpg(image.Substring(0, image.IndexOf(';'))))
-                throw new ApplicationException("invalid file type");
-
-            if (!IsSmallerOrEqual(image.Substring(image.IndexOf(',') + 1), maxFileLengthInBytes))
-                throw new ApplicationException("file is more then 350kb");
-
-            return true;
-        }
-
-        public bool IsBase64String(string base64)
-        {
-            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
-            return Convert.TryFromBase64String(base64, buffer, out int bytesParsed);
-        }
-
-        public bool IsSmallerOrEqual(string base64, int lengthInBytes)
-        {
-            byte[] imageBytes = Convert.FromBase64String(base64);
-            return imageBytes.Length <= lengthInBytes;
-        }
-
-        private bool IsPngOrJpg(string data)
-        {
-            return data.Contains("image/png") || data.Contains("image/png") || data.Contains("image/jpeg");
         }
     }
 }

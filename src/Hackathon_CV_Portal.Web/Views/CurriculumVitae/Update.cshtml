@@ -18,8 +18,8 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="row mt-5">
-                        <div class="text-center border mb-3">
-                            <h5>ფოტო</h5>
+                        <div class="text-center border mb-3 p-4">
+                            <h5 class="">ფოტო</h5>
                             <div class="d-flex justify-content-center align-items-center mb-2">
                                 <div style="width:300px" class="text-center" id="imgTestDiv">
                                     @if (Model != null)
@@ -62,6 +62,7 @@
                             </div>
                             <div>
                                 <p>ატვირთეთ PNG/JPG ფაილები მაქსიმუმ 350 კილობაიტის ზომის</p>
+                                 <div class="text-danger"> @Html.ValidationMessage("Validation") </div>
                             </div>
                         </div>
 

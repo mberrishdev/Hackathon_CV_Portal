@@ -10,13 +10,15 @@
             <h4 class="text-center">შექმენი CV</h4>
         </p>
 
+      
+
         <div class="row">
             <div class="col-md-8 offset-2">
                 <form asp-action="Create" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div class="row">
 
+                    <div class="row">
                         <div class="text-center border mb-3">
                             <h5>ფოტო</h5>
                             <div class="d-flex justify-content-center align-items-center mb-2">
@@ -59,6 +61,7 @@
                                 }
                             </div>
                             <p>ატვირთეთ PNG/JPG ფაილები მაქსიმუმ 350 კილობაიტის ზომის</p>
+                            <div class="text-danger"> @Html.ValidationMessage("Validation") </div>
                         </div>
 
                         <div class="col-md-6">
