@@ -1,4 +1,5 @@
-﻿using Hackathon_CV_Portal.Domain.AppliedCCVs;
+﻿using Hackathon_CV_Portal.Domain.AboutUs;
+using Hackathon_CV_Portal.Domain.AppliedCCVs;
 using Hackathon_CV_Portal.Domain.Categories;
 using Hackathon_CV_Portal.Domain.CVs;
 using Hackathon_CV_Portal.Domain.Educations;
@@ -21,7 +22,7 @@ namespace Hackathon_CV_Portal.Persistence.Context
         {
         }
 
-
+        public DbSet<About> About { get; set; }
         public DbSet<CurriculumVitae> CVs { get; set; }
         public DbSet<Education> Educations { get; set; }
         public DbSet<FavouriteVacancy> FavouriteVacancies { get; set; }
