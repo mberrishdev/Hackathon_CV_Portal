@@ -4,6 +4,8 @@ using Hackathon_CV_Portal.Domain.CVs;
 using Hackathon_CV_Portal.Domain.Educations;
 using Hackathon_CV_Portal.Domain.FavouriteVacancies;
 using Hackathon_CV_Portal.Domain.Locations;
+using Hackathon_CV_Portal.Domain.Qualifications;
+using Hackathon_CV_Portal.Domain.Responsibilities;
 using Hackathon_CV_Portal.Domain.Skills;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vcancies;
@@ -28,6 +30,8 @@ namespace Hackathon_CV_Portal.Persistence.Context
         public DbSet<WorkingExperience> WorkignExperiences { get; set; }
         public DbSet<Vacancy> Vacancies { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Responsibility> Responsibilities { get; set; }
+        public DbSet<Qualification> Qualifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,6 +94,13 @@ namespace Hackathon_CV_Portal.Persistence.Context
                .HasOne(c => c.CV)
                .WithMany(s => s.Skills);
 
+            modelBuilder.Entity<Responsibility>()
+               .HasOne(v => v.Vacancy)
+               .WithMany(r => r.Responsibilities);
+
+            modelBuilder.Entity<Qualification>()
+               .HasOne(v => v.Vacancy)
+               .WithMany(q => q.Qualifications);
         }
     }
 }

@@ -18,10 +18,23 @@
                 <div class="mb-5">
                     <h4 class="mb-3">აღწერა</h4>
                     <p> @Model.Description</p>
-                    <h4 class="mb-3">მოვალეობები</h4>
-                    <p>@Model.Responsibility </p>
-                    <h4 class="mb-3">კვალიფიკაცია</h4>
-                    <p>@Model.Qualifications</p>
+                    @if (Model.Qualifications.Count() != 0)
+                    {
+                        <h4 class="mb-3">კვალიფიკაცია</h4>
+                        @foreach (var qualifications in Model.Qualifications)
+                        {
+                            <p>. @qualifications.QualificationName</p>
+                        }
+                    }
+
+                    @if (Model.Responsibilities.Count() != 0)
+                    {
+                        <h4 class="mb-3">მოვალეობები</h4>
+                        @foreach (var responsibilities in Model.Responsibilities)
+                        {
+                            <p>. @responsibilities.ResponsibilityName</p>
+                        }
+                    }
                 </div>
         
                @* <div class="">
@@ -49,7 +62,10 @@
                         </div>
                     </form>
                 </div>*@
-                <a class="btn btn-primary me-2" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@Model.Id">Apply Now</a>
+                @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) || !SignInManager.IsSignedIn(User))
+                {
+                    <a class="btn btn-primary me-2" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@Model.Id">Apply Now</a>
+                }
             </div>
 
         </div>

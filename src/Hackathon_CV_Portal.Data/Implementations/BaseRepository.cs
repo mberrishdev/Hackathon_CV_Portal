@@ -64,10 +64,13 @@ namespace Hackathon_CV_Portal.Data.Implementations
             return await _dbSet.FindAsync(obj);
         }
 
-        public async Task CreateAsync(T entity)
+        public async Task<int> CreateAsync(T entity)
         {
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
+
+            var IdProperty = entity.GetType().GetProperty("Id").GetValue(entity, null);
+            return (int)IdProperty;
         }
 
         public async Task UpdateAsync(T entity)

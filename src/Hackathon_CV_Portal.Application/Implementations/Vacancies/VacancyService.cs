@@ -1,4 +1,7 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
+using Hackathon_CV_Portal.Application.Exceptions;
+using Hackathon_CV_Portal.Application.Implementations.Qualifications.Models;
+using Hackathon_CV_Portal.Application.Implementations.Responsibilities.Models;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Queries;
 using Hackathon_CV_Portal.Data.Abstractions;
@@ -23,14 +26,20 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
             _cvService = cvService;
         }
 
-        public async Task CreateVacancy(CreateVacancyCommand command)
+        public async Task<int> CreateVacancy(CreateVacancyCommand command)
         {
-            await _baseRepository.CreateAsync(new Vacancy(command));
+            var id = await _baseRepository.CreateAsync(new Vacancy(command));
+
+            return id;
         }
 
         public async Task<VacancyModel> GetVacancyById(int id)
         {
-            var vm = await _baseRepository.GetAsync(new Expression<Func<Vacancy, object>>[2] { x => x.Category, x => x.Location }, x => x.Id == id);
+            var vm = await _baseRepository.GetAsync(includeProperties: new Expression<Func<Vacancy, object>>[4] { x => x.Category, x => x.Location,
+                x=>x.Qualifications,x=>x.Responsibilities }, x => x.Id == id);
+
+            if (vm == null)
+                throw new NotFoundExcpetion();
 
             return new VacancyModel()
             {
@@ -44,8 +53,18 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                 PublishDate = vm.PublishDate,
                 DeadLine = vm.DeadLine,
                 Description = vm.Description,
-                Responsibility = vm.Responsibility,
-                Qualifications = vm.Qualifications,
+                Responsibilities = vm.Responsibilities.Select(x => new ResponsibilityVM()
+                {
+                    Id = x.Id,
+                    VacancyId = x.VacancyId,
+                    ResponsibilityName = x.ResponsibilityName
+                }).ToList(),
+                Qualifications = vm.Qualifications.Select(x => new QualificationVM()
+                {
+                    Id = x.Id,
+                    VacancyId = x.VacancyId,
+                    QualificationName = x.QualificationName
+                }).ToList(),
                 UserId = vm.UserId,
             };
         }
@@ -64,7 +83,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                 var isFavoutire = query.UserModel == null ? false : await _favouriteVacancyService.AnyAsync(predicate: x => x.VacansyId == item.Id && x.UserId == query.UserModel.UserId);
                 if (query.WithFav && !isFavoutire)
                     continue;
-
+                //ToDo
                 vacancyModels.Add(new VacancyModel()
                 {
                     Id = item.Id,
@@ -77,8 +96,8 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                     PublishDate = item.PublishDate,
                     DeadLine = item.DeadLine,
                     Description = item.Description,
-                    Responsibility = item.Responsibility,
-                    Qualifications = item.Qualifications,
+                    //Responsibility = item.Responsibility,
+                    //Qualifications = item.Qualifications,
                     IsFavourite = isFavoutire,
                     UserId = item.UserId,
                 });

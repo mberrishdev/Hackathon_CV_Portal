@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Hackathon_CV_Portal.Application.Implementations.UserRoles
 {
-    public class UserRolesService : IUserRolesService
+    public class UserRolesService : iResponsibilityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;

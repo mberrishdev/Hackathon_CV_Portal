@@ -10,8 +10,8 @@ namespace Hackathon_CV_Portal.Web.Controllers.UserRole
     [Authorize(Roles = "Admin")]
     public class UserRoleController : BaseController
     {
-        private readonly IUserRolesService _userRolesService;
-        public UserRoleController(SignInManager<ApplicationUser> signInManager, IUserRolesService userRolesService) : base(signInManager)
+        private readonly iResponsibilityService _userRolesService;
+        public UserRoleController(SignInManager<ApplicationUser> signInManager, iResponsibilityService userRolesService) : base(signInManager)
         {
             _userRolesService = userRolesService;
         }

@@ -1,6 +1,8 @@
 ﻿using Hackathon_CV_Portal.Domain.Categories;
 using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.Locations;
+using Hackathon_CV_Portal.Domain.Qualifications;
+using Hackathon_CV_Portal.Domain.Responsibilities;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using System.ComponentModel.DataAnnotations;
@@ -26,10 +28,6 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
         public DateTime DeadLine { get; set; }
         [Required, Column(TypeName = "NVARCHAR"), MaxLength(500)]
         public string Description { get; set; }
-        [Required, Column(TypeName = "NVARCHAR"), MaxLength(500)]
-        public string Responsibility { get; set; }
-        [Required, Column(TypeName = "NVARCHAR"), MaxLength(500)]
-        public string Qualifications { get; set; }
 
         public int UserId { get; set; }
         public int CategoryId { get; set; }
@@ -37,6 +35,8 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
         public ApplicationUser User { get; set; }
         public Category Category { get; set; }
         public Location Location { get; set; }
+        public ICollection<Responsibility> Responsibilities { get; set; }
+        public ICollection<Qualification> Qualifications { get; set; }
 
         public Vacancy()
         {
@@ -50,8 +50,6 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
             PublishDate = DateTime.Now;
             DeadLine = command.DeadLine;
             Description = command.Description;
-            Qualifications = command.Qualifications;
-            Responsibility = command.Responsibility;
             LocationId = command.LocationId;
             CategoryId = command.CategoryId;
             UserId = command.UserModel.UserId;
