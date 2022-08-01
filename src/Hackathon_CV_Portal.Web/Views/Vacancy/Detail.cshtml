@@ -1,5 +1,10 @@
 ﻿@using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models
+@using System.Security.Claims
+@using Hackathon_CV_Portal.Domain.Enums;
+@using Hackathon_CV_Portal.Domain.Users
+@using Microsoft.AspNetCore.Identity
 @model VacancyModel
+@inject SignInManager<ApplicationUser> SignInManager
 
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">

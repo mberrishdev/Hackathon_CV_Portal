@@ -1,11 +1,10 @@
-﻿using Hackathon_CV_Portal.Application.Abstractions;
-using Hackathon_CV_Portal.Application.Implementations.UserRoles.Models;
+﻿using Hackathon_CV_Portal.Application.Implementations.UserRoles.Models;
 using Hackathon_CV_Portal.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace Hackathon_CV_Portal.Application.Implementations.UserRoles
 {
-    public class UserRolesService : iResponsibilityService
+    public class UserRolesService : IUserRolesService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
