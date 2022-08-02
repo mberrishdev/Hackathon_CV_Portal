@@ -14,15 +14,14 @@
 
 <script language="javascript">
 
-    $(document).ready(function() {
-            bkLib.onDomLoaded(function()
+
+     bkLib.onDomLoaded(function()
     {
         new nicEditor().panelInstance('NicEdit');
         document.getElementsByClassName("nicEdit-main")[0].innerHTML = `@Html.Raw(Model.Content.ToString())`
         RemoveProperties($(".nicEdit-main")[0].style, ["width"])
         RemoveProperties($(".nicEdit-main")[0].parentElement.style, ["width"])
         RemoveProperties($(".nicEdit-main")[0].parentElement.parentElement.childNodes[1].style, ["width"])
-    });
     });
 
     $("#submitButton").on("click", function() {
