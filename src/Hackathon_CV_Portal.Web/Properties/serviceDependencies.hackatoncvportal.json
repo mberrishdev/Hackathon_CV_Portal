@@ -2,9 +2,10 @@
   "dependencies": {
     "mssql1": {
       "secretStore": "AzureAppSettings",
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/mberrishserver/databases/cvplatform",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/cvplatformprod/databases/cvplatform",
       "type": "mssql.azure",
-      "connectionId": "ConnectionStrings:HackathonCvPortalContextConnection"
+      "connectionId": "ConnectionStrings:HackathonCvPortalContextConnection",
+      "dynamicId": null
     }
   }
 }
