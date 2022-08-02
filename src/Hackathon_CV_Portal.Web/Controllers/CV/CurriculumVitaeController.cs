@@ -93,8 +93,16 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Update()
         {
-            CvVM result = null;
             LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
+            CvVM result = null;
 
             if (UserModel != null)
             {
@@ -111,7 +119,15 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Update([FromForm] CreateCvDTO model)
         {
-            
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
 
             if (!ModelState.IsValid)
                 return View();
@@ -129,8 +145,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
                     return View();
                 }
             }
-
-            LoadUserModel();
 
             var command = new CreateCvCommand()
             {
@@ -152,9 +166,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
 
         // Skill
         [Authorize(Roles = "User")]
-        public IActionResult Skill()
+        public async Task<IActionResult> Skill()
         {
             LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
 
             var skillModels = _cvService.GetCV(UserModel.UserId).Result.Skills;
 
@@ -171,8 +193,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         }
 
         [Authorize(Roles = "User")]
-        public IActionResult AddSkill()
+        public async Task<IActionResult> AddSkill()
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             return View();
         }
 
@@ -180,10 +211,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         [HttpPost]
         public async Task<IActionResult> AddSkill([FromForm] CreateSkillDTO model)
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             if (!ModelState.IsValid)
                 return View();
-
-            LoadUserModel();
 
             var command = new CreateSkillCommand()
             {
@@ -218,8 +256,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
 
         // Education
         [Authorize(Roles = "User")]
-        public IActionResult AddEducation()
+        public async Task<IActionResult> AddEducation()
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             return View();
         }
 
@@ -228,10 +275,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         public async Task<IActionResult> AddEducation([FromForm] CreateEducationDto model)
         {
 
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             if (!ModelState.IsValid)
                 return View();
-
-            LoadUserModel();
 
             var command = new CreateEducationCommand()
             {
@@ -271,6 +325,13 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         {
             LoadUserModel();
 
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             var educationModels = _cvService.GetCV(UserModel.UserId).Result.Education;
 
             EducationVm educationVm = new EducationVm()
@@ -298,6 +359,15 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         [Authorize(Roles = "User")]
         public async Task<IActionResult> AddWorkingExperience()
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             return View();
         }
 
@@ -305,10 +375,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         [HttpPost]
         public async Task<IActionResult> AddWorkingExperience([FromForm] CreateWorkingExperienceDto model)
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             if (!ModelState.IsValid)
                 return RedirectToAction("AddWorkingExperience");
-
-            LoadUserModel();
 
             var command = new CreateWorkingExperienceCommand()
             {
@@ -329,6 +406,13 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         public async Task<IActionResult> WorkingExperience()
         {
             LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
 
             var workingExperiences = _cvService.GetCV(UserModel.UserId).Result.WorkingExperience;
 
