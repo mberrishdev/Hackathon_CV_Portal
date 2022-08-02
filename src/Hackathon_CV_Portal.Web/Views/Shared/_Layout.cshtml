@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
-    
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-     <link rel="stylesheet" href="~/css/MarkUpStyle.css" />
+    <link rel="stylesheet" href="~/css/MarkUpStyle.css" />
 
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
@@ -42,9 +42,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+        <nav class="fixed-top navbar navbar-expand-lg bg-white navbar-light shadow p-0">
             <a asp-controller="Home" asp-action="Index" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
-                <h1 class="m-0 text-primary">re:hire</h1>
+                <h1 class="m-0 text-primary">findjob.ge</h1>
             </a>
             <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
@@ -76,7 +76,7 @@
                             <a class="nav-link text-dark" asp-controller="Vacancy" asp-action="Add">ვაკანსიის დამატება</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Vacancy" asp-action="Index" asp-route-companyId="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))">ჩემი ვაკანისები</a>    
+                            <a class="nav-link text-dark" asp-controller="Vacancy" asp-action="Index" asp-route-companyId="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))">ჩემი ვაკანისები</a>
                         </li>
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
@@ -92,17 +92,40 @@
             </div>
         </nav>
     </header>
-    <div class="container-fluid mb-5">
-        <main role="main" class="pb-3">
+
+    <div class="container-fluid" style="margin-top:6.5rem; margin-bottom:5.5rem">
+        <main role="main" class="">
             @RenderBody()
         </main>
     </div>
 
-    @*    <footer class="border-top footer text-muted">
-        <div class="container">
-        &copy; 2022 - re:hire - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top text-muted">
+        <div class="col-12 d-flex justify-content-center">
+            <div class="row col-8">
+                <div class="col-lg-4 col-12 d-flex justify-content-center align-items-center mt-5">
+                    <img src="/img/sdc.jpg" class="img-fluid">
+                </div>
+                <div class="col-lg-4 col-12 d-flex justify-content-center align-items-center my-2">
+
+                    <img src="/img/logo taoba 1.jpg" class="img-fluid">
+                </div>
+                <div class="col-lg-4 col-12 d-flex justify-content-center align-items-center my-2">
+                    <img src="/img/UNDP.png" class="img-fluid">
+                </div>
+            </div>
         </div>
-        </footer>*@
+        <div class="container col-12 px-2">
+            <p>
+                პორტალი შექმნილია გაეროს განვითარების პროგრამისა და შვეიცარიის მთავრობის ხელშეწყობით.
+                მის შინაარსზე სრულად პასუხისმგებელია ახალგაზრდული  ქსელი "თაობა".  პორტალის  შინაარსი შესაძლოა არ
+                გამოხატავდეს გაეროს განვითარების პროგრამისა და შვეიცარიის მთავრობის თვალსაზრისს.
+            </p>
+        </div>
+        <hr />
+        <div class="text-center">
+            <p>Created by  <a href="https://www.linkedin.com/in/mberrish/">Mikheil Berishvili </a> &  <a href="https://www.linkedin.com/in/rati-tkhilaishvili-3002231b8/"/>Rati Tkhilaishvili</a> </p>
+        </div>
+    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
