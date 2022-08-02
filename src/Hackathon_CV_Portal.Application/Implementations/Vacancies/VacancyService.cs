@@ -45,8 +45,10 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
             {
                 Id = vm.Id,
                 Category = vm.Category.Name,
+                CategoryId = vm.CategoryId,
                 Title = vm.Title,
                 Location = vm.Location.Country + ", " + vm.Location.City,
+                LocationId = vm.LocationId,
                 SalaryRange = vm.SalaryRange,
                 Type = vm.Type.ToString(),
                 CompanyName = vm.CompanyName,

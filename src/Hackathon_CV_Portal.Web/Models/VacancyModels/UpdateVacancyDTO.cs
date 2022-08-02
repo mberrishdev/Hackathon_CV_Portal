@@ -14,7 +14,7 @@ namespace Hackathon_CV_Portal.Web.Models.VacancyModels
         [RequiredGreaterThanZero(ErrorMessage = "ტიპის შეყვანა აუცილებელია")]
         [Required(ErrorMessage = "ტიპის შეყვანა აუცილებელია")]
         [Display(Name = "ტიპი")]
-        public int Type { get; set; }
+        public string Type { get; set; }
         [Required(ErrorMessage = "კომპანიის სახელი შეყვანა აუცილებელია")]
         [Display(Name = "კომპანიის სახელი")]
         public string CompanyName { get; set; }

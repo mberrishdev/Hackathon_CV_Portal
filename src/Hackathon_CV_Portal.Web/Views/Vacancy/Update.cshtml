@@ -10,12 +10,18 @@
     <div class="col-md-6 offset-lg-3 offset-md-2 offset-lg-2">
         <div class="row">
             <p>
-            <h4 class="text-center">შექმენი ვაკანსია</h4>
+            <h4 class="text-center">ვაკანსიის რედაქტირება</h4>
             </p>
             <div class="row">
                 <div class="col-md-8 offset-md-2 offset-lg-2">
                     <form asp-action="Update" method="post">
                         <div class="row">
+                                <div class="form-group"  style="display: none;">
+                                    <label asp-for="Id" class="control-label"></label>
+                                    <span class="text-danger">*</span>
+                                    <input asp-for="Id" class="form-control" />
+                                    <span asp-validation-for="Id" class="text-danger"></span>
+                                </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label asp-for="Title" class="control-label"></label>
@@ -37,7 +43,7 @@
                                     </select>
                                     <span asp-validation-for="Type" class="text-danger"></span>
                                 </div>
-@*                                <div class="form-group">
+                               <div class="form-group">
                                     <label asp-for="LocationId"></label>
                                     <span class="text-danger">*</span>
                                     <select asp-for="LocationId" class="custom-select mr-sm-2"
@@ -45,7 +51,7 @@
                                         <option value="0">აირჩიეთ მისამართი</option>
                                     </select>
                                     <span asp-validation-for="LocationId" class="text-danger"></span>
-                                </div>*@
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -60,7 +66,7 @@
                                     <input asp-for="DeadLine" type="date" class="form-control" />
                                     <span asp-validation-for="DeadLine" class="text-danger"></span>
                                 </div>
-@*                                <div class="form-group">
+                               <div class="form-group">
                                     <label asp-for="CategoryId"></label>
                                     <span class="text-danger">*</span>
                                     <select asp-for="CategoryId" class="custom-select mr-sm-2"
@@ -68,7 +74,7 @@
                                         <option value="0">აირჩიეთ კატეგორია</option>
                                     </select>
                                     <span asp-validation-for="CategoryId" class="text-danger"></span>
-                                </div>*@
+                                </div>
                                 <div class="form-group">
                                     <label asp-for="SalaryRange"></label>
                                     <small class="text-muted">
@@ -88,6 +94,7 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <a class="btn btn-warning float-left" asp-controller="Vacancy" asp-action="UpdateVacancyDetail" asp-route-id="@Model.Id">კვალიფიკაციის ან მოთხოვნის რედაქტირება</a>
                             <input type="submit" value="რედაქტირება" class="btn btn-outline-success float-right" />
                         </div>
                     </form>
