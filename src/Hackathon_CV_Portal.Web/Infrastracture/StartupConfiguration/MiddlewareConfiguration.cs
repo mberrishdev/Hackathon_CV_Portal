@@ -1,4 +1,7 @@
-﻿namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
+﻿using Hackathon_CV_Portal.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
+
+namespace Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration
 {
     public static class MiddlewareConfiguration
     {
@@ -11,6 +14,8 @@
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseDatabaseMigration<CvPortalDbContext>();
 
             //using (var scope = app.Services.CreateScope())
             //{
@@ -32,5 +37,17 @@
 
             return app;
         }
+
+        public static void UseDatabaseMigration<TDbContext>(this IApplicationBuilder builder) where TDbContext : DbContext
+        {
+            using (IServiceScope serviceScope = builder.ApplicationServices.CreateScope())
+            {
+                TDbContext service = serviceScope.ServiceProvider.GetService<TDbContext>();
+                if (service != null)
+                    service.Database.Migrate();
+            }
+        }
     }
+
+
 }

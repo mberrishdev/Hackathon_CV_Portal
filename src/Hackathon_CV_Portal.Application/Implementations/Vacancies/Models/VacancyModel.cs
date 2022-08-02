@@ -21,15 +21,19 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies.Models
         [Display(Name = "სახელფასო მოლოდინი")]
         public string SalaryRange { get; set; }
         public DateTime PublishDate { get; set; }
+        [Display(Name = "ვაკანსიის გამოგზავნის ბოლო ვადა")]
         public DateTime DeadLine { get; set; }
         public string Description { get; set; }
-        [Display(Name = "ვაკანსიის გამოგზავნის ბოლო ვადა")]
+        [Display(Name = "მოთხოვნები")]
         public List<ResponsibilityVM> Responsibilities { get; set; }
+        [Display(Name = "კვალიფიკაცია")]
         public List<QualificationVM> Qualifications { get; set; }
         public bool IsFavourite { get; set; }
         [Display(Name = "საკონტაქტო მეილი")]
         public string Email { get; set; }
+        [Display(Name = "კატეგორია")]
         public int CategoryId { get; set; }
+        [Display(Name = "ლოკაცია")]
         public int LocationId { get; set; }
     }
 }
