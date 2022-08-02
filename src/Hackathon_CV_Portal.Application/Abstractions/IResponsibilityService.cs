@@ -7,5 +7,6 @@ namespace Hackathon_CV_Portal.Application.Abstractions
     {
         Task AddResponsibility(AddResponsibilityCommand command);
         Task<List<ResponsibilityVM>> GetByVacancyId(int vacancyId);
+        Task DeleteResponsibility(DeleteResponsibilityCommand command);
     }
 }

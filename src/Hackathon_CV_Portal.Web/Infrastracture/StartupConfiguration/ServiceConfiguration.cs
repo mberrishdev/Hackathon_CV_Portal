@@ -2,7 +2,6 @@
 using Hackathon_CV_Portal.Data;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Persistence.Context;
-using Hackathon_CV_Portal.Persistence.Seed;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

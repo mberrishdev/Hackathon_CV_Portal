@@ -22,6 +22,7 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
         public string CompanyName { get; set; }
         [Required]
         public VacancyType Type { get; set; }
+        public string Email { get; set; }
         [Required]
         public DateTime PublishDate { get; set; }
         [Required]
@@ -53,6 +54,21 @@ namespace Hackathon_CV_Portal.Domain.Vcancies
             LocationId = command.LocationId;
             CategoryId = command.CategoryId;
             UserId = command.UserModel.UserId;
+            Email = command.Email;
+            Type = command.Type;
+        }
+
+        public void Update(UpdateVacancyCommand command)
+        {
+            Title = command.Title;
+            SalaryRange = command.SalaryRange;
+            CompanyName = command.CompanyName;
+            PublishDate = DateTime.Now;
+            DeadLine = command.DeadLine;
+            Description = command.Description;
+            LocationId = command.LocationId;
+            Email = command.Email;
+            CategoryId = command.CategoryId;
             Type = command.Type;
         }
     }

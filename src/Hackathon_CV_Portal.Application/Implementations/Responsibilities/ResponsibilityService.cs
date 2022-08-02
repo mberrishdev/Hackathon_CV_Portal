@@ -43,5 +43,19 @@ namespace Hackathon_CV_Portal.Application.Implementations.Responsibilities
                 VacancyId = x.VacancyId
             }).ToList();
         }
+
+        public async Task DeleteResponsibility(DeleteResponsibilityCommand command)
+        {
+            var vacancy = await _vacancyService.GetVacancyById(command.VacancyId);
+            if (vacancy == null)
+                throw new NotFoundExcpetion();
+
+            if (vacancy.UserId != command.UserModel.UserId)
+                throw new Exception();
+
+            var responsibility = await _baseRepository.GetForUpdateAsync(command.ResponsibilityId);
+
+            await _baseRepository.RemoveAsync(responsibility);
+        }
     }
 }
