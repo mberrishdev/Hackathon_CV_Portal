@@ -34,6 +34,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv.Models
         public List<Education> Education { get; set; }
         [Display(Name = "უნარები")]
         public List<Skill> Skills { get; set; }
+        public string Image { get; set; }
         public int UserId { get; set; }
     }
 }

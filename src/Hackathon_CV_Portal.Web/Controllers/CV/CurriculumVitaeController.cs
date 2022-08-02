@@ -48,30 +48,23 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             }
 
             if (result == null)
-                return RedirectToAction("NotFound", "Home");
+                return RedirectToAction("Create", "CurriculumVitae");
 
             return View(result);
         }
 
+
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> Update()
+        public async Task<IActionResult> Create()
         {
-            CvVM result = null;
-            LoadUserModel();
+            CvVM tmpCvVM = new CvVM();
 
-            if (UserModel != null)
-            {
-                result = await _cvService.GetCV(UserModel.UserId);
-            }
-            if (result == null)
-                return RedirectToAction("Index", "NotFound");
-
-            return View(result);
+            return View(tmpCvVM);
         }
 
         [HttpPost]
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> Update([FromForm] CreateCvDTO model)
+        public async Task<IActionResult> Create([FromForm] CreateCvDTO model)
         {
             if (!ModelState.IsValid)
                 return View();
@@ -82,11 +75,87 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                BirtDate = model.BirtDate,
+                BirtDate = model.BirthDate,
                 PhoneNumber = model.PhoneNumber,
                 Email = model.Email,
                 Address = model.Address,
                 AboutMe = model.AboutMe,
+                Image = model.Image ?? "",
+                UserId = UserModel.UserId
+            };
+
+            await _cvService.CreateCv(command);
+
+            return RedirectToAction("Index");
+        }
+
+
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Update()
+        {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
+            CvVM result = null;
+
+            if (UserModel != null)
+            {
+                result = await _cvService.GetCV(UserModel.UserId);
+            }
+
+            if (result == null)
+                return RedirectToAction("Create", "CurriculumVitae");
+
+            return View(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User")]
+        public async Task<IActionResult> Update([FromForm] CreateCvDTO model)
+        {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
+
+            if (!ModelState.IsValid)
+                return View();
+
+
+            if (model.Image != "" && model.Image != null)
+            {
+                try
+                {
+                    ValidateImage(model.Image);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Validation", ex.Message);
+                    return View();
+                }
+            }
+
+            var command = new CreateCvCommand()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                BirtDate = model.BirthDate,
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
+                Address = model.Address,
+                AboutMe = model.AboutMe,
+                Image = model.Image ?? "",
                 UserId = UserModel.UserId
             };
 
@@ -97,9 +166,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
 
         // Skill
         [Authorize(Roles = "User")]
-        public IActionResult Skill()
+        public async Task<IActionResult> Skill()
         {
             LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
 
             var skillModels = _cvService.GetCV(UserModel.UserId).Result.Skills;
 
@@ -116,8 +193,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         }
 
         [Authorize(Roles = "User")]
-        public IActionResult AddSkill()
+        public async Task<IActionResult> AddSkill()
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             return View();
         }
 
@@ -125,10 +211,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         [HttpPost]
         public async Task<IActionResult> AddSkill([FromForm] CreateSkillDTO model)
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             if (!ModelState.IsValid)
                 return View();
-
-            LoadUserModel();
 
             var command = new CreateSkillCommand()
             {
@@ -137,7 +230,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             };
             await _cvService.AddSkillAsync(command);
 
-            return RedirectToAction("Skill");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "User")]
@@ -155,7 +248,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
                 }
             }
 
-            return RedirectToAction("Skill");
+            return RedirectToAction("Index");
         }
 
         // - Skill
@@ -163,8 +256,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
 
         // Education
         [Authorize(Roles = "User")]
-        public IActionResult AddEducation()
+        public async Task<IActionResult> AddEducation()
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             return View();
         }
 
@@ -173,10 +275,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         public async Task<IActionResult> AddEducation([FromForm] CreateEducationDto model)
         {
 
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             if (!ModelState.IsValid)
                 return View();
-
-            LoadUserModel();
 
             var command = new CreateEducationCommand()
             {
@@ -190,7 +299,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             };
             await _cvService.AddEducationAsync(command);
 
-            return RedirectToAction("Education");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "User")]
@@ -208,13 +317,20 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
                 }
             }
 
-            return RedirectToAction("Education");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Education()
         {
             LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
 
             var educationModels = _cvService.GetCV(UserModel.UserId).Result.Education;
 
@@ -243,6 +359,15 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         [Authorize(Roles = "User")]
         public async Task<IActionResult> AddWorkingExperience()
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             return View();
         }
 
@@ -250,10 +375,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         [HttpPost]
         public async Task<IActionResult> AddWorkingExperience([FromForm] CreateWorkingExperienceDto model)
         {
+            LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
+
             if (!ModelState.IsValid)
                 return RedirectToAction("AddWorkingExperience");
-
-            LoadUserModel();
 
             var command = new CreateWorkingExperienceCommand()
             {
@@ -267,13 +399,20 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             };
             await _cvService.AddWorkingExperienceAsync(command);
 
-            return RedirectToAction("WorkingExperience");
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "User")]
         public async Task<IActionResult> WorkingExperience()
         {
             LoadUserModel();
+
+            var cv = await _cvService.GetCV(UserModel.UserId);
+
+            if (cv == null)
+            {
+                return RedirectToAction("Create", "CurriculumVitae");
+            }
 
             var workingExperiences = _cvService.GetCV(UserModel.UserId).Result.WorkingExperience;
 
@@ -309,11 +448,44 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
                 }
             }
 
-            return RedirectToAction("WorkingExperience");
+            return RedirectToAction("Index");
         }
 
         // - Working Experience
 
+
+        public bool ValidateImage(string image)
+        {
+            int maxFileLengthInBytes = 350000;
+
+            if (!IsBase64String(image.Substring(image.IndexOf(',') + 1)))
+                throw new ApplicationException("invalid file encoding");
+
+            if (!IsPngOrJpg(image.Substring(0, image.IndexOf(';'))))
+                throw new ApplicationException("არასწორი ფაილის ტიპი ატვირთეთ PNG ან JPG");
+
+            if (!IsSmallerOrEqual(image.Substring(image.IndexOf(',') + 1), maxFileLengthInBytes))
+                throw new ApplicationException("ფაილის ზომა 350kb ნაკლები უნდა იყოს ");
+
+            return true;
+        }
+
+        public bool IsBase64String(string base64)
+        {
+            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
+            return Convert.TryFromBase64String(base64, buffer, out int bytesParsed);
+        }
+
+        public bool IsSmallerOrEqual(string base64, int lengthInBytes)
+        {
+            byte[] imageBytes = Convert.FromBase64String(base64);
+            return imageBytes.Length <= lengthInBytes;
+        }
+
+        private bool IsPngOrJpg(string data)
+        {
+            return data.Contains("image/png") || data.Contains("image/png") || data.Contains("image/jpeg");
+        }
 
     }
 }

@@ -1,15 +1,25 @@
 ﻿@using Hackathon_CV_Portal.Application.Implementations.Cv.Models
+@using System.Security.Claims
+@using Hackathon_CV_Portal.Domain.Enums
 @model CvVM
 @{
     ViewData["Title"] = "შენი CV";
 }
 
 <!-- container -->
-<div class="container">
+<div class="container px-1 mb-3">
 
     <!-- wrapper -->
-    <div class="wrapper">
+    <div class="wrapper mt-4">
         <hr>
+
+        @if (Model.Image != "" && Model.Image != null)
+        {
+            <div class="d-flex align-items-center justify-content-center mt-3 mb-3">
+                <img class="img-thumbnail bg-primary" style="width:25rem; border-radius: 50%" src="@Model.Image" />
+            </div>
+        }
+
         <!-- title name cv-->
         <header class="main">
             <h1 class="text-uppercase text-center">@string.Concat(Model.FirstName," ",Model.LastName)</h1>
@@ -26,11 +36,12 @@
                 <!-- about me -->
                 <section>
 
-                    <h3 class="text-uppercase">ჩემს შესახებ</h3>
+                    <h1 class="text-uppercase text-center">ჩემს შესახებ</h1>
+                    <hr />
                     <article>
                         <div class="row">
-                            @*              <div class="col-sm-4 col-sm-push-8">
-                                <img src="http://lorempixel.com/500/500/people/" class="img-responsive img-circle photo">
+                            @* <div class="col-sm-4 col-sm-push-8">
+                                <img class="img-responsive img-circle photo">
                                 </div>*@
                             <div class="col-xs-12 col-sm-8 col-sm-pull-4">
                                 @Model.AboutMe
@@ -41,31 +52,50 @@
                 <!--/ about me -->
                 <!-- experiences -->
                 <section>
-                    <h3 class="text-uppercase">სამუშაო გამოცდილება</h3>
+
+                    <h1 class="text-uppercase text-center">სამუშაო გამოცდილება</h1>
+                    <hr />
+
                     <article>
                         <div class="row">
 
                             @foreach (var workingExperience in Model.WorkingExperience)
                             {
-
-                                <div class="col-sm-4">
-                                    <h4><i class="fa fa-map-marker-alt text-primary me-2"></i> @workingExperience.City</h4>
-                                    @if (workingExperience.EndDate != null)
+                                <div class="p-3 mb-3">
+                                    <div class="col-sm-4">
+                                        <h4><i class="fa fa-map-marker-alt text-primary me-2"></i> @workingExperience.City</h4>
+                                        @if (workingExperience.EndDate != null)
+                                        {
+                                            <p><small class="text-primary"><i class="fa fa-calendar-marker-alt text-primary me-2"></i> @workingExperience.StartDate.Month/@workingExperience.StartDate.Day/@workingExperience.StartDate.Year - @workingExperience.EndDate.Value.Month/@workingExperience.EndDate.Value.Day/@workingExperience.EndDate.Value.Year</small></p>
+                                        }
+                                        @if (workingExperience.EndDate == null)
+                                        {
+                                            <p><small class="text-primary"><i class="bi bi-calendar text-primary me-2"></i> @workingExperience.StartDate.Month/@workingExperience.StartDate.Day/@workingExperience.StartDate.Year - Now</small></p>
+                                        }
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <h4>@workingExperience.Name, კომპანია @workingExperience.Company</h4>
+                                        <p>@workingExperience.Description</p>
+                                    </div>
+                                    @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) && @Model.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
                                     {
-                                        <p><small class="text-primary"><i class="fa fa-calendar-marker-alt text-primary me-2"></i> @workingExperience.StartDate.Month/@workingExperience.StartDate.Day/@workingExperience.StartDate.Year - @workingExperience.EndDate.Value.Month/@workingExperience.EndDate.Value.Day/@workingExperience.EndDate.Value.Year</small></p>
+                                        <div class="text-left">
+                                            <a class="ml-3 btn btn-danger" asp-action="DeleteWorkingExperience" asp-controller="CurriculumVitae" asp-route-id="@workingExperience.Id">წაშლა</a>
+                                        </div>
                                     }
-                                    @if (workingExperience.EndDate == null)
-                                    {
-                                        <p><small class="text-primary"><i class="bi bi-calendar text-primary me-2"></i> @workingExperience.StartDate.Month/@workingExperience.StartDate.Day/@workingExperience.StartDate.Year - Now</small></p>
-                                    }
-                                </div>
-                                <div class="col-sm-8">
-                                    <h4>@workingExperience.Name, კომპანია @workingExperience.Company</h4>
-                                    <p>@workingExperience.Description</p>
                                 </div>
                             }
                         </div>
-                        <hr>
+
+                        @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) && @Model.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                        {
+                            <div class="row container-fluid">
+                                <div>
+                                    <a class="btn btn-primary text-white border-radius-2 float-right" asp-controller="CurriculumVitae" asp-action="AddWorkingExperience">+</a>
+                                </div>
+                            </div>
+                        }
+
                     </article>
 
                 </section>
@@ -73,24 +103,48 @@
                 <!-- education -->
                 <section>
 
-                    <h3 class="text-uppercase">განათლება</h3>
+                    <h1 class="text-uppercase text-center">განათლება</h1>
+                    <hr />
 
-                    @foreach (var education in Model.Education)
+                    <div class="row">
+                        @foreach (var education in Model.Education)
+                        {
+                            <div class="p-3 mb-3">
+
+                                <div class="col-sm-8">
+                                    <h4><i class="fa fa-map-marker-alt text-primary me-2"></i> @education.City</h4>
+                                    <h4>@education.Name, @education.University</h4>
+                                </div>
+                                <div class="col-sm-8">
+                                    @if (education.EndDate != null)
+                                    {
+                                        <p><small class="text-primary">@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - @education.EndDate.Value.Month/@education.EndDate.Value.Day/@education.EndDate.Value.Year</small></p>
+                                    }
+                                    @if (education.EndDate == null)
+                                    {
+                                        <p><small class="text-primary">sa@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - now</small></p>
+                                    }
+                                    <p>@education.Description</p>
+                                </div>
+
+                                @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) && @Model.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                                {
+                                    <div class="text-left">
+                                        <a class="ml-3 btn btn-danger" asp-action="DeleteEducation" asp-controller="CurriculumVitae" asp-route-id="@education.Id">წაშლა</a>
+                                    </div>
+                                }
+
+                            </div>
+                        }
+                    </div>
+
+                    @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) && @Model.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
                     {
-                        <article>
-                            <h4><i class="fa fa-map-marker-alt text-primary me-2"></i> @education.City</h4>
-                            <h4>@education.Name, @education.University</h4>
-                            @if (education.EndDate != null)
-                            {
-                                <p><small class="text-primary">@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - @education.EndDate.Value.Month/@education.EndDate.Value.Day/@education.EndDate.Value.Year</small></p>
-                            }
-                            @if (education.EndDate == null)
-                            {
-                                <p><small class="text-primary">sa@education.StartDate.Month/@education.StartDate.Day/@education.StartDate.Year - now</small></p>
-                            }
-                            <p>@education.Description</p>
-                            <hr>
-                        </article>
+                        <div class="row container-fluid">
+                            <div>
+                                <a class="btn btn-primary text-white border-radius-2 float-right" asp-controller="CurriculumVitae" asp-action="AddEducation">+</a>
+                            </div>
+                        </div>
                     }
                 </section>
                 <!--/ education -->
@@ -104,50 +158,70 @@
                 <!-- contact -->
                 <section>
 
-                    <h3 class="text-uppercase">კონტაქტი</h3>
 
-                    <article class="media">
+                    <h1 class="text-uppercase text-center">კონტაქტი</h1>
+
+                    <div class="media">
 
                         <div class="pull-left">
                             <span class="text-primary"><i class="bi bi-telephone"></i></span>
                         </div>
                         <div class="media-body"> მობილურის ნომერი | @Model.PhoneNumber</div>
 
-                    </article>
+                    </div>
 
-                    <article class="media">
+                    <div class="media">
                         <div class="pull-left">
                             <span class="text-primary"><i class="bi bi-envelope"></i></span>
                         </div>
                         <div class="media-body"> მეილი | @Model.Email</div>
-                    </article>
+                    </div>
 
-                    <article class="media">
+                    <div class="media">
                         <div class="pull-left">
                             <span class="text-primary"><i class="fa fa-map-marker"></i></span>
                         </div>
                         <div class="media-body"> მისამართი | @Model.Address</div>
-                    </article>
-                    <article class="media">
+                    </div>
+                    <div class="media">
                         <div class="pull-left">
                             <span class="text-primary"><i class="bi bi-calendar"></i></span>
                         </div>
                         <div class="media-body"> ასაკი | @Model.Age</div>
-                    </article>
+                    </div>
                 </section>
                 <!--/ contact -->
                 <!-- Skills -->
                 <section>
-
-                    <h3 class="text-uppercase">უნარები</h3>
-                    <article class="media">
-                        <div class="media-body">
+                    <h1 class="text-uppercase text-center">უნარები</h1>
+                    <hr />
+                    <div class="media">
+                        <div class="row media-body d-flex justify-content-center">
                             @foreach (var skill in @Model.Skills)
                             {
-                                @string.Concat(skill.Title, ", ") 
+                                <div class="card col-5 m-1">
+                                    <div class="container card-body float-center">
+                                        <h5 class="card-title text-center">@skill.Title</h5>
+                                        @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) && @Model.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                                        {
+                                            <div class="text-center">
+                                                <a class="btn btn-danger" asp-action="DeleteSkill" asp-controller="CurriculumVitae" asp-route-id="@skill.Id">წაშლა</a>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
                             }
                         </div>
-                    </article>
+                    </div>
+
+                    @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) && @Model.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                    {
+                        <div class="row container-fluid">
+                            <div>
+                                <a class="btn btn-primary text-white border-radius-2 float-right" asp-controller="CurriculumVitae" asp-action="AddSkill">+</a>
+                            </div>
+                        </div>
+                    }
 
                 </section>
                 <!--/ Skills -->
@@ -156,8 +230,40 @@
             <!--/ column right -->
         </div>
         <hr>
-
+        
+        
     </div>
     <!--/ wrapper -->
 
+    @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) && @Model.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+        {
+            <div class="mt-2 float-right" style="margin-bottom:6.5rem">
+                <a class="btn btn-outline-success rounded-pill float-right" asp-controller="CurriculumVitae" asp-action="Update">რედაქტირება</a>
+            </div>
+        }
 </div>
+
+<script>
+       function encodeImageFileAsURL() {
+
+      var filesSelected = document.getElementById("inputFileToLoad").files;
+      if (filesSelected.length > 0) {
+        var fileToLoad = filesSelected[0];
+
+        var fileReader = new FileReader();
+
+        fileReader.onload = function(fileLoadedEvent) {
+
+          var srcData = fileLoadedEvent.target.result; // <--- data: base64
+
+          var newImage = document.createElement('img');
+          newImage.src = srcData;
+
+          document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+          alert("Converted Base64 version is " + document.getElementById("imgTest").innerHTML);
+          console.log("Converted Base64 version is " + document.getElementById("imgTest").innerHTML);
+        }
+        fileReader.readAsDataURL(fileToLoad);
+      }
+    }
+</script>

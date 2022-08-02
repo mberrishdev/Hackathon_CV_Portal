@@ -1,0 +1,155 @@
+﻿@using Hackathon_CV_Portal.Application.Implementations.Cv.Models;
+@model CvVM
+@{
+    ViewData["Title"] = "შექმენი CV";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4 class="text-center">შექმენი CV</h4>
+        </p>
+
+      
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+                    <div class="row">
+                        <div class="text-center border mb-3">
+                            <h5>ფოტო</h5>
+                            <div class="d-flex justify-content-center align-items-center mb-2">
+                                <div style="width:300px" class="text-center" id="imgTestDiv">
+                                    @if (Model != null)
+                                    {
+                                        @if (Model.Image != null && Model.Image != "")
+                                        {
+                                            <img src="@Model.Image" id="imgTest" class="img-thumbnail bg-primary mb-2 mt-2" style="border-radius: 50%" />
+                                        }
+                                        else
+                                        {
+                                            <img src="" id="imgTest" class="img-thumbnail bg-primary mb-2 mt-2" style="display:none; border-radius: 50%" />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <img src="" id="imgTest" class="img-thumbnail bg-primary mb-2 mt-2" style="display:none; border-radius: 50%" />
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center align-items-center mb-2">
+                                <input asp-for="Image" id="inputFileToLoadString" style="display:none" />
+                                <input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL();" name="avatar" accept="image/png, image/jpeg" />
+                                @if (Model != null)
+                                {
+                                    @if (Model.Image != null && Model.Image != "")
+                                    {
+                                        <a id="removePhotoButton" class="btn btn-danger col-5 text-white" onclick="removeImage()">ფოტოს წაშლა</a>
+                                    }
+                                    else
+                                    {
+                                        <a id="removePhotoButton" class="btn btn-danger col-5 text-white" onclick="removeImage()" style="display:none">ფოტოს წაშლა</a>
+                                    }
+                                }
+                                else
+                                {
+                                      <a id="removePhotoButton" class="btn btn-danger col-5 text-white" onclick="removeImage()" style="display:none">ფოტოს წაშლა</a>
+                                }
+                            </div>
+                            <p>ატვირთეთ PNG/JPG ფაილები მაქსიმუმ 350 კილობაიტის ზომის</p>
+                            <div class="text-danger"> @Html.ValidationMessage("Validation") </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FirstName" class="control-label"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="LastName" class="control-label"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BirthDate" class="control-label"></label>
+                                <input asp-for="BirthDate" type="date" class="form-control" />
+                                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Address" class="control-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+
+
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="AboutMe" class="control-label"></label>
+                                <textarea asp-for="AboutMe" class="form-control"></textarea>
+                                <span asp-validation-for="AboutMe" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="დამატება" class="btn btn-outline-success float-right" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+     function removeImage() {
+        var newImage = document.getElementById('imgTest');
+        newImage.style.display = "none";
+        document.getElementById("inputFileToLoadString").value = "";
+        document.getElementById("removePhotoButton").style.display = "none";
+    }
+       function encodeImageFileAsURL() {
+
+
+
+                var filesSelected = document.getElementById("inputFileToLoad").files;
+                if (filesSelected.length > 0) {
+                  var fileToLoad = filesSelected[0];
+
+                  var fileReader = new FileReader();
+
+                  fileReader.onload = function(fileLoadedEvent) {
+                    var srcData = fileLoadedEvent.target.result; // <--- data: base64
+
+                    var newImage = document.getElementById('imgTest');
+                    newImage.src = srcData;
+
+                    newImage.style.display = "block";
+
+                    document.getElementById("imgTestDiv").innerHTML = newImage.outerHTML;
+                   document.getElementById("inputFileToLoadString").value = srcData;
+                       document.getElementById("removePhotoButton").style.display = "block";
+                  }
+                  fileReader.readAsDataURL(fileToLoad);
+                }
+              }
+</script>

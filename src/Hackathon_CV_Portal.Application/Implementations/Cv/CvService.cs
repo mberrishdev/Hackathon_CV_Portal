@@ -103,11 +103,11 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
                 cv.BirtDate = command.BirtDate;
                 cv.Email = command.Email;
                 cv.AboutMe = command.AboutMe;
+                cv.Image = command.Image ?? "";
             }
 
             await _context.SaveChangesAsync();
         }
-
 
         public async Task DeleteEducation(int id)
         {
@@ -192,6 +192,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
                     Education = cv.Educations.ToList(),
                     Skills = cv.Skills.ToList(),
                     UserId = cv.UserId,
+                    Image = cv.Image,
                 };
 
                 return cvVm;
@@ -222,6 +223,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Cv
                     Education = cv.Educations.ToList(),
                     Skills = cv.Skills.ToList(),
                     UserId = cv.UserId,
+                    Image = cv.Image
                 };
 
                 return cvVm;

@@ -57,11 +57,12 @@
             },
             {
               "sku": {
-                "name": "Basic",
-                "tier": "Basic",
-                "capacity": 5
+                "name": "GP_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 2
               },
-              "kind": "v12.0,user",
+              "kind": "v12.0,user,vcore",
               "location": "[parameters('resourceLocation')]",
               "name": "mberrishserver/cvplatform",
               "type": "Microsoft.Sql/servers/databases",

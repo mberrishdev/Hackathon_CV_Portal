@@ -1,3 +1,5 @@
-# Hackathon_CV_Portal
+# Cv Platform
 
-https://hackatoncvportal.azurewebsites.net/
+test env : https://hackatoncvportal.azurewebsites.net/
+
+prod env : https://cvplatformprod.azurewebsites.net/

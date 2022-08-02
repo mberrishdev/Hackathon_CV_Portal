@@ -16,7 +16,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.UserRole
             _userRolesService = userRolesService;
         }
 
-
         public async Task<IActionResult> Manage(int id)
         {
             LoadUserModel();

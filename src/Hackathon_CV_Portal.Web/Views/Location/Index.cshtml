@@ -1,0 +1,37 @@
+﻿@using Hackathon_CV_Portal.Application.Locations.Vacancies.Models;
+@model IEnumerable<LocationVM>
+
+@{
+    ViewData["Title"] = "ლოკაციების მართვა";
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-md-2">
+        <p>
+            <h1 class="text-center">ლოკაციები</h1>
+        </p>
+
+         <div class="row container mt-5 mb-4">
+                <a class="btn btn-primary col-md-4 float-center" asp-controller="Location" asp-action="AddLocation"><h4 class="text-white">ლოკაციის დამატება</h4></a>
+         </div>
+
+        @foreach (var item in Model)
+        {
+            <div class="job-item p-3 mb-2 bg-light text-dark border">
+                <div class="row g-4">
+                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                        <div class="text-start ps-4">
+                            <h5 class="mb-3">ქვეყანა: @Html.DisplayFor(modelItem => item.Country)</h5>
+                            <h5 class="mb-3">ქალაქი: @Html.DisplayFor(modelItem => item.City)</h5>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                        <div class="d-flex mb-3">
+                            <a class="btn btn-danger me-2" asp-controller="Location" asp-action="DeleteLocation" asp-route-id="@item.Id"><h5 class="text-white">წაშლა</h5></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

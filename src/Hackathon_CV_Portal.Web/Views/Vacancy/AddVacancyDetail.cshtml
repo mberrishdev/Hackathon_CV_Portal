@@ -1,0 +1,156 @@
+﻿@using Hackathon_CV_Portal.Web.Models.VacancyModels
+@model AddVacancyDetailModel
+
+@{
+    ViewData["Title"] = "ვაკანსიის დეტალების დამატება";
+}
+
+
+<div class="row">
+    <div class="col-md-6 offset-lg-3 offset-md-2 offset-lg-2">
+        <div class="row">
+            <div class="modal fade" id="qualificationModal" tabindex="-1" role="dialog"
+                aria-labelledby="qualificationModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="qualificationModalLabel">კვალიფიკაციის დამატება</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">კვალიფიკაცია:</label>
+                                    <textarea id="QualificationNameInput" class="form-control"
+                                        id="message-text"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ჩახურვა</button>
+                            <button type="button" onClick="AddQualification()" class="btn btn-primary">დამატება</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="responsibilityModal" tabindex="-1" role="dialog"
+                aria-labelledby="responsibilityLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="responsibilityModalLabel">მოთხოვნის დამატება</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="message-text" class="col-form-label">მოთხოვნა:</label>
+                                    <textarea id="ResponsibilityNameInput" class="form-control"
+                                        id="message-text"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">ჩახურვა</button>
+                            <button type="button" onClick="AddResponsibility()"
+                                class="btn btn-primary">დამატება</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mt-4 mb-4">
+                    <div class="text-center mb-3">
+                        <h3 class="">კვალიფიკაციები</h3>
+                    </div>
+                    @if (Model.Qualifications.Count() == 0)
+                    {
+                        <p>ჯერ არ გაქვთ დამატებული კვალიფიკაცია</p>
+                    }
+                    @foreach (var qualifications in Model.Qualifications)
+                    {
+                        <p>. @qualifications.QualificationName</p>
+                    }
+
+                    <div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#qualificationModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
+                    </div>
+                </div>
+                <div class="mb-4 mt-4">
+
+                    <div class="text-center mb-3">
+                        <h3>მოვალეობა</h3>
+                    </div>
+
+                    @if (Model.Responsibilities.Count() == 0)
+                    {
+                        <p>ჯერ არ გაქვთ დამატებული მოვალეობები</p>
+                    }
+                    @foreach (var responsibility in Model.Responsibilities)
+                    {
+                        <p class="text-sm-left">. @responsibility.ResponsibilityName</p>
+                    }
+                    <div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#responsibilityModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-center ">
+                    <div class="text-center">
+                        <a asp-controller="Vacancy" asp-action="Detail" asp-route-id="@Model.VacancyId"
+                            class="btn btn-primary">მთავარ მენიუზე დაბრუნება</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function AddQualification() {
+        var vacancyId = window.location.href.substring(window.location.href.indexOf('=') + 1);;
+        var qualificationName = document.getElementById("QualificationNameInput").value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/AddQualification",
+            data: {
+                qualificationName: qualificationName,
+                vacancyId: vacancyId,
+            },
+            success: function (response) {
+                window.location.href = response.redirectToUrl;
+            },
+            error: function (data) {
+                console.log('There was a problem');
+            }
+        });
+    }
+
+    function AddResponsibility() {
+
+        var vacancyId = window.location.href.substring(window.location.href.indexOf('=') + 1);;
+        var responsibilityName = document.getElementById("ResponsibilityNameInput").value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/AddResponsibility",
+            data: {
+                responsibilityName: responsibilityName,
+                vacancyId: vacancyId,
+            },
+            success: function (response) {
+                window.location.href = response.redirectToUrl;
+            },
+            error: function (data) {
+                console.log('There was a problem');
+            }
+        });
+        return false;
+    }
+</script>
