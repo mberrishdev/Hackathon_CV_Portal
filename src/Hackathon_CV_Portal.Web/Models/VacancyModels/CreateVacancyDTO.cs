@@ -22,10 +22,10 @@ namespace Hackathon_CV_Portal.Web.Models.VacancyModels
         [Required(ErrorMessage = "სათაურის შეყვანა აუცილებელია")]
         [Display(Name = "სათაური")]
         public string Title { get; set; }
-        [Display(Name = "სახელფასო მოლოდინი")]
+        [Display(Name = "სახელფასო მოლოდინი (100-200₾)")]
         public string SalaryRange { get; set; }
         [Required, CheckDateRange(ErrorMessage = "გამოგზავნის ვადა უნდა იყოს მეტი დღევნადელ თარიღზე")]
-        [Display(Name = "ვაკანსიის გამოგზავნის ბოლო ვადა")]
+        [Display(Name = "სივის გამოგზავნის ბოლო ვადა")]
         public DateTime DeadLine { get; set; }
         [Required(ErrorMessage = "აღწერის შეყვანა აუცილებელია")]
         [Display(Name = "აღწერა")]
