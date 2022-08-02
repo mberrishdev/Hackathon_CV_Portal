@@ -73,7 +73,7 @@
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Company"))
                     {
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Vacancy" asp-action="Add">ვაკანსიის დამატება</a>
+                            <a class="nav-link text-dark" asp-controller="Vacancy" asp-action="Create">ვაკანსიის დამატება</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Vacancy" asp-action="Index" asp-route-companyId="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))">ჩემი ვაკანისები</a>    

@@ -53,6 +53,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                 PublishDate = vm.PublishDate,
                 DeadLine = vm.DeadLine,
                 Description = vm.Description,
+                Email = vm.Email,
                 Responsibilities = vm.Responsibilities.Select(x => new ResponsibilityVM()
                 {
                     Id = x.Id,
@@ -134,6 +135,20 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
             {
                 await _baseRepository.RemoveAsync(item);
             }
+        }
+
+        public async Task UpdateVacancy(UpdateVacancyCommand command)
+        {
+            var vacancy = await _baseRepository.GetForUpdateAsync(command.Id);
+
+            if (vacancy == null)
+                throw new NotFoundExcpetion();
+
+            if (vacancy.UserId != command.UserModel.UserId)
+                throw new Exception();
+
+            vacancy.Update(command);
+            await _baseRepository.UpdateAsync(vacancy);
         }
     }
 }

@@ -2,8 +2,9 @@
 
 namespace Hackathon_CV_Portal.Domain.Vacancies.Commands
 {
-    public class CreateVacancyCommand
+    public class UpdateVacancyCommand
     {
+        public int Id { get; set; }
         public int CategoryId { get; set; }
         public VacancyType Type { get; set; }
         public string CompanyName { get; set; }

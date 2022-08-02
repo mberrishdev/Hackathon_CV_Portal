@@ -1,8 +1,8 @@
 ﻿@using Hackathon_CV_Portal.Web.Models.VacancyModels
-@model AddVacancyDetailModel
+@model UpdateVacancyDetailModel
 
 @{
-    ViewData["Title"] = "ვაკანსიის დეტალების დამატება";
+    ViewData["Title"] = "ვაკანსიის დეტალების რედაქტირება";
 }
 
 
@@ -62,26 +62,45 @@
             <div class="row">
                 <div class="">
                     <h3>კვალიფიკაციები:</h3>
-                    <button type="button" class="btn btn-primary  btn-sm" data-toggle="modal" data-target="#qualificationModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#qualificationModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
                     @if (Model.Qualifications.Count() == 0)
                     {
                         <p>ჯერ არ გაქვთ დამატებული კვალიფიკაცია</p>
                     }
-                    @foreach (var qualifications in Model.Qualifications)
+                    @foreach (var qualification in Model.Qualifications)
                     {
-                        <p>. @qualifications.QualificationName</p>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <p class="text-sm-left">. @qualification.QualificationName</p>
+                                </div>
+                                <div class="col-sm">
+                                    <a class="btn btn-danger btn-sm" asp-controller="Vacancy" asp-action="DeleteQualification" asp-route-qualificationId="@qualification.Id" asp-route-vacancyId="@qualification.VacancyId">წაშლა</a>
+                                </div>
+                            </div>
+                        </div>
                     }
                 </div>
                 <div>
                     <h3>მოვალეობა:</h3>
-                    <button type="button" class="btn btn-primary  btn-sm" data-toggle="modal" data-target="#responsibilityModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#responsibilityModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
                     @if (Model.Responsibilities.Count() == 0)
                     {
                         <p>ჯერ არ გაქვთ დამატებული მოვალეობები</p>
                     }
                     @foreach (var responsibility in Model.Responsibilities)
                     {
-                        <p class="text-sm-left">. @responsibility.ResponsibilityName</p>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-sm">
+                                    <p class="text-sm-left">. @responsibility.ResponsibilityName</p>
+                                </div>
+                                <div class="col-sm">
+                                    <a class="btn btn-danger btn-sm" asp-controller="Vacancy" asp-action="DeleteResponsibility" asp-route-responsibilityId="@responsibility.Id" asp-route-vacancyId="@responsibility.VacancyId">წაშლა</a>
+                                </div>
+                            </div>
+                        </div>
+
                     }
                 </div>
             </div>
@@ -91,7 +110,7 @@
 
 <script type="text/javascript">
     function AddQualification() {
- var vacancyId = window.location.href.substring(window.location.href.indexOf('=') + 1);;
+        var vacancyId = window.location.href.substring(window.location.href.indexOf('=') + 1);;
         var responsibilityName = document.getElementById("QualificationNameInput").value;
 
         $.ajax({
@@ -111,7 +130,6 @@
     }
 
     function AddResponsibility() {
-
         var vacancyId = window.location.href.substring(window.location.href.indexOf('=') + 1);;
         var responsibilityName = document.getElementById("ResponsibilityNameInput").value;
 
@@ -129,6 +147,5 @@
                 console.log('There was a problem');
             }
         });
-        return false;
     }
 </script>

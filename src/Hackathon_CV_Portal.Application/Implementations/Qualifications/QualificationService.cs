@@ -32,6 +32,20 @@ namespace Hackathon_CV_Portal.Application.Implementations.Qualifications
             await _baseRepository.CreateAsync(qualification);
         }
 
+        public async Task DeleteQualification(DeleteQualificationCommand command)
+        {
+            var vacancy = await _vacancyService.GetVacancyById(command.VacancyId);
+            if (vacancy == null)
+                throw new NotFoundExcpetion();
+
+            if (vacancy.UserId != command.UserModel.UserId)
+                throw new Exception();
+
+            var qualification = await _baseRepository.GetForUpdateAsync(command.QualificationId);
+
+            await _baseRepository.RemoveAsync(qualification);
+        }
+
         public async Task<List<QualificationVM>> GetByVacancyId(int vacancyId)
         {
             var qualifications = await _baseRepository.GetListAsync(predicate: x => x.VacancyId == vacancyId);

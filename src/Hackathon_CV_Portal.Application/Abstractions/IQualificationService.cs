@@ -7,5 +7,6 @@ namespace Hackathon_CV_Portal.Application.Abstractions
     {
         Task AddQualification(AddQualificationCommand command);
         Task<List<QualificationVM>> GetByVacancyId(int vacancyId);
+        Task DeleteQualification(DeleteQualificationCommand command);
     }
 }

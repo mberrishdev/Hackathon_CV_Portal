@@ -1,9 +1,9 @@
 ﻿@using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models
 @using Hackathon_CV_Portal.Web.Models.VacancyModels
-@model CreateVacancyDTO
+@model VacancyModel
 
 @{
-    ViewData["Title"] = "ვაკანსიის დამატება";
+    ViewData["Title"] = "ვაკანსიის რედაქტირება";
 }
 
 <div class="row">
@@ -14,7 +14,7 @@
             </p>
             <div class="row">
                 <div class="col-md-8 offset-md-2 offset-lg-2">
-                    <form asp-action="Add" method="post">
+                    <form asp-action="Update" method="post">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -37,7 +37,7 @@
                                     </select>
                                     <span asp-validation-for="Type" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
+@*                                <div class="form-group">
                                     <label asp-for="LocationId"></label>
                                     <span class="text-danger">*</span>
                                     <select asp-for="LocationId" class="custom-select mr-sm-2"
@@ -45,7 +45,7 @@
                                         <option value="0">აირჩიეთ მისამართი</option>
                                     </select>
                                     <span asp-validation-for="LocationId" class="text-danger"></span>
-                                </div>
+                                </div>*@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -60,7 +60,7 @@
                                     <input asp-for="DeadLine" type="date" class="form-control" />
                                     <span asp-validation-for="DeadLine" class="text-danger"></span>
                                 </div>
-                                <div class="form-group">
+@*                                <div class="form-group">
                                     <label asp-for="CategoryId"></label>
                                     <span class="text-danger">*</span>
                                     <select asp-for="CategoryId" class="custom-select mr-sm-2"
@@ -68,7 +68,7 @@
                                         <option value="0">აირჩიეთ კატეგორია</option>
                                     </select>
                                     <span asp-validation-for="CategoryId" class="text-danger"></span>
-                                </div>
+                                </div>*@
                                 <div class="form-group">
                                     <label asp-for="SalaryRange"></label>
                                     <small class="text-muted">
@@ -85,22 +85,10 @@
                                     <input asp-for="Description" class="form-control" />
                                     <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
-                               @* <div class="form-group">
-                                    <label asp-for="Responsibility"></label>
-                                    <span class="text-danger">*</span>
-                                    <input asp-for="Responsibility" class="form-control" />
-                                    <span asp-validation-for="Responsibility" class="text-danger"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Qualifications"></label>
-                                    <span class="text-danger">*</span>
-                                    <input asp-for="Qualifications" class="form-control" />
-                                    <span asp-validation-for="Qualifications" class="text-danger"></span>
-                                </div>*@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="დამატება" class="btn btn-outline-success float-right" />
+                            <input type="submit" value="რედაქტირება" class="btn btn-outline-success float-right" />
                         </div>
                     </form>
                 </div>

@@ -19,5 +19,6 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies.Models
         public List<ResponsibilityVM> Responsibilities { get; set; }
         public List<QualificationVM> Qualifications { get; set; }
         public bool IsFavourite { get; set; }
+        public string Email { get; set; }
     }
 }

@@ -14,5 +14,6 @@ namespace Hackathon_CV_Portal.Application.Abstractions
         Task RemoveFavourite(RemoveFavouriteCommand command);
         Task CleanVacancies();
         Task Delete(int id);
+        Task UpdateVacancy(UpdateVacancyCommand command);
     }
 }
