@@ -307,7 +307,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
         [Authorize(Roles = "Company")]
         [HttpPost]
-        public async Task<IActionResult> AddQualification(string responsibilityName, int vacancyId)
+        public async Task<IActionResult> AddQualification(string qualificationName, int vacancyId)
         {
             if (!ModelState.IsValid)
                 return View();
@@ -316,7 +316,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
             var command = new AddQualificationCommand()
             {
-                QualificationName = responsibilityName,
+                QualificationName = qualificationName,
                 VacancyId = vacancyId,
                 UserModel = UserModel,
             };
