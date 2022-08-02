@@ -4,7 +4,7 @@
   "parameters": {
     "resourceGroupName": {
       "type": "string",
-      "defaultValue": "CvPlatform",
+      "defaultValue": "Hackaton",
       "metadata": {
         "_parameterType": "resourceGroup",
         "description": "Name of the resource group for the resource. It is recommended to put resources under same resource group for better tracking."
@@ -51,24 +51,24 @@
             {
               "kind": "v12.0",
               "location": "[parameters('resourceLocation')]",
-              "name": "cvplatformprod",
+              "name": "mberrishserver",
               "type": "Microsoft.Sql/servers",
               "apiVersion": "2017-10-01-preview"
             },
             {
               "sku": {
-                "name": "GP_S_Gen5",
+                "name": "GP_Gen5",
                 "tier": "GeneralPurpose",
                 "family": "Gen5",
-                "capacity": 1
+                "capacity": 2
               },
-              "kind": "v12.0,user,vcore,serverless",
+              "kind": "v12.0,user,vcore",
               "location": "[parameters('resourceLocation')]",
-              "name": "cvplatformprod/cvplatform",
+              "name": "mberrishserver/cvplatform",
               "type": "Microsoft.Sql/servers/databases",
               "apiVersion": "2017-10-01-preview",
               "dependsOn": [
-                "cvplatformprod"
+                "mberrishserver"
               ]
             }
           ]
