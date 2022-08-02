@@ -1,4 +1,5 @@
 using Hackathon_CV_Portal.Web.Infrastracture.StartupConfiguration;
+using Hackathon_CV_Portal.Web.Worker;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -11,9 +12,7 @@ try
 
     builder.ConfigureService();
 
-
-    //builder.Services.AddHostedService<VacancyCleanerWorker>();
-
+    builder.Services.AddHostedService<VacancyCleanerWorker>();
 
     var app = builder.Build();
 

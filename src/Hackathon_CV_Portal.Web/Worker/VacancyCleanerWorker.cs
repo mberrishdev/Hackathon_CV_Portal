@@ -18,7 +18,8 @@ namespace Hackathon_CV_Portal.Web.Worker
                 using (var serviceScope = _serviceProvicer.CreateScope())
                 {
                     var vacancyService = serviceScope.ServiceProvider.GetService<IVacancyService>();
-                    await vacancyService.CleanVacancies();
+                    if (vacancyService != null)
+                        await vacancyService.CleanVacancies();
                 }
 
                 await Task.Delay(3600000, stoppingToken);
