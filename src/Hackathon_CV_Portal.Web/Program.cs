@@ -11,6 +11,10 @@ try
 
     builder.ConfigureService();
 
+
+    //builder.Services.AddHostedService<VacancyCleanerWorker>();
+
+
     var app = builder.Build();
 
     app.UseDeveloperExceptionPage();

@@ -22,6 +22,23 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Hackathon_CV_Portal.Domain.AboutUs.About", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("About");
+                });
+
             modelBuilder.Entity("Hackathon_CV_Portal.Domain.AppliedCCVs.AppliedCurriculumVitae", b =>
                 {
                     b.Property<int>("Id")
@@ -93,9 +110,9 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("NVARCHAR(50)");
 
-                    b.Property<byte[]>("Image")
+                    b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("varbinary");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -178,6 +195,75 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FavouriteVacancies");
+                });
+
+            modelBuilder.Entity("Hackathon_CV_Portal.Domain.Locations.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Location");
+                });
+
+            modelBuilder.Entity("Hackathon_CV_Portal.Domain.Qualifications.Qualification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("QualificationName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("VacancyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VacancyId");
+
+                    b.ToTable("Qualifications");
+                });
+
+            modelBuilder.Entity("Hackathon_CV_Portal.Domain.Responsibilities.Responsibility", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ResponsibilityName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("VacancyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VacancyId");
+
+                    b.ToTable("Responsibilities");
                 });
 
             modelBuilder.Entity("Hackathon_CV_Portal.Domain.Skills.Skill", b =>
@@ -349,23 +435,15 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("NVARCHAR(500)");
 
-                    b.Property<string>("Location")
+                    b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Qualifications")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("NVARCHAR(500)");
-
-                    b.Property<string>("Responsibility")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("NVARCHAR(500)");
 
                     b.Property<string>("SalaryRange")
                         .IsRequired()
@@ -386,6 +464,8 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("LocationId");
 
                     b.HasIndex("UserId");
 
@@ -574,6 +654,28 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                     b.Navigation("CV");
                 });
 
+            modelBuilder.Entity("Hackathon_CV_Portal.Domain.Qualifications.Qualification", b =>
+                {
+                    b.HasOne("Hackathon_CV_Portal.Domain.Vcancies.Vacancy", "Vacancy")
+                        .WithMany("Qualifications")
+                        .HasForeignKey("VacancyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vacancy");
+                });
+
+            modelBuilder.Entity("Hackathon_CV_Portal.Domain.Responsibilities.Responsibility", b =>
+                {
+                    b.HasOne("Hackathon_CV_Portal.Domain.Vcancies.Vacancy", "Vacancy")
+                        .WithMany("Responsibilities")
+                        .HasForeignKey("VacancyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vacancy");
+                });
+
             modelBuilder.Entity("Hackathon_CV_Portal.Domain.Skills.Skill", b =>
                 {
                     b.HasOne("Hackathon_CV_Portal.Domain.CVs.CurriculumVitae", "CV")
@@ -593,6 +695,12 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Hackathon_CV_Portal.Domain.Locations.Location", "Location")
+                        .WithMany("Vacancies")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Hackathon_CV_Portal.Domain.Users.ApplicationUser", "User")
                         .WithMany("Vacancies")
                         .HasForeignKey("UserId")
@@ -600,6 +708,8 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Location");
 
                     b.Navigation("User");
                 });
@@ -684,6 +794,11 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                     b.Navigation("WorkingExperience");
                 });
 
+            modelBuilder.Entity("Hackathon_CV_Portal.Domain.Locations.Location", b =>
+                {
+                    b.Navigation("Vacancies");
+                });
+
             modelBuilder.Entity("Hackathon_CV_Portal.Domain.Users.ApplicationRole", b =>
                 {
                     b.Navigation("UserRoles");
@@ -696,6 +811,13 @@ namespace Hackathon_CV_Portal.Persistence.Migrations
                     b.Navigation("UserRoles");
 
                     b.Navigation("Vacancies");
+                });
+
+            modelBuilder.Entity("Hackathon_CV_Portal.Domain.Vcancies.Vacancy", b =>
+                {
+                    b.Navigation("Qualifications");
+
+                    b.Navigation("Responsibilities");
                 });
 #pragma warning restore 612, 618
         }

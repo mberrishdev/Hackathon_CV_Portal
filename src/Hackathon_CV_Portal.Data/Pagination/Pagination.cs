@@ -1,4 +1,6 @@
-﻿namespace Hackathon_CV_Portal.Data.Pagination
+﻿using Hackathon_CV_Portal.Domain.Vcancies;
+
+namespace Hackathon_CV_Portal.Data.Pagination
 {
     public static class Pagination
     {
@@ -73,6 +75,11 @@
         public static DomainPagedResult<T> Create(List<T> items, int currentPage, int resultsPerPage, int totalPages, long totalResults)
         {
             return new DomainPagedResult<T>(items, currentPage, resultsPerPage, totalPages, totalResults);
+        }
+
+        public DomainPagedResult<Vacancy> Where(Func<object, object> value)
+        {
+            throw new NotImplementedException();
         }
 
         public static DomainPagedResult<T> Empty => new DomainPagedResult<T>();

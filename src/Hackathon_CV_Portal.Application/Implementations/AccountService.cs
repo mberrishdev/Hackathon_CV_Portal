@@ -96,25 +96,6 @@ namespace Hackathon_CV_Portal.Application.Implementations
                 _logger.LogInformation("User created a new account with password.");
                 await _userManager.AddToRoleAsync(user, role);
 
-                // Create Cv
-                if (userType == UserType.User)
-                {
-                    CreateCvCommand cvCommand = new CreateCvCommand()
-                    {
-                        UserId = user.Id,
-                        FirstName = "Jhon",
-                        LastName = "Doe",
-                        AboutMe = "",
-                        BirtDate = DateTime.Now,
-                        Email = "",
-                        Educations = new List<Domain.Educations.Education>(),
-                        WorkingExperiences = new List<Domain.WorkignExperiences.WorkingExperience>(),
-                        Skills = new List<Domain.Skills.Skill>(),
-                        Address = "",
-                        PhoneNumber = "",
-                    };
-                    await _cvService.CreateCv(cvCommand);
-                }
             }
 
             return result.Errors;

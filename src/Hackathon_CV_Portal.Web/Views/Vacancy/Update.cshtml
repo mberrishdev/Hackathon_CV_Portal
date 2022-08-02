@@ -1,0 +1,105 @@
+﻿@using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models
+@using Hackathon_CV_Portal.Web.Models.VacancyModels
+@model VacancyModel
+
+@{
+    ViewData["Title"] = "ვაკანსიის რედაქტირება";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-lg-3 offset-md-2 offset-lg-2">
+        <div class="row">
+            <p>
+            <h4 class="text-center">ვაკანსიის რედაქტირება</h4>
+            </p>
+            <div class="row">
+                <div class="col-md-8 offset-md-2 offset-lg-2">
+                    <form asp-action="Update" method="post">
+                        <div class="row">
+                                <div class="form-group"  style="display: none;">
+                                    <label asp-for="Id" class="control-label"></label>
+                                    <span class="text-danger">*</span>
+                                    <input asp-for="Id" class="form-control" />
+                                    <span asp-validation-for="Id" class="text-danger"></span>
+                                </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Title" class="control-label"></label>
+                                    <span class="text-danger">*</span>
+                                    <input asp-for="Title" class="form-control" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <span class="text-danger">*</span>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Type"></label>
+                                    <span class="text-danger">*</span>
+                                    <select asp-for="Type" class="custom-select mr-sm-2" asp-items="ViewBag.Types">
+                                        <option value="0">აირჩიეთ ტიპი</option>
+                                    </select>
+                                    <span asp-validation-for="Type" class="text-danger"></span>
+                                </div>
+                               <div class="form-group">
+                                    <label asp-for="LocationId"></label>
+                                    <span class="text-danger">*</span>
+                                    <select asp-for="LocationId" class="custom-select mr-sm-2"
+                                        asp-items="ViewBag.Locations">
+                                        <option value="0">აირჩიეთ მისამართი</option>
+                                    </select>
+                                    <span asp-validation-for="LocationId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="CompanyName" class="control-label"></label>
+                                    <span class="text-danger">*</span>
+                                    <input asp-for="CompanyName" class="form-control" />
+                                    <span asp-validation-for="CompanyName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="DeadLine" class="control-label"></label>
+                                    <span class="text-danger">*</span>
+                                    <input asp-for="DeadLine" type="date" class="form-control" />
+                                    <span asp-validation-for="DeadLine" class="text-danger"></span>
+                                </div>
+                               <div class="form-group">
+                                    <label asp-for="CategoryId"></label>
+                                    <span class="text-danger">*</span>
+                                    <select asp-for="CategoryId" class="custom-select mr-sm-2"
+                                        asp-items="ViewBag.Categories">
+                                        <option value="0">აირჩიეთ კატეგორია</option>
+                                    </select>
+                                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="SalaryRange"></label>
+                                    <small class="text-muted">
+                                        მაგ: 100-200 ₾
+                                    </small>
+                                    <input asp-for="SalaryRange" class="form-control" value="შეთანხმებით" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label asp-for="Description"></label>
+                                    <span class="text-danger">*</span>
+                                    <input asp-for="Description" class="form-control" />
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <a class="btn btn-warning float-left" asp-controller="Vacancy" asp-action="UpdateVacancyDetail" asp-route-id="@Model.Id">კვალიფიკაციის ან მოთხოვნის რედაქტირება</a>
+                            <input type="submit" value="რედაქტირება" class="btn btn-outline-success float-right" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -29,24 +29,17 @@ namespace Hackathon_CV_Portal.Application.Implementations.EmailService
             return Task.FromResult(0);
         }
 
-        public async Task Execute(string email, string subject, string message, List<Attachment> attachments)
+        public async Task Execute(string toEmail, string subject, string message, List<Attachment> attachments)
         {
             try
             {
-                var toEmail = string.IsNullOrEmpty(email) ? _emailSettings.ToEmail : email;
 
                 MailMessage mail = new MailMessage()
                 {
-                    From = new MailAddress(_emailSettings.FromAddress, _emailSettings.FromName)
+                    From = new MailAddress(_emailSettings.PlatformMailAddress, _emailSettings.FromName)
                 };
 
                 mail.To.Add(new MailAddress(toEmail));
-
-                if (!string.IsNullOrEmpty(_emailSettings.CcEmail))
-                    mail.CC.Add(new MailAddress(_emailSettings.CcEmail));
-
-                if (!string.IsNullOrEmpty(_emailSettings.BccEmail))
-                    mail.Bcc.Add(new MailAddress(_emailSettings.BccEmail));
 
                 if (attachments != null)
                 {

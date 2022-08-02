@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackathon_CV_Portal.Domain"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackathon_CV_Portal.Persistence", "src\Hackathon_CV_Portal.Persistence\Hackathon_CV_Portal.Persistence.csproj", "{61C60EB7-C682-4342-A6C5-795CB69918D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hackathon_CV_Portal.Data", "src\Hackathon_CV_Portal.Data\Hackathon_CV_Portal.Data.csproj", "{00B0A4B9-2C3C-4FA1-B799-E9A55C21EC28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hackathon_CV_Portal.Data", "src\Hackathon_CV_Portal.Data\Hackathon_CV_Portal.Data.csproj", "{00B0A4B9-2C3C-4FA1-B799-E9A55C21EC28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

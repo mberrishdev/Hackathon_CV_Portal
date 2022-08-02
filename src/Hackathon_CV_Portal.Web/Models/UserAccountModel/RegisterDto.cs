@@ -26,9 +26,5 @@ namespace Hackathon_CV_Portal.Web.Models.UserAccountModel
 
         [Display(Name = "დავრეგისტრირდე როგორც კომპანია")]
         public bool IsCompany { get; set; }
-
-
-        [Display(Name = "ვეთანხმები წესებს")]
-        public bool AggreeTOS { get; set; }
     }
 }

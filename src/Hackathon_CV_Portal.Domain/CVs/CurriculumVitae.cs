@@ -28,7 +28,7 @@ namespace Hackathon_CV_Portal.Domain.CVs
         public string Address { get; set; }
         [Required, Column(TypeName = "NVARCHAR"), MaxLength(500)]
         public string AboutMe { get; set; }
-        [Required, Column(TypeName = "varbinary")]
+        [Required]
         public string Image { get; set; }
 
         public int UserId { get; set; }

@@ -4,53 +4,70 @@
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Claims
 @inject SignInManager<ApplicationUser> SignInManager
-@model VacansyVM
+@model VacansyVM;
 
-<div class="container-xxl py-5">
+@{
+    ViewBag.User = User;
+}
+
+<div class="container-xxl py-5" id="Div">
     <div class="container">
-        @*<h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">ვაკანსიები</h1>*@
-        <h1 class="display-3 text-center mb-3 animated slideInDown">ვაკანსიები</h1>
-
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-
             @if (@Model.WithFil)
             {
-                @using (Html.BeginForm("Index", "Vacancy", FormMethod.Get))
-                {
-                    <div class="container-xxl bg-white p-0" bgcolor="#800000">
-                        <div class="container-fluid mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="">
-                                        <div class="row">
-                                            <div class="">
-                                                <p>კატეგორია</p>
-                                                <p>
-                                                    @Html.TextBox("searchCategory", ViewBag.CurrentFilter as string, "კატეგორია")
-                                                </p>
-                                                <input type="submit" class="form-control border-0 bg-primary" value="ძებნა" />
-                                            </div>
-                                        </div>
+                <!-- Search Start -->
+                <div class="container-fluid mb-5 wow fadeIn" data-wow-delay="0.1s" style="padding: 35px;">
+                    <div class="container-fluid">
+                        <div class="row g-2">
+                            <div class="col-md-12">
+                                <div class="row g-2">
+                                    @* <div class="col-md-4">
+                                <input type="text" id="KeywordInput" class="form-control border-0" placeholder="ტექსტი" />
+                                </div> *@
+                                    <div class="col-md-3 border border-primary mr-2 rounded-pill">
+                                        <select id="CategoryInput" class="form-select rounded-pill border-0">
+                                            <option value="0" selected>ყველა კატეგორია</option>
+                                            @foreach (var category in Model.Categories)
+                                            {
+                                                <option value="@category.Id">@category.Name</option>
+                                            }
+                                        </select>
                                     </div>
-                                </div>
+                                    <div class="col-md-3 border border-primary mr-2 rounded-pill">
+                                        <select id="LocationInput" class="form-select rounded-pill border-0">
+                                            <option selected value="0">ყველა მისამართი</option>
+                                            @foreach (var location in Model.Locations)
+                                            {
+                                                <option value="@location.Id">@location.Country, @location.City</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 border border-primary mr-2 rounded-pill">
+                                        <input type="text" id="KeywordInput" class="form-control rounded-pill border-0" placeholder="ტექსტი" />
+                                    </div>
+                                    <div class="d-flex col-md-2 justify-content-center align-items-center">
+                                     <button style="width:10rem"  onclick="GetVacancesBySearch()" class=" border-start-0 rounded-pill btn btn-dark border-0"><i class="fa fa-search"></i></button>
+                                    </div>
+                                 </div>
                             </div>
                         </div>
                     </div>
-                }
-                <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
-                    <li class="nav-item">
+                </div>
+                <!-- Search End -->
+            }
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+                <li class="nav-item">
                     <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
-                        <h6 class="mt-n1 mb-0"><a class="page-link" href="?vacancyType=FullTime">Full Time</a></h6>
+                        <h6 class="mt-n1 mb-0"><button class="page-link text-white bg-primary" onclick="GetVacancesByType('FullTime')">სრული განაკვეთი</button></h6>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
-                        <h6 class="mt-n1 mb-0"><a class="page-link" href="?vacancyType=PartTime">Part Time</a></h6>
+                        <h6 class="mt-n1 mb-0"><button class="page-link  text-white bg-primary" onclick="GetVacancesByType('PartTime')">ნახევარი განაკვეთი</button></h6>
                     </a>
                 </li>
             </ul>
-            }
-            <div class="tab-content">
+            <div class="tab-content" id="VacancyList">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     @if (Model.IsEmpty)
                     {    @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
@@ -67,80 +84,194 @@
                     {
                         @foreach (var vacancy in Model.VacancyModels)
                         {
-                            <div class="job-item p-3 mb-2 bg-light text-dark">
+                            <div class="d-flex justify-content-center">
+                            <div class="border job-item col-8 m-3 p-3 mb-4 bg-light text-dark">
+                                
                                 <div class="row g-4">
-                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <div class="col-sm-12 d-flex align-items-center justify-content-center">
                                         <div class="text-start ps-4">
                                             <h5 class="mb-3">@vacancy.Title</h5>
                                             <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@vacancy.Location</span>
                                             <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>@vacancy.Type</span>
-                                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>@vacancy.SalaryRange</span>
+                                            <span class="text-truncate me-3"><i class="far fa-money-bill-alt text-primary me-2"></i>@vacancy.SalaryRange  </span>
+                                            <small class="text-truncate me-0"><i class="far fa-calendar-alt text-primary me-2"></i>@vacancy.PublishDate.ToString("dd/MM/yyyy") - @vacancy.DeadLine.ToString("dd/MM/yyyy")</small>
                                         </div>
                                     </div>
-                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                        <div class="d-flex mb-3">
+                                    <div class="col-sm-12 d-flex justify-content-center">
+                                        <div class="row mb-3">
                                             @if (@vacancy.IsFavourite && User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
                                             {
-                                                <div class="form-group">
+                                                <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
                                                     <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="RemoveFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary bi-suit-heart-fill"></i></a>
                                                 </div>
                                             }
                                             else if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
                                             {
-                                                <div class="form-group">
+                                                <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
                                                     <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="AddFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary"></i></a>
                                                 </div>
                                             }
+                                            
+                                            <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0 mr-4">
+                                                <a class="btn btn-info" asp-controller="Vacancy" asp-action="Detail" asp-route-id="@vacancy.Id">დეტალები</a>
+                                            </div>
                                             @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) || !SignInManager.IsSignedIn(User))
                                             {
-                                                <div class="form-group">
-                                                    <a class="btn btn-primary me-2" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@vacancy.Id">Apply Now</a>
+                                                <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                    <a class="btn btn-primary" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@vacancy.Id">Apply Now</a>
                                                 </div>
                                             }
-                                            <div class="form-group">
-                                                <a class="btn btn-info me-2" asp-controller="Vacancy" asp-action="Detail" asp-route-id="@vacancy.Id">დეტალები</a>
-                                            </div>
                                             @if (User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
                                             {
-                                                <div class="form-group">
-                                                    <a class="btn btn-warning me-2" asp-controller="Vacancy" asp-action="Edit" asp-route-id="@vacancy.Id">რედაქტირება</a>
+                                                <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                    <a class="btn btn-warning" asp-controller="Vacancy" asp-action="Update" asp-route-id="@vacancy.Id">რედაქტირება</a>
                                                 </div>
                                             }
                                             @if ((User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))) || User.HasClaim(ClaimTypes.Role, UserRole.Admin.ToString()))
                                             {
-                                                <div class="form-group">
-                                                    <a class="btn btn-danger me-2" asp-controller="Vacancy" asp-action="Delete" asp-route-id="@vacancy.Id">წაშლა</a>
+                                                <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                    <a class="btn btn-danger" asp-controller="Vacancy" asp-action="Delete" asp-route-id="@vacancy.Id">წაშლა</a>
                                                 </div>
                                             }
                                             @if ((User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString())) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
                                             {
-                                                <div class="form-group">
-                                                    <a class="btn btn-success me-2" asp-controller="AppliedCurriculumVitae" asp-action="Index" asp-route-vacancyId="@vacancy.Id">გამოგზავნილი ვაკანსიები</a>
+                                                <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                    <a class="btn btn-success" asp-controller="AppliedCurriculumVitae" asp-action="Index" asp-route-vacancyId="@vacancy.Id">გამოგზავნილი ვაკანსიები</a>
                                                 </div>
                                             }
                                         </div>
-                                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>@vacancy.DeadLine</small>
+                                        
                                     </div>
+                                </div>
                                 </div>
                             </div>
                         }
                     }
                 </div>
             </div>
+
+            <ul id="pagination" class="pagination d-flex justify-content-center">
+                @if (!Model.IsEmpty)
+                {
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex - 10 > 0 ? Model.CurrentPageIndex - 10 : 1)"><i class="fas fa-angle-double-left"></i></button></li>
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex - 5 > 0 ? Model.CurrentPageIndex - 5 : 1)"><i class="fas fa-angle-left"></i></button></li>
+                    @for (int i = Model.CurrentPageIndex - 1 >= 1 ? Model.CurrentPageIndex - 1 : 1; i <= (Model.CurrentPageIndex + 1 < Model.TottalPages ? Model.CurrentPageIndex + 1 : Model.TottalPages); i++)
+                    {
+                        <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@i)">@i</button></li>
+                    }
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 5 <= Mode.TottalPages - 1 ? Model.CurrentPageIndex + 5 : Mode.TottalPages - 1)"><i class="fas fa-angle-right"></i></button></li>
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 10 <= Mode.TottalPages - 1 ? Model.CurrentPageIndex + 10 : Mode.TottalPages - 1)"><i class="fas fa-angle-double-right"></i></button></li>
+                }
+            </ul>
         </div>
     </div>
 </div>
 
 
+<script type="text/javascript">
+    $('#CategoryInput').change(function() {
+        var categoryId = parseInt(jQuery(this).val());
 
-<nav aria-label="Page navigation example" class="text-center ">
-    <ul class="pagination">
-        @for (int i = 1; i <= Model.TottalPages; i++)
-        {
-            <li class="page-item"><a class="page-link" href="?page=@i">@i</a></li>
-        }
-    </ul>
-</nav>
+        GetVacancesByCategory(categoryId);
+    });
 
-</div>
+    function GetVacancesByCategory(categoryId) {
+        var keyword = document.getElementById("KeywordInput").value;
+        var location = document.getElementById("LocationInput").value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/Index",
+            data: {
+                searchKeyword: keyword,
+                categoryId: categoryId,
+                locationId: location,
+            },
+
+            success: function(response) {
+                var seachDiv = $($.parseHTML(response)).find("#VacancyList").html();
+                document.getElementById("VacancyList").innerHTML = seachDiv;
+
+                var pagination = $($.parseHTML(response)).find("#pagination").html();
+                document.getElementById("pagination").innerHTML = pagination;
+            }
+
+        })
+    }
+
+    function GetVacancesBySearch() {
+        var keyword = document.getElementById("KeywordInput").value;
+        var cateogry = document.getElementById("CategoryInput").value;
+        var location = document.getElementById("LocationInput").value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/Index",
+            data: {
+                searchKeyword: keyword,
+                categoryId: cateogry,
+                locationId: location,
+            },
+
+            success: function(response) {
+                var seachDiv = $($.parseHTML(response)).find("#VacancyList").html();
+                document.getElementById("VacancyList").innerHTML = seachDiv;
+
+                var pagination = $($.parseHTML(response)).find("#pagination").html();
+                document.getElementById("pagination").innerHTML = pagination;
+            }
+
+        })
+    }
+
+    function GetVacancesByPage(page) {
+        var keyword = document.getElementById("KeywordInput").value;
+        var cateogry = document.getElementById("CategoryInput").value;
+        var location = document.getElementById("LocationInput").value;
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/Index",
+            data: {
+                searchKeyword: keyword,
+                categoryId: cateogry,
+                locationId: location,
+                page: page
+            },
+
+            success: function(response) {
+                var seachDiv = $($.parseHTML(response)).find("#VacancyList").html();
+                document.getElementById("VacancyList").innerHTML = seachDiv;
+
+                                var pagination = $($.parseHTML(response)).find("#pagination").html();
+                document.getElementById("pagination").innerHTML = pagination;
+            }
+
+        })
+    }
+
+    function GetVacancesByType(vacancyType) {
+        var keyword = document.getElementById("KeywordInput").value;
+        var cateogry = document.getElementById("CategoryInput").value;
+        var location = document.getElementById("LocationInput").value;
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/Index",
+            data: {
+                searchKeyword: keyword,
+                categoryId: cateogry,
+                locationId: location,
+                vacancyType: vacancyType
+            },
+
+            success: function(response) {
+                var seachDiv = $($.parseHTML(response)).find("#VacancyList").html();
+                document.getElementById("VacancyList").innerHTML = seachDiv;
+
+                                var pagination = $($.parseHTML(response)).find("#pagination").html();
+                document.getElementById("pagination").innerHTML = pagination;
+            }
+
+        })
+    }
+</script>
 

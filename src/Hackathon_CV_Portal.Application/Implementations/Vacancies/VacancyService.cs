@@ -1,4 +1,7 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
+using Hackathon_CV_Portal.Application.Exceptions;
+using Hackathon_CV_Portal.Application.Implementations.Qualifications.Models;
+using Hackathon_CV_Portal.Application.Implementations.Responsibilities.Models;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Queries;
 using Hackathon_CV_Portal.Data.Abstractions;
@@ -23,29 +26,48 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
             _cvService = cvService;
         }
 
-        public async Task CreateVacancy(CreateVacancyCommand command)
+        public async Task<int> CreateVacancy(CreateVacancyCommand command)
         {
-            await _baseRepository.CreateAsync(new Vacancy(command));
+            var id = await _baseRepository.CreateAsync(new Vacancy(command));
+
+            return id;
         }
 
         public async Task<VacancyModel> GetVacancyById(int id)
         {
-            var vm = await _baseRepository.GetAsync(new Expression<Func<Vacancy, object>>[1] { x => x.Category }, x => x.Id == id);
+            var vm = await _baseRepository.GetAsync(includeProperties: new Expression<Func<Vacancy, object>>[4] { x => x.Category, x => x.Location,
+                x=>x.Qualifications,x=>x.Responsibilities }, x => x.Id == id);
+
+            if (vm == null)
+                throw new NotFoundExcpetion();
 
             return new VacancyModel()
             {
                 Id = vm.Id,
                 Category = vm.Category.Name,
+                CategoryId = vm.CategoryId,
                 Title = vm.Title,
-                Location = vm.Location,
+                Location = vm.Location.Country + ", " + vm.Location.City,
+                LocationId = vm.LocationId,
                 SalaryRange = vm.SalaryRange,
                 Type = vm.Type.ToString(),
                 CompanyName = vm.CompanyName,
                 PublishDate = vm.PublishDate,
                 DeadLine = vm.DeadLine,
                 Description = vm.Description,
-                Responsibility = vm.Responsibility,
-                Qualifications = vm.Qualifications,
+                Email = vm.Email,
+                Responsibilities = vm.Responsibilities.Select(x => new ResponsibilityVM()
+                {
+                    Id = x.Id,
+                    VacancyId = x.VacancyId,
+                    ResponsibilityName = x.ResponsibilityName
+                }).ToList(),
+                Qualifications = vm.Qualifications.Select(x => new QualificationVM()
+                {
+                    Id = x.Id,
+                    VacancyId = x.VacancyId,
+                    QualificationName = x.QualificationName
+                }).ToList(),
                 UserId = vm.UserId,
             };
         }
@@ -53,7 +75,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
         public async Task<VacansyVM> ListVacancyQuery(ListVacancyQuery query)
         {
             var vacancies = await _baseRepository.GetAllAsyncByPage(query.Page, expression: query.Expression,
-                includeProperties: new Expression<Func<Vacancy, object>>[1] { x => x.Category });
+                includeProperties: new Expression<Func<Vacancy, object>>[2] { x => x.Category, x => x.Location });
 
             if (vacancies == null)
                 return null;
@@ -64,7 +86,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                 var isFavoutire = query.UserModel == null ? false : await _favouriteVacancyService.AnyAsync(predicate: x => x.VacansyId == item.Id && x.UserId == query.UserModel.UserId);
                 if (query.WithFav && !isFavoutire)
                     continue;
-
+                //ToDo
                 vacancyModels.Add(new VacancyModel()
                 {
                     Id = item.Id,
@@ -72,13 +94,13 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                     Title = item.Title,
                     SalaryRange = item.SalaryRange,
                     CompanyName = item.CompanyName,
-                    Location = item.Location,
+                    Location = item.Location.Country + ", " + item.Location.City,
                     Type = item.Type.ToString(),
                     PublishDate = item.PublishDate,
                     DeadLine = item.DeadLine,
                     Description = item.Description,
-                    Responsibility = item.Responsibility,
-                    Qualifications = item.Qualifications,
+                    //Responsibility = item.Responsibility,
+                    //Qualifications = item.Qualifications,
                     IsFavourite = isFavoutire,
                     UserId = item.UserId,
                 });
@@ -89,6 +111,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
                 VacancyModels = vacancyModels,
                 TottalPages = vacancies.TotalPages,
                 IsEmpty = vacancies.IsEmpty,
+                CurrentPageIndex = query.Page
             };
         }
 
@@ -106,6 +129,29 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
         {
             var entity = await _baseRepository.GetAsync(predicate: x => x.Id == id);
             await _baseRepository.RemoveAsync(entity);
+        }
+
+        public async Task CleanVacancies()
+        {
+            var list = await _baseRepository.GetListAsync(x => DateTime.Now > x.DeadLine);
+            foreach (var item in list)
+            {
+                await _baseRepository.RemoveAsync(item);
+            }
+        }
+
+        public async Task UpdateVacancy(UpdateVacancyCommand command)
+        {
+            var vacancy = await _baseRepository.GetForUpdateAsync(command.Id);
+
+            if (vacancy == null)
+                throw new NotFoundExcpetion();
+
+            if (vacancy.UserId != command.UserModel.UserId)
+                throw new Exception();
+
+            vacancy.Update(command);
+            await _baseRepository.UpdateAsync(vacancy);
         }
     }
 }

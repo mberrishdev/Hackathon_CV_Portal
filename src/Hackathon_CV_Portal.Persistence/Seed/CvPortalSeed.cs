@@ -28,14 +28,26 @@ namespace Hackathon_CV_Portal.Persistence.Seed
         {
             var seeded = false;
 
-            SeedRoles(context, ref seeded);
-            SeedUsers(context, ref seeded);
-            SeedCategories(context, ref seeded);
+            //SeedRoles(context, ref seeded);
+            //SeedUsers(context, ref seeded);
+            //SeedCategories(context, ref seeded);
             //SeedCv(context, ref seeded);
             //SeedVacancies(context, ref seeded);
+            //SeedAboutUs(context, ref seeded);
 
             if (seeded)
                 context.SaveChanges();
+        }
+
+        private static void SeedAboutUs(CvPortalDbContext context, ref bool seeded)
+        {
+            var aboutUs = $@"<div class='container-xxl py-5'> <div class='container'><div class='row g-5 align-items-center'><div class='col-lg-6 wow fadeIn' data-wow-delay='0.5s'><h1 class='mb-4'>ჩვენ გეხმარებით, რომ იპოვოთ სასურველი სამსახური და სასურველი თანამშრომელი</h1><p class='mb-4'>დასაქმება ასე მარტივი არასდროს ყოფილა</p><p><i class='fa fa-check text-primary me-3'></i>სწრაფად</p><p><i class='fa fa-check text-primary me-3'></i>მარტივად</p><p><i class='fa fa-check text-primary me-3'></i>ხარისხიანად</p> <a class='btn btn-primary py-3 px-5 mt-3' href='/Contact'>გაიგე უფრო მეტი</a></div></div></div></div>";
+
+            if (!context.About.Any())
+            {
+                context.About.Add(new Domain.AboutUs.About() { Content = aboutUs });
+                seeded = true;
+            }
         }
 
         private static void SeedCv(CvPortalDbContext context, ref bool seeded)
@@ -232,23 +244,23 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     Title = $"Vac{i}",
                     SalaryRange = $"{100 + i}-{200 + i} $",
                     CompanyName = $"Facebook {1}",
-                    Location = $"Tbilisi, Georgia {1}",
+                    LocationId = 1,
                     PublishDate = DateTime.Now,
                     DeadLine = DateTime.Now,
                     Description = "bla bla",
                     Type = VacancyType.PartTime,
                     UserId = 1,
                     CategoryId = 1,
-                    Responsibility = "** მაღაზიაში არსებული სტანდარტის მიხედვით მომხმარებლისათვის კვალიფიციური მომსახურების და კონსულტაციის გაწევა" +
-                                    "* *პროდუქციის მოწესრიგება," +
-                                     "მაღაზიის ვიზუალზე ზრუნვა" +
-                                    "* *მომხმარებლისათვის პროდუქციის ეფექტური შეთავაზება," +
-                                     " გაყიდვების ზრდაზე ზრუნვა" +
-                                    "* *მაღაზიის ყოველდღიური მუშაობის პროცესში ჩართულობა.,",
-                    Qualifications = "** ინტერესი მოდის ინდუსტრიის მიმართ, მსოფლიო მოდის ტენდენციებისა და ლუქს კლასის ბრენდების კარგი ცოდნა, სტილისა და ფერის შეგრძნება, კრეატიულობა და კარგი ხედვა" +
-                                    "** ასაკი : 25+ (ასაკობრივი ზედა ზღვარის, სქესისა და სხვა შეზღუდვის გარეშე)" +
-                                    "** მსგავს პოზიციაზე მინიმუმ 2 წლიანი სამუშაო გამოცდილება;" +
-                                    "** ქართული ენის სრულყოფილად ცოდნა. ინგლისური და სხვა უცხო ენები- კარგი, თავისუფალი საკომუნიკაციო დონე"
+                    //Responsibility = "** მაღაზიაში არსებული სტანდარტის მიხედვით მომხმარებლისათვის კვალიფიციური მომსახურების და კონსულტაციის გაწევა" +
+                    //                "* *პროდუქციის მოწესრიგება," +
+                    //                 "მაღაზიის ვიზუალზე ზრუნვა" +
+                    //                "* *მომხმარებლისათვის პროდუქციის ეფექტური შეთავაზება," +
+                    //                 " გაყიდვების ზრდაზე ზრუნვა" +
+                    //                "* *მაღაზიის ყოველდღიური მუშაობის პროცესში ჩართულობა.,",
+                    //Qualifications = "** ინტერესი მოდის ინდუსტრიის მიმართ, მსოფლიო მოდის ტენდენციებისა და ლუქს კლასის ბრენდების კარგი ცოდნა, სტილისა და ფერის შეგრძნება, კრეატიულობა და კარგი ხედვა" +
+                    //                "** ასაკი : 25+ (ასაკობრივი ზედა ზღვარის, სქესისა და სხვა შეზღუდვის გარეშე)" +
+                    //                "** მსგავს პოზიციაზე მინიმუმ 2 წლიანი სამუშაო გამოცდილება;" +
+                    //                "** ქართული ენის სრულყოფილად ცოდნა. ინგლისური და სხვა უცხო ენები- კარგი, თავისუფალი საკომუნიკაციო დონე"
                 };
 
                 context.Vacancies.Add(vac);
@@ -261,15 +273,15 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                     Title = $"Vac{i}",
                     SalaryRange = $"{100 + i}-{200 + i} $",
                     CompanyName = $"Facebook {1}",
-                    Location = $"Tbilisi, Georgia {1}",
+                    //LocationId = 1,
                     PublishDate = DateTime.Now,
                     DeadLine = DateTime.Now,
                     Description = "bla bla",
                     Type = VacancyType.FullTime,
                     UserId = 1,
                     CategoryId = 1,
-                    Responsibility = "",
-                    Qualifications = "",
+                    //Responsibility = "",
+                    //Qualifications = "",
                 };
 
                 context.Vacancies.Add(vac);

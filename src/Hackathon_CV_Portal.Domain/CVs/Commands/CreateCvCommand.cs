@@ -13,7 +13,7 @@ namespace Hackathon_CV_Portal.Domain.CVs.Commands
         public string Email { get; set; }
         public string Address { get; set; }
         public string AboutMe { get; set; }
-        public string Image { get { return ""; } }
+        public string Image { get; set; }
 
         public ICollection<Education> Educations { get; set; }
         public ICollection<WorkingExperience> WorkingExperiences { get; set; }
