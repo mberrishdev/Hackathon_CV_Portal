@@ -60,9 +60,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="">
-                    <h3>კვალიფიკაციები:</h3>
-                    <button type="button" class="btn btn-primary  btn-sm" data-toggle="modal" data-target="#qualificationModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
+                <div class="mt-4 mb-4">
+                    <div class="text-center mb-3">
+                        <h3 class="">კვალიფიკაციები</h3>
+                    </div>
                     @if (Model.Qualifications.Count() == 0)
                     {
                         <p>ჯერ არ გაქვთ დამატებული კვალიფიკაცია</p>
@@ -71,10 +72,17 @@
                     {
                         <p>. @qualifications.QualificationName</p>
                     }
+
+                    <div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#qualificationModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
+                    </div>
                 </div>
-                <div>
-                    <h3>მოვალეობა:</h3>
-                    <button type="button" class="btn btn-primary  btn-sm" data-toggle="modal" data-target="#responsibilityModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
+                <div class="mb-4 mt-4">
+
+                    <div class="text-center mb-3">
+                        <h3>მოვალეობა</h3>
+                    </div>
+                    
                     @if (Model.Responsibilities.Count() == 0)
                     {
                         <p>ჯერ არ გაქვთ დამატებული მოვალეობები</p>
@@ -83,6 +91,9 @@
                     {
                         <p class="text-sm-left">. @responsibility.ResponsibilityName</p>
                     }
+                    <div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#responsibilityModal"><i class="bi bi-plus fa-1x"></i> დამატება</button>
+                    </div>
                 </div>
             </div>
         </div>

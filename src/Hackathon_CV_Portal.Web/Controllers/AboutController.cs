@@ -31,7 +31,7 @@ namespace Hackathon_CV_Portal.Web.Controllers
             return View(aboutUsVM);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit()
         {
             var aboutUs = await _aboutService.GetAboutUs();
@@ -45,7 +45,7 @@ namespace Hackathon_CV_Portal.Web.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string Content)
         {
             CreateAboutUsCommand command = new CreateAboutUsCommand()

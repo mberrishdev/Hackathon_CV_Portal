@@ -28,19 +28,31 @@ namespace Hackathon_CV_Portal.Persistence.Seed
         {
             var seeded = false;
 
-            SeedRoles(context, ref seeded);
-            SeedUsers(context, ref seeded);
-            SeedCategories(context, ref seeded);
+            //SeedRoles(context, ref seeded);
+            //SeedUsers(context, ref seeded);
+            //SeedCategories(context, ref seeded);
             //SeedCv(context, ref seeded);
             //SeedVacancies(context, ref seeded);
+            //SeedAboutUs(context, ref seeded);
 
             if (seeded)
                 context.SaveChanges();
         }
 
-        private static void SeedCv(CvPortalDbContext context, ref bool seeded)
+        private static void SeedAboutUs(CvPortalDbContext context, ref bool seeded)
         {
-            var curriculumVitaes = new List<CurriculumVitae>()
+            var aboutUs = $@"<div class='container-xxl py-5'> <div class='container'><div class='row g-5 align-items-center'><div class='col-lg-6 wow fadeIn' data-wow-delay='0.5s'><h1 class='mb-4'>ჩვენ გეხმარებით, რომ იპოვოთ სასურველი სამსახური და სასურველი თანამშრომელი</h1><p class='mb-4'>დასაქმება ასე მარტივი არასდროს ყოფილა</p><p><i class='fa fa-check text-primary me-3'></i>სწრაფად</p><p><i class='fa fa-check text-primary me-3'></i>მარტივად</p><p><i class='fa fa-check text-primary me-3'></i>ხარისხიანად</p> <a class='btn btn-primary py-3 px-5 mt-3' href='/Contact'>გაიგე უფრო მეტი</a></div></div></div></div>";
+            
+            if (!context.About.Any())
+            {
+                context.About.Add(new Domain.AboutUs.About() { Content = aboutUs });
+                seeded = true;
+            }
+        }
+
+    private static void SeedCv(CvPortalDbContext context, ref bool seeded)
+    {
+        var curriculumVitaes = new List<CurriculumVitae>()
             {
                new CurriculumVitae()
                {
@@ -122,19 +134,19 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                }
             };
 
-            foreach (var cv in curriculumVitaes)
+        foreach (var cv in curriculumVitaes)
+        {
+            if (!context.CVs.Any(item => item.Id == cv.Id))
             {
-                if (!context.CVs.Any(item => item.Id == cv.Id))
-                {
-                    context.CVs.Add(cv);
-                    seeded = true;
-                }
+                context.CVs.Add(cv);
+                seeded = true;
             }
         }
+    }
 
-        private static void SeedCategories(CvPortalDbContext context, ref bool seeded)
-        {
-            var categories = new List<Category>()
+    private static void SeedCategories(CvPortalDbContext context, ref bool seeded)
+    {
+        var categories = new List<Category>()
             {
                 new Category()
                 {
@@ -150,19 +162,19 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                 },
             };
 
-            foreach (var category in categories)
+        foreach (var category in categories)
+        {
+            if (!context.Categories.Any(item => item.Id == category.Id))
             {
-                if (!context.Categories.Any(item => item.Id == category.Id))
-                {
-                    context.Categories.Add(category);
-                    seeded = true;
-                }
+                context.Categories.Add(category);
+                seeded = true;
             }
         }
+    }
 
-        private static void SeedRoles(CvPortalDbContext context, ref bool seeded)
-        {
-            var roles = new List<ApplicationRole>()
+    private static void SeedRoles(CvPortalDbContext context, ref bool seeded)
+    {
+        var roles = new List<ApplicationRole>()
             {
                 new ApplicationRole()
                 {
@@ -181,19 +193,19 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                 },
             };
 
-            foreach (var role in roles)
+        foreach (var role in roles)
+        {
+            if (!context.Roles.Any(item => item.Name == role.Name))
             {
-                if (!context.Roles.Any(item => item.Name == role.Name))
-                {
-                    context.Roles.Add(role);
-                    seeded = true;
-                }
+                context.Roles.Add(role);
+                seeded = true;
             }
         }
-        private static void SeedUsers(CvPortalDbContext context, ref bool seeded)
-        {
-            //Coding_123
-            var users = new List<ApplicationUser>()
+    }
+    private static void SeedUsers(CvPortalDbContext context, ref bool seeded)
+    {
+        //Coding_123
+        var users = new List<ApplicationUser>()
             {
                 new ApplicationUser()
                 {
@@ -212,74 +224,74 @@ namespace Hackathon_CV_Portal.Persistence.Seed
                 },
             };
 
-            foreach (var user in users)
-            {
-                if (!context.Users.Any(item => item.UserName == user.UserName))
-                {
-                    context.Users.Add(user);
-                    seeded = true;
-                }
-            }
-        }
-
-        private static void SeedVacancies(CvPortalDbContext context, ref bool seeded)
+        foreach (var user in users)
         {
-
-            for (int i = 0; i < 25; i++)
+            if (!context.Users.Any(item => item.UserName == user.UserName))
             {
-                var vac = new Vacancy()
-                {
-                    Title = $"Vac{i}",
-                    SalaryRange = $"{100 + i}-{200 + i} $",
-                    CompanyName = $"Facebook {1}",
-                    //LocationId = 1,
-                    PublishDate = DateTime.Now,
-                    DeadLine = DateTime.Now,
-                    Description = "bla bla",
-                    Type = VacancyType.PartTime,
-                    UserId = 1,
-                    CategoryId = 1,
-                    //Responsibility = "** მაღაზიაში არსებული სტანდარტის მიხედვით მომხმარებლისათვის კვალიფიციური მომსახურების და კონსულტაციის გაწევა" +
-                    //                "* *პროდუქციის მოწესრიგება," +
-                    //                 "მაღაზიის ვიზუალზე ზრუნვა" +
-                    //                "* *მომხმარებლისათვის პროდუქციის ეფექტური შეთავაზება," +
-                    //                 " გაყიდვების ზრდაზე ზრუნვა" +
-                    //                "* *მაღაზიის ყოველდღიური მუშაობის პროცესში ჩართულობა.,",
-                    //Qualifications = "** ინტერესი მოდის ინდუსტრიის მიმართ, მსოფლიო მოდის ტენდენციებისა და ლუქს კლასის ბრენდების კარგი ცოდნა, სტილისა და ფერის შეგრძნება, კრეატიულობა და კარგი ხედვა" +
-                    //                "** ასაკი : 25+ (ასაკობრივი ზედა ზღვარის, სქესისა და სხვა შეზღუდვის გარეშე)" +
-                    //                "** მსგავს პოზიციაზე მინიმუმ 2 წლიანი სამუშაო გამოცდილება;" +
-                    //                "** ქართული ენის სრულყოფილად ცოდნა. ინგლისური და სხვა უცხო ენები- კარგი, თავისუფალი საკომუნიკაციო დონე"
-                };
-
-                context.Vacancies.Add(vac);
-            }
-
-            for (int i = 0; i < 25; i++)
-            {
-                var vac = new Vacancy()
-                {
-                    Title = $"Vac{i}",
-                    SalaryRange = $"{100 + i}-{200 + i} $",
-                    CompanyName = $"Facebook {1}",
-                    //LocationId = 1,
-                    PublishDate = DateTime.Now,
-                    DeadLine = DateTime.Now,
-                    Description = "bla bla",
-                    Type = VacancyType.FullTime,
-                    UserId = 1,
-                    CategoryId = 1,
-                    //Responsibility = "",
-                    //Qualifications = "",
-                };
-
-                context.Vacancies.Add(vac);
+                context.Users.Add(user);
                 seeded = true;
             }
         }
+    }
 
-        private static void Migrate(CvPortalDbContext context)
+    private static void SeedVacancies(CvPortalDbContext context, ref bool seeded)
+    {
+
+        for (int i = 0; i < 25; i++)
         {
-            context.Database.Migrate();
+            var vac = new Vacancy()
+            {
+                Title = $"Vac{i}",
+                SalaryRange = $"{100 + i}-{200 + i} $",
+                CompanyName = $"Facebook {1}",
+                LocationId = 1,
+                PublishDate = DateTime.Now,
+                DeadLine = DateTime.Now,
+                Description = "bla bla",
+                Type = VacancyType.PartTime,
+                UserId = 1,
+                CategoryId = 1,
+                //Responsibility = "** მაღაზიაში არსებული სტანდარტის მიხედვით მომხმარებლისათვის კვალიფიციური მომსახურების და კონსულტაციის გაწევა" +
+                //                "* *პროდუქციის მოწესრიგება," +
+                //                 "მაღაზიის ვიზუალზე ზრუნვა" +
+                //                "* *მომხმარებლისათვის პროდუქციის ეფექტური შეთავაზება," +
+                //                 " გაყიდვების ზრდაზე ზრუნვა" +
+                //                "* *მაღაზიის ყოველდღიური მუშაობის პროცესში ჩართულობა.,",
+                //Qualifications = "** ინტერესი მოდის ინდუსტრიის მიმართ, მსოფლიო მოდის ტენდენციებისა და ლუქს კლასის ბრენდების კარგი ცოდნა, სტილისა და ფერის შეგრძნება, კრეატიულობა და კარგი ხედვა" +
+                //                "** ასაკი : 25+ (ასაკობრივი ზედა ზღვარის, სქესისა და სხვა შეზღუდვის გარეშე)" +
+                //                "** მსგავს პოზიციაზე მინიმუმ 2 წლიანი სამუშაო გამოცდილება;" +
+                //                "** ქართული ენის სრულყოფილად ცოდნა. ინგლისური და სხვა უცხო ენები- კარგი, თავისუფალი საკომუნიკაციო დონე"
+            };
+
+            context.Vacancies.Add(vac);
+        }
+
+        for (int i = 0; i < 25; i++)
+        {
+            var vac = new Vacancy()
+            {
+                Title = $"Vac{i}",
+                SalaryRange = $"{100 + i}-{200 + i} $",
+                CompanyName = $"Facebook {1}",
+                //LocationId = 1,
+                PublishDate = DateTime.Now,
+                DeadLine = DateTime.Now,
+                Description = "bla bla",
+                Type = VacancyType.FullTime,
+                UserId = 1,
+                CategoryId = 1,
+                //Responsibility = "",
+                //Qualifications = "",
+            };
+
+            context.Vacancies.Add(vac);
+            seeded = true;
         }
     }
+
+    private static void Migrate(CvPortalDbContext context)
+    {
+        context.Database.Migrate();
+    }
+}
 }

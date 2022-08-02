@@ -102,7 +102,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             }
 
             if (result == null)
-                return RedirectToAction("Index", "NotFound");
+                return RedirectToAction("Create", "CurriculumVitae");
 
             return View(result);
         }
@@ -111,8 +111,24 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
         [Authorize(Roles = "User")]
         public async Task<IActionResult> Update([FromForm] CreateCvDTO model)
         {
+            
+
             if (!ModelState.IsValid)
                 return View();
+
+
+            if (model.Image != "" && model.Image != null)
+            {
+                try
+                {
+                    ValidateImage(model.Image);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("Validation", ex.Message);
+                    return View();
+                }
+            }
 
             LoadUserModel();
 
@@ -353,6 +369,39 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
 
         // - Working Experience
 
+
+        public bool ValidateImage(string image)
+        {
+            int maxFileLengthInBytes = 350000;
+
+            if (!IsBase64String(image.Substring(image.IndexOf(',') + 1)))
+                throw new ApplicationException("invalid file encoding");
+
+            if (!IsPngOrJpg(image.Substring(0, image.IndexOf(';'))))
+                throw new ApplicationException("არასწორი ფაილის ტიპი ატვირთეთ PNG ან JPG");
+
+            if (!IsSmallerOrEqual(image.Substring(image.IndexOf(',') + 1), maxFileLengthInBytes))
+                throw new ApplicationException("ფაილის ზომა 350kb ნაკლები უნდა იყოს ");
+
+            return true;
+        }
+
+        public bool IsBase64String(string base64)
+        {
+            Span<byte> buffer = new Span<byte>(new byte[base64.Length]);
+            return Convert.TryFromBase64String(base64, buffer, out int bytesParsed);
+        }
+
+        public bool IsSmallerOrEqual(string base64, int lengthInBytes)
+        {
+            byte[] imageBytes = Convert.FromBase64String(base64);
+            return imageBytes.Length <= lengthInBytes;
+        }
+
+        private bool IsPngOrJpg(string data)
+        {
+            return data.Contains("image/png") || data.Contains("image/png") || data.Contains("image/jpeg");
+        }
 
     }
 }
