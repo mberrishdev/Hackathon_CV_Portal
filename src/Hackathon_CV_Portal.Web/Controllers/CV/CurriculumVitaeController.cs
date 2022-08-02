@@ -102,7 +102,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.CV
             }
 
             if (result == null)
-                return RedirectToAction("Index", "NotFound");
+                return RedirectToAction("Create", "CurriculumVitae");
 
             return View(result);
         }
