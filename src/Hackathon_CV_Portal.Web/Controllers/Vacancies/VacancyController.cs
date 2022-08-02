@@ -39,34 +39,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
         [AllowAnonymous]
         public async Task<IActionResult> Index(string searchKeyword, int categoryId, int locationId, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
         {
-            Expression<Func<Vacancy, bool>>? expression = null;
-
-            expression = x =>
-                !string.IsNullOrEmpty(searchKeyword)
-                        ? companyId == 0
-                            ? x.CompanyName.Contains(searchKeyword) || x.Description.Contains(searchKeyword) || x.Responsibilities.Any(y => y.ResponsibilityName.Contains(searchKeyword)) || x.Qualifications.Any(y => y.QualificationName.Contains(searchKeyword))
-                            : x.UserId == companyId && (x.CompanyName.Contains(searchKeyword) || x.Description.Contains(searchKeyword) || x.Responsibilities.Any(y => y.ResponsibilityName.Contains(searchKeyword)) || x.Qualifications.Any(y => y.QualificationName.Contains(searchKeyword)))
-                        : true
-                && categoryId > 0
-                        ? companyId == 0
-                            ? x.Category.Id == categoryId
-                            : x.Category.Id == categoryId && x.UserId == companyId
-                        : true
-                && locationId > 0
-                        ? locationId == 0
-                            ? x.Location.Id == locationId
-                            : x.Location.Id == locationId && x.UserId == companyId
-                        : true
-                && !String.IsNullOrEmpty(vacancyType)
-                    ? companyId == 0
-                        ? x.Type == Enum.Parse<VacancyType>(vacancyType)
-                        : x.Category.Id == categoryId && x.UserId == companyId
-                    : true
-                && categoryId <= 0 && String.IsNullOrEmpty(vacancyType) && companyId != 0
-                    ? x.UserId == companyId
-                    : true
-                && x.DeadLine <= DateTime.Now;
-
+          
             LoadUserModel();
 
             if (UserModel?.UserId != companyId && companyId != 0)
@@ -75,7 +48,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             var query = new ListVacancyQuery()
             {
                 Page = page,
-                Expression = expression,
+                Expression = ConstructFilterExpression(searchKeyword, categoryId, locationId, vacancyType, isFav, withFiL, page, companyId),
                 UserModel = UserModel,
                 WithFav = isFav,
             };
@@ -391,5 +364,43 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             return RedirectToAction("UpdateVacancyDetail", new { id = vacancyId });
         }
         #endregion
+
+
+        public List<Expression<Func<Vacancy, bool>>>? ConstructFilterExpression(string searchKeyword, int categoryId, int locationId, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
+        {
+            VacancyType parseResult;
+
+            List<Expression<Func<Vacancy, bool>>>? expressions = new List<Expression<Func<Vacancy, bool>>>();
+
+            Expression<Func<Vacancy, bool>> expression = x => x.DeadLine > DateTime.Now;
+
+            if (!string.IsNullOrEmpty(searchKeyword))
+            {
+                Expression<Func<Vacancy, bool>> KeywordExpression = x => x.Title.ToLower().Contains(searchKeyword) || x.CompanyName.ToLower().Contains(searchKeyword) || x.Description.ToLower().Contains(searchKeyword) || x.Responsibilities.Any(y => y.ResponsibilityName.ToLower().Contains(searchKeyword)) || x.Qualifications.Any(y => y.QualificationName.ToLower().Contains(searchKeyword));
+                expressions.Add(KeywordExpression);
+            }
+            if (categoryId > 0)
+            {
+                Expression<Func<Vacancy, bool>> CategoryExpression = x => x.CategoryId == categoryId;
+                expressions.Add(CategoryExpression);
+            }
+            if (locationId > 0)
+            {
+                Expression<Func<Vacancy, bool>> LocationExpression = x => x.LocationId == locationId;
+                expressions.Add(LocationExpression);
+            }
+            if (!String.IsNullOrEmpty(vacancyType) && Enum.TryParse(vacancyType, out parseResult))
+            {
+                Expression<Func<Vacancy, bool>> TypeExpression = x => x.Type == Enum.Parse<VacancyType>(vacancyType);
+                expressions.Add(TypeExpression);
+            }
+            if (companyId > 0)
+            {
+                Expression<Func<Vacancy, bool>> TypeExpression = x => x.UserId == companyId;
+                expressions.Add(TypeExpression);
+            }
+
+            return expressions;
+        }
     }
 }

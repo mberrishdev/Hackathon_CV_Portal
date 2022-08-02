@@ -22,8 +22,8 @@
                             <div class="col-md-12">
                                 <div class="row g-2">
                                     @* <div class="col-md-4">
-                                <input type="text" id="KeywordInput" class="form-control border-0" placeholder="ტექსტი" />
-                                </div> *@
+                                        <input type="text" id="KeywordInput" class="form-control border-0" placeholder="ტექსტი" />
+                                        </div> *@
                                     <div class="col-md-3 border border-primary mr-2 rounded-pill">
                                         <select id="CategoryInput" class="form-select rounded-pill border-0">
                                             <option value="0" selected>ყველა კატეგორია</option>
@@ -46,23 +46,23 @@
                                         <input type="text" id="KeywordInput" class="form-control rounded-pill border-0" placeholder="ტექსტი" />
                                     </div>
                                     <div class="d-flex col-md-2 justify-content-center align-items-center">
-                                     <button style="width:10rem"  onclick="GetVacancesBySearch()" class=" border-start-0 rounded-pill btn btn-dark border-0"><i class="fa fa-search"></i></button>
+                                        <button style="width:10rem" onclick="GetVacancesBySearch()" class=" border-start-0 rounded-pill btn btn-dark border-0"><i class="fa fa-search"></i></button>
                                     </div>
-                                 </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <!-- Search End -->
             }
-            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+            <ul id="vacancyTypeId" class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
                 <li class="nav-item">
-                    <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
+                    <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2" value="FullTime">
                         <h6 class="mt-n1 mb-0"><button class="page-link text-white bg-primary" onclick="GetVacancesByType('FullTime')">სრული განაკვეთი</button></h6>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
+                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3" value="PartTime">
                         <h6 class="mt-n1 mb-0"><button class="page-link  text-white bg-primary" onclick="GetVacancesByType('PartTime')">ნახევარი განაკვეთი</button></h6>
                     </a>
                 </li>
@@ -85,64 +85,64 @@
                         @foreach (var vacancy in Model.VacancyModels)
                         {
                             <div class="d-flex justify-content-center">
-                            <div class="border job-item col-8 m-3 p-3 mb-4 bg-light text-dark">
-                                
-                                <div class="row g-4">
-                                    <div class="col-sm-12 d-flex align-items-center justify-content-center">
-                                        <div class="text-start ps-4">
-                                            <h5 class="mb-3">@vacancy.Title</h5>
-                                            <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@vacancy.Location</span>
-                                            <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>@vacancy.Type</span>
-                                            <span class="text-truncate me-3"><i class="far fa-money-bill-alt text-primary me-2"></i>@vacancy.SalaryRange  </span>
-                                            <small class="text-truncate me-0"><i class="far fa-calendar-alt text-primary me-2"></i>@vacancy.PublishDate.ToString("dd/MM/yyyy") - @vacancy.DeadLine.ToString("dd/MM/yyyy")</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 d-flex justify-content-center">
-                                        <div class="row mb-3">
-                                            @if (@vacancy.IsFavourite && User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
-                                            {
-                                                <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                    <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="RemoveFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary bi-suit-heart-fill"></i></a>
-                                                </div>
-                                            }
-                                            else if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
-                                            {
-                                                <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                    <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="AddFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary"></i></a>
-                                                </div>
-                                            }
-                                            
-                                            <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0 mr-4">
-                                                <a class="btn btn-info" asp-controller="Vacancy" asp-action="Detail" asp-route-id="@vacancy.Id">დეტალები</a>
+                                <div class="border job-item col-8 m-3 p-3 mb-4 bg-light text-dark">
+
+                                    <div class="row g-4">
+                                        <div class="col-sm-12 d-flex align-items-center justify-content-center">
+                                            <div class="text-start ps-4">
+                                                <h5 class="mb-3">@vacancy.Title</h5>
+                                                <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@vacancy.Location</span>
+                                                <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>@vacancy.Type</span>
+                                                <span class="text-truncate me-3"><i class="far fa-money-bill-alt text-primary me-2"></i>@vacancy.SalaryRange  </span>
+                                                <small class="text-truncate me-0"><i class="far fa-calendar-alt text-primary me-2"></i>@vacancy.PublishDate.ToString("dd/MM/yyyy") - @vacancy.DeadLine.ToString("dd/MM/yyyy")</small>
                                             </div>
-                                            @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) || !SignInManager.IsSignedIn(User))
-                                            {
-                                                <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                    <a class="btn btn-primary" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@vacancy.Id">Apply Now</a>
-                                                </div>
-                                            }
-                                            @if (User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
-                                            {
-                                                <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                    <a class="btn btn-warning" asp-controller="Vacancy" asp-action="Update" asp-route-id="@vacancy.Id">რედაქტირება</a>
-                                                </div>
-                                            }
-                                            @if ((User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))) || User.HasClaim(ClaimTypes.Role, UserRole.Admin.ToString()))
-                                            {
-                                                <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                    <a class="btn btn-danger" asp-controller="Vacancy" asp-action="Delete" asp-route-id="@vacancy.Id">წაშლა</a>
-                                                </div>
-                                            }
-                                            @if ((User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString())) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
-                                            {
-                                                <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                    <a class="btn btn-success" asp-controller="AppliedCurriculumVitae" asp-action="Index" asp-route-vacancyId="@vacancy.Id">გამოგზავნილი ვაკანსიები</a>
-                                                </div>
-                                            }
                                         </div>
-                                        
+                                        <div class="col-sm-12 d-flex justify-content-center">
+                                            <div class="row mb-3">
+                                                @if (@vacancy.IsFavourite && User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
+                                                {
+                                                    <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                        <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="RemoveFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary bi-suit-heart-fill"></i></a>
+                                                    </div>
+                                                }
+                                                else if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
+                                                {
+                                                    <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                        <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="AddFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary"></i></a>
+                                                    </div>
+                                                }
+
+                                                <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0 mr-4">
+                                                    <a class="btn btn-info" asp-controller="Vacancy" asp-action="Detail" asp-route-id="@vacancy.Id">დეტალები</a>
+                                                </div>
+                                                @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) || !SignInManager.IsSignedIn(User))
+                                                {
+                                                    <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                        <a class="btn btn-primary" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@vacancy.Id">მოთხოვნის გაგზავნა</a>
+                                                    </div>
+                                                }
+                                                @if (User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                                                {
+                                                    <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                        <a class="btn btn-warning" asp-controller="Vacancy" asp-action="Update" asp-route-id="@vacancy.Id">რედაქტირება</a>
+                                                    </div>
+                                                }
+                                                @if ((User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))) || User.HasClaim(ClaimTypes.Role, UserRole.Admin.ToString()))
+                                                {
+                                                    <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                        <a class="btn btn-danger" asp-controller="Vacancy" asp-action="Delete" asp-route-id="@vacancy.Id">წაშლა</a>
+                                                    </div>
+                                                }
+                                                @if ((User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString())) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
+                                                {
+                                                    <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
+                                                        <a class="btn btn-success" asp-controller="AppliedCurriculumVitae" asp-action="Index" asp-route-vacancyId="@vacancy.Id">გამოგზავნილი ვაკანსიები</a>
+                                                    </div>
+                                                }
+                                            </div>
+
+                                        </div>
                                     </div>
-                                </div>
                                 </div>
                             </div>
                         }
@@ -175,9 +175,16 @@
         GetVacancesByCategory(categoryId);
     });
 
+    $('#LocationInput').change(function() {
+        var LocationId = parseInt(jQuery(this).val());
+
+        GetVacancesByLocation(LocationId);
+    });
+
     function GetVacancesByCategory(categoryId) {
         var keyword = document.getElementById("KeywordInput").value;
         var location = document.getElementById("LocationInput").value;
+        var vacancyTypeValue = $("#vacancyTypeId li .active").attr("value")
 
         $.ajax({
             type: "POST",
@@ -186,6 +193,7 @@
                 searchKeyword: keyword,
                 categoryId: categoryId,
                 locationId: location,
+                vacancyType: vacancyTypeValue,
             },
 
             success: function(response) {
@@ -203,6 +211,7 @@
         var keyword = document.getElementById("KeywordInput").value;
         var cateogry = document.getElementById("CategoryInput").value;
         var location = document.getElementById("LocationInput").value;
+        var vacancyTypeValue = $("#vacancyTypeId li .active").attr("value");
 
         $.ajax({
             type: "POST",
@@ -211,6 +220,34 @@
                 searchKeyword: keyword,
                 categoryId: cateogry,
                 locationId: location,
+                vacancyType: vacancyTypeValue,
+            },
+
+            success: function(response) {
+                var seachDiv = $($.parseHTML(response)).find("#VacancyList").html();
+                document.getElementById("VacancyList").innerHTML = seachDiv;
+
+                var pagination = $($.parseHTML(response)).find("#pagination").html();
+                document.getElementById("pagination").innerHTML = pagination;
+            }
+
+        })
+    }
+
+    function GetVacancesByLocation() {
+        var keyword = document.getElementById("KeywordInput").value;
+        var cateogry = document.getElementById("CategoryInput").value;
+        var location = document.getElementById("LocationInput").value;
+        var vacancyTypeValue = $("#vacancyTypeId li .active").attr("value");
+
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/Index",
+            data: {
+                searchKeyword: keyword,
+                categoryId: cateogry,
+                locationId: location,
+                vacancyType: vacancyTypeValue,
             },
 
             success: function(response) {
@@ -228,6 +265,8 @@
         var keyword = document.getElementById("KeywordInput").value;
         var cateogry = document.getElementById("CategoryInput").value;
         var location = document.getElementById("LocationInput").value;
+        var vacancyTypeValue = $("#vacancyTypeId li .active").attr("value")
+
         $.ajax({
             type: "POST",
             url: "/Vacancy/Index",
@@ -235,7 +274,8 @@
                 searchKeyword: keyword,
                 categoryId: cateogry,
                 locationId: location,
-                page: page
+                vacancyType: vacancyTypeValue,
+                page: page,
             },
 
             success: function(response) {
@@ -260,7 +300,7 @@
                 searchKeyword: keyword,
                 categoryId: cateogry,
                 locationId: location,
-                vacancyType: vacancyType
+                vacancyType: vacancyType,
             },
 
             success: function(response) {

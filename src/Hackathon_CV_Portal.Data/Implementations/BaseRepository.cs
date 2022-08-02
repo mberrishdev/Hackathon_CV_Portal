@@ -36,12 +36,17 @@ namespace Hackathon_CV_Portal.Data.Implementations
         }
 
         public async Task<DomainPagedResult<T>> GetAllAsyncByPage(int page, Expression<Func<T, object>>[] includeProperties,
-            Expression<Func<T, bool>>? expression = null, int resultsPerPage = 10)
+            List<Expression<Func<T, bool>>>? expression = null, int resultsPerPage = 10)
         {
             IQueryable<T> query = _context.Set<T>();
 
             if (expression != null)
-                query = query.Where(expression);
+            {
+                for (int i = 0; i < expression.Count; i++)
+                {
+                    query = query.Where(expression[i]);
+                }
+            }
 
             query = includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
             var result = query.Paginate<T>(new DomainPagedQueryBase(page, resultsPerPage));
