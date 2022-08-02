@@ -1,4 +1,5 @@
-﻿using Hackathon_CV_Portal.Application.Implementations.UserRoles.Models;
+﻿using Hackathon_CV_Portal.Application.Abstractions;
+using Hackathon_CV_Portal.Application.Implementations.UserRoles.Models;
 using Hackathon_CV_Portal.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 
