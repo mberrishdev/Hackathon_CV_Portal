@@ -39,7 +39,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
         [AllowAnonymous]
         public async Task<IActionResult> Index(string searchKeyword, int categoryId, int locationId, string vacancyType, bool isFav, bool withFiL = true, int page = 1, int companyId = 0)
         {
-          
+
             LoadUserModel();
 
             if (UserModel?.UserId != companyId && companyId != 0)
@@ -115,7 +115,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 model.SalaryRange = "შეთანხმებით";
 
             LoadUserModel();
-            //ToDo
             var command = new CreateVacancyCommand()
             {
                 CategoryId = model.CategoryId,
@@ -127,8 +126,6 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 DeadLine = model.DeadLine,
                 Description = model.Description,
                 Email = model.Email,
-                //Responsibility = model.Responsibility,
-                //Qualifications = model.Qualifications,
                 UserModel = UserModel
             };
 
