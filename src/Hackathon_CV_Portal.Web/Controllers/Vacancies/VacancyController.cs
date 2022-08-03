@@ -216,32 +216,17 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
         [Authorize(Roles = "User")]
         [HttpPost]
-        public async Task<IActionResult> AddFavourite(int id)
+        public async Task<IActionResult> AddOrRemoveFavourite(int id)
         {
             LoadUserModel();
-            var command = new AddFavouriteCommand()
+            var command = new AddRemoveFavouriteCommand()
             {
                 VacasnyId = id,
                 UserModel = UserModel
             };
 
-            await _vacancyService.AddFavourite(command);
-            return Ok();
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> RemoveFavourite(int id)
-        {
-            LoadUserModel();
-            var command = new RemoveFavouriteCommand()
-            {
-                VacasnyId = id,
-                UserModel = UserModel
-            };
-
-            await _vacancyService.RemoveFavourite(command);
-            return Ok();
+            var status = await _vacancyService.AddOrRemoveFavourite(command);
+            return Ok(status);
         }
 
         #endregion

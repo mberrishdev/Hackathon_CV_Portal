@@ -107,13 +107,13 @@
                                                 @if (@vacancy.IsFavourite && User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
                                                 {
                                                     <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                        <button class="btn btn-light btn-square me-3" onClick="RemoveFavourite(@vacancy.Id)"><i  id="@vacancy.Id" class=" far fa-heart text-primary bi-suit-heart-fill"></i></button>
+                                                        <button class="btn btn-light btn-square me-3" onClick="AddOrRemoveFavourite(@vacancy.Id)"><i  id="@vacancy.Id" class=" far fa-heart text-primary bi-suit-heart-fill"></i></button>
                                                     </div>
                                                 }
                                                 else if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
                                                 {
                                                     <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                         <button class="btn btn-light btn-square me-3" onClick="AddFavourite(@vacancy.Id)"><i  id="@vacancy.Id" class="far fa-heart text-primary"></i></button>
+                                                         <button class="btn btn-light btn-square me-3" onClick="AddOrRemoveFavourite(@vacancy.Id)"><i  id="@vacancy.Id" class="far fa-heart text-primary"></i></button>
                                                     </div>
                                                 }
 
@@ -194,18 +194,22 @@
         })
     }
 
-    function AddFavourite(vancacyId) 
+    function AddOrRemoveFavourite(vancacyId) 
     { 
         $.ajax({
             type: "POST",
-            url: "/Vacancy/AddFavourite",
+            url: "/Vacancy/AddOrRemoveFavourite",
             data: {
                 id: vancacyId,
             },
             success: function(response) {
-               toastr.success('ვაკანსია წარმატებით დაემატა ფავორიტებში');
-                var heart = document.getElementById('2')
-               heart.className ="far fa-heart text-primary bi-suit-heart-fill";
+                toastr.success('ვაკანსია წარმატებით დაემატა ფავორიტებში');
+                var heart = document.getElementById(vancacyId)
+            
+                if(response==1)
+                    heart.className ="far fa-heart text-primary bi-suit-heart-fill";
+                if(response == 2)
+                    heart.className ="far fa-heart text-primary";
             },
             error: function(response)
             { 
@@ -215,26 +219,6 @@
         })
     }
 
-    function RemoveFavourite(vancacyId) 
-    { 
-        $.ajax({
-            type: "POST",
-            url: "/Vacancy/RemoveFavourite",
-            data: {
-                id: vancacyId,
-            },
-            success: function(response) {
-               toastr.success('ვაკანსია წარმატებით წაიშალა ფავორიტებიდან');
-                var heart = document.getElementById('2')
-               heart.className ="far fa-heart text-primary";
-            },
-            error: function(response)
-            { 
-                toastr.error('უპს... დაფიქსირდა შეცდომა')
-            }
-
-        })
-    }
     $('#CategoryInput').change(function() {
         var categoryId = parseInt(jQuery(this).val());
 
