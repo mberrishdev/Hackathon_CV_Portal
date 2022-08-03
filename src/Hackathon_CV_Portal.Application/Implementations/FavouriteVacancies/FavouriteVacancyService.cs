@@ -31,7 +31,7 @@ namespace Hackathon_CV_Portal.Application.Implementations.FavouriteVacancies
             var fv = await _baseRepository.GetAsync(predicate: x => x.UserId == command.UserModel.UserId && x.VacansyId == command.VacasnyId);
             if (fv == null)
                 throw new Exception("ვაკანსია არ არსებობს");
-            await _baseRepository.RemoveAsync(fv.Id);
+            await _baseRepository.RemoveAsync(fv);
         }
     }
 }
