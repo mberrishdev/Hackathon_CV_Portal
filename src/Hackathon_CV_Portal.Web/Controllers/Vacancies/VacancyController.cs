@@ -214,7 +214,8 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
 
         #region Favourite
 
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
+        [HttpPost]
         public async Task<IActionResult> AddFavourite(int id)
         {
             LoadUserModel();
@@ -225,10 +226,11 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             };
 
             await _vacancyService.AddFavourite(command);
-            return RedirectToAction("Index");
+            return Ok();
         }
 
-        [Authorize(Roles = "User")]
+        [HttpPost]
+        //[Authorize(Roles = "User")]
         public async Task<IActionResult> RemoveFavourite(int id)
         {
             LoadUserModel();
@@ -239,7 +241,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             };
 
             await _vacancyService.RemoveFavourite(command);
-            return RedirectToAction("Index");
+            return Ok();
         }
 
         #endregion

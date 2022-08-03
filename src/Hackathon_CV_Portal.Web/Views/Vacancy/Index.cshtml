@@ -10,6 +10,7 @@
     ViewBag.User = User;
 }
 
+</style>  
 <div class="container-xxl py-5" id="Div">
     <div class="container">
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
@@ -102,13 +103,13 @@
                                                 @if (@vacancy.IsFavourite && User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
                                                 {
                                                     <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                        <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="RemoveFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary bi-suit-heart-fill"></i></a>
+                                                        <button class="btn btn-light btn-square me-3" onClick="RemoveFavourite(@vacancy.Id)"><i  id="@vacancy.Id" class=" far fa-heart text-primary bi-suit-heart-fill"></i></button>
                                                     </div>
                                                 }
                                                 else if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
                                                 {
                                                     <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                        <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="AddFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary"></i></a>
+                                                         <button class="btn btn-light btn-square me-3" onClick="AddFavourite(@vacancy.Id)"><i  id="@vacancy.Id" class="far fa-heart text-primary"></i></button>
                                                     </div>
                                                 }
 
@@ -118,7 +119,7 @@
                                                 @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) || !SignInManager.IsSignedIn(User))
                                                 {
                                                     <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                        <a class="btn btn-primary" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@vacancy.Id">მოთხოვნის გაგზავნა</a>
+                                                        <button class="btn btn-primary" onClick="ApplyVacancy(@vacancy.Id)">მოთხოვნის გაგზავნა</button>
                                                     </div>
                                                 }
                                                 @if (User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
@@ -169,6 +170,68 @@
 
 
 <script type="text/javascript">
+
+    function ApplyVacancy(vancacyId) 
+    { 
+        $.ajax({
+            type: "POST",
+            url: "/AppliedCurriculumVitae/Apply",
+            data: {
+                id: vancacyId,
+            },
+            success: function(response) {
+               toastr.success('თქვენი სივი წარამტებით გაიგზავნა დამსაქმებელთან');
+               location.reload();
+            },
+            error: function(response)
+            { 
+                toastr.error('უპს... დაფიქსირდა შეცდომა')
+            }
+
+        })
+    }
+
+    function AddFavourite(vancacyId) 
+    { 
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/AddFavourite",
+            data: {
+                id: vancacyId,
+            },
+            success: function(response) {
+               toastr.success('ვაკანსია წარმატებით დაემატა ფავორიტებში');
+                var heart = document.getElementById('2')
+               heart.className ="far fa-heart text-primary bi-suit-heart-fill";
+            },
+            error: function(response)
+            { 
+                toastr.error('უპს... დაფიქსირდა შეცდომა')
+            }
+
+        })
+    }
+
+    function RemoveFavourite(vancacyId) 
+    { 
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/RemoveFavourite",
+            data: {
+                id: vancacyId,
+            },
+            success: function(response) {
+               toastr.success('ვაკანსია წარმატებით წაიშალა ფავორიტებიდან');
+                var heart = document.getElementById('2')
+               heart.className ="far fa-heart text-primary";
+            },
+            error: function(response)
+            { 
+                toastr.error('უპს... დაფიქსირდა შეცდომა')
+            }
+
+        })
+    }
     $('#CategoryInput').change(function() {
         var categoryId = parseInt(jQuery(this).val());
 
