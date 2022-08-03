@@ -182,9 +182,13 @@
     });
 
     function GetVacancesByCategory(categoryId) {
-        var keyword = document.getElementById("KeywordInput").value;
-        var location = document.getElementById("LocationInput").value;
+        var keyword = document.getElementById("KeywordInput") != null ? document.getElementById("KeywordInput").value : null;
+        var location = document.getElementById("LocationInput") != null ? document.getElementById("LocationInput").value : null;
         var vacancyTypeValue = $("#vacancyTypeId li .active").attr("value")
+
+        var url = new URL(window.location.href);
+        var isFavValue = url.searchParams.get("isFav")
+        var isFilValue = url.searchParams.get("isFil")
 
         $.ajax({
             type: "POST",
@@ -194,6 +198,8 @@
                 categoryId: categoryId,
                 locationId: location,
                 vacancyType: vacancyTypeValue,
+                isFav: isFavValue,
+                isFil: isFilValue,
             },
 
             success: function(response) {
@@ -208,10 +214,14 @@
     }
 
     function GetVacancesBySearch() {
-        var keyword = document.getElementById("KeywordInput").value;
-        var cateogry = document.getElementById("CategoryInput").value;
-        var location = document.getElementById("LocationInput").value;
+        var keyword = document.getElementById("KeywordInput") != null ? document.getElementById("KeywordInput").value : null;
+        var cateogry = document.getElementById("CategoryInput") != null ? document.getElementById("CategoryInput").value : null;
+        var location = document.getElementById("LocationInput") != null ? document.getElementById("LocationInput").value : null;
         var vacancyTypeValue = $("#vacancyTypeId li .active").attr("value");
+
+        var url = new URL(window.location.href);
+        var isFavValue = url.searchParams.get("isFav")
+        var isFilValue = url.searchParams.get("isFil")
 
         $.ajax({
             type: "POST",
@@ -221,6 +231,8 @@
                 categoryId: cateogry,
                 locationId: location,
                 vacancyType: vacancyTypeValue,
+                  isFav: isFavValue,
+                isFil: isFilValue,
             },
 
             success: function(response) {
@@ -235,10 +247,14 @@
     }
 
     function GetVacancesByLocation() {
-        var keyword = document.getElementById("KeywordInput").value;
-        var cateogry = document.getElementById("CategoryInput").value;
-        var location = document.getElementById("LocationInput").value;
+        var keyword = document.getElementById("KeywordInput") != null ? document.getElementById("KeywordInput").value : null;
+        var cateogry = document.getElementById("CategoryInput") != null ? document.getElementById("CategoryInput").value : null;
+        var location = document.getElementById("LocationInput") != null ? document.getElementById("LocationInput").value : null;
         var vacancyTypeValue = $("#vacancyTypeId li .active").attr("value");
+
+        var url = new URL(window.location.href);
+        var isFavValue = url.searchParams.get("isFav")
+        var isFilValue = url.searchParams.get("isFil")
 
         $.ajax({
             type: "POST",
@@ -248,6 +264,8 @@
                 categoryId: cateogry,
                 locationId: location,
                 vacancyType: vacancyTypeValue,
+                  isFav: isFavValue,
+                isFil: isFilValue,
             },
 
             success: function(response) {
@@ -262,10 +280,14 @@
     }
 
     function GetVacancesByPage(page) {
-        var keyword = document.getElementById("KeywordInput").value;
-        var cateogry = document.getElementById("CategoryInput").value;
-        var location = document.getElementById("LocationInput").value;
-        var vacancyTypeValue = $("#vacancyTypeId li .active").attr("value")
+        var keyword = document.getElementById("KeywordInput") != null ? document.getElementById("KeywordInput").value : null;
+        var cateogry = document.getElementById("CategoryInput") != null ? document.getElementById("CategoryInput").value : null;
+        var location = document.getElementById("LocationInput") != null ? document.getElementById("LocationInput").value : null;
+        var vacancyTypeValue = $("#vacancyTypeId li .active") != null ?  $("#vacancyTypeId li .active").attr("value") : null;
+
+        var url = new URL(window.location.href);
+        var isFavValue = url.searchParams.get("isFav")
+        var isFilValue = url.searchParams.get("isFil")
 
         $.ajax({
             type: "POST",
@@ -275,6 +297,8 @@
                 categoryId: cateogry,
                 locationId: location,
                 vacancyType: vacancyTypeValue,
+                  isFav: isFavValue,
+                isFil: isFilValue,
                 page: page,
             },
 
@@ -290,9 +314,15 @@
     }
 
     function GetVacancesByType(vacancyType) {
-        var keyword = document.getElementById("KeywordInput").value;
-        var cateogry = document.getElementById("CategoryInput").value;
-        var location = document.getElementById("LocationInput").value;
+
+        var keyword = document.getElementById("KeywordInput") != null ? document.getElementById("KeywordInput").value : null;
+        var cateogry = document.getElementById("CategoryInput") != null ? document.getElementById("CategoryInput").value : null;
+        var location = document.getElementById("LocationInput") != null ? document.getElementById("LocationInput").value : null;
+
+        var url = new URL(window.location.href);
+        var isFavValue = url.searchParams.get("isFav")
+        var isFilValue = url.searchParams.get("isFil")
+
         $.ajax({
             type: "POST",
             url: "/Vacancy/Index",
@@ -301,6 +331,8 @@
                 categoryId: cateogry,
                 locationId: location,
                 vacancyType: vacancyType,
+                  isFav: isFavValue,
+                isFil: isFilValue,
             },
 
             success: function(response) {
