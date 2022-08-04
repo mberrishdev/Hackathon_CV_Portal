@@ -19,7 +19,7 @@
 
                 @if (User.Identity.IsAuthenticated && User.IsInRole("Company"))
                 {
-                    <a asp-controller="Vacancy" asp-action="Index" asp-route-companyId="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))" class="btn btn-primary py-md-3 px-md-5 col-5 animated slideInRight">შენი გამოქვეყნებული ვაკანსიები</a>
+                    <a asp-controller="Vacancy" asp-action="Index" asp-route-companyId="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))" class="btn btn-primary py-md-3 px-md-5 col-6 animated slideInRight">შენი გამოქვეყნებული ვაკანსიები</a>
                 }
             </div>
         </div>
