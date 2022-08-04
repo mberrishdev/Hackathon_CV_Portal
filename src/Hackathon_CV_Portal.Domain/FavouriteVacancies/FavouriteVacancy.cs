@@ -16,7 +16,7 @@ namespace Hackathon_CV_Portal.Domain.FavouriteVacancies
         //public Vacancie Vacancie { get; private set; }
 
         public FavouriteVacancy() { }
-        public FavouriteVacancy(AddFavouriteCommand command)
+        public FavouriteVacancy(AddRemoveFavouriteCommand command)
         {
             UserId = command.UserModel.UserId;
             VacansyId = command.VacasnyId;

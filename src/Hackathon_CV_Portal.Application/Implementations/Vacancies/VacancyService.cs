@@ -5,6 +5,7 @@ using Hackathon_CV_Portal.Application.Implementations.Responsibilities.Models;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Queries;
 using Hackathon_CV_Portal.Data.Abstractions;
+using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.FavouriteVacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vcancies;
@@ -115,16 +116,13 @@ namespace Hackathon_CV_Portal.Application.Implementations.Vacancies
             };
         }
 
-        public async Task AddFavourite(AddFavouriteCommand command)
+        public async Task<AddRemoveVacancyStatus> AddOrRemoveFavourite(AddRemoveFavouriteCommand command)
         {
-            await _favouriteVacancyService.AddFavourite(command);
+            var vacancy = await _baseRepository.GetAsync(predicate: x => x.Id == command.VacasnyId);
+            if (vacancy == null)
+                throw new Exception("ასეთი ვაკანსია არ არსებობს");
+            return await _favouriteVacancyService.AddOrRemoveFavourite(command);
         }
-
-        public async Task RemoveFavourite(RemoveFavouriteCommand command)
-        {
-            await _favouriteVacancyService.RemoveFavourite(command);
-        }
-
         public async Task Delete(int id)
         {
             var entity = await _baseRepository.GetAsync(predicate: x => x.Id == id);

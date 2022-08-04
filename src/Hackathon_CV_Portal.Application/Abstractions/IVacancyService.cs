@@ -1,5 +1,6 @@
 ﻿using Hackathon_CV_Portal.Application.Implementations.Vacancies.Models;
 using Hackathon_CV_Portal.Application.Implementations.Vacancies.Queries;
+using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.FavouriteVacancies.Commands;
 using Hackathon_CV_Portal.Domain.Vacancies.Commands;
 
@@ -10,10 +11,9 @@ namespace Hackathon_CV_Portal.Application.Abstractions
         Task<VacansyVM> ListVacancyQuery(ListVacancyQuery query);
         Task<int> CreateVacancy(CreateVacancyCommand command);
         Task<VacancyModel> GetVacancyById(int id);
-        Task AddFavourite(AddFavouriteCommand command);
-        Task RemoveFavourite(RemoveFavouriteCommand command);
         Task CleanVacancies();
         Task Delete(int id);
         Task UpdateVacancy(UpdateVacancyCommand command);
+        Task<AddRemoveVacancyStatus> AddOrRemoveFavourite(AddRemoveFavouriteCommand command);
     }
 }
