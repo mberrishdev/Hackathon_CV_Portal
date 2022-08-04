@@ -86,8 +86,7 @@
                 city: city,
             },
             success: function(response) {
-                var locDiv = document.getElementById("Locations").innerHTML +=
-                    `
+                var newLocation =  `
                     <div class="job-item p-3 mb-2 bg-light text-dark border">
                         <div class="row g-4">
                             <div class="col-sm-12 col-md-8 d-flex align-items-center">
@@ -107,6 +106,9 @@
                         </div>
                     </div>
                     `
+                var updatedInnerHtml = newLocation +  document.getElementById("Locations").innerHTML;
+                var locDiv = document.getElementById("Locations").innerHTML = updatedInnerHtml;
+                    
                 toastr.success('ლოკაცია წარმატებით დაემატა');
             },
             error: function(data) {
