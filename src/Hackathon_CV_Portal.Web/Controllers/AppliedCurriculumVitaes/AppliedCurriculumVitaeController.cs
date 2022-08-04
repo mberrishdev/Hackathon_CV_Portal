@@ -55,12 +55,13 @@ namespace Hackathon_CV_Portal.Web.Controllers.AppliedCurriculumVitaes
         }
 
         [Authorize(Roles = "User")]
+        [HttpPost]
         public async Task<IActionResult> Apply(int id)
         {
             LoadUserModel();
 
             await _appliedCurriculumVitaeService.ApplyVacancy(id, UserModel);
-            return View();
+            return Ok();
         }
 
     }

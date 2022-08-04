@@ -10,6 +10,11 @@
     ViewBag.User = User;
 }
 
+@{
+    ViewData["Title"] = "ვაკანსიები";
+}
+
+</style>  
 <div class="container-xxl py-5" id="Div">
     <div class="container">
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
@@ -102,13 +107,13 @@
                                                 @if (@vacancy.IsFavourite && User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
                                                 {
                                                     <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                        <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="RemoveFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary bi-suit-heart-fill"></i></a>
+                                                        <button class="btn btn-light btn-square me-3" onClick="AddOrRemoveFavourite(@vacancy.Id)"><i  id="@vacancy.Id" class=" far fa-heart text-primary bi-suit-heart-fill"></i></button>
                                                     </div>
                                                 }
                                                 else if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()))
                                                 {
                                                     <div class="d-flex justify-content-center col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                        <a class="btn btn-light btn-square me-3" asp-controller="Vacancy" asp-action="AddFavourite" asp-route-id="@vacancy.Id"><i class=" far fa-heart text-primary"></i></a>
+                                                         <button class="btn btn-light btn-square me-3" onClick="AddOrRemoveFavourite(@vacancy.Id)"><i  id="@vacancy.Id" class="far fa-heart text-primary"></i></button>
                                                     </div>
                                                 }
 
@@ -118,7 +123,7 @@
                                                 @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) || !SignInManager.IsSignedIn(User))
                                                 {
                                                     <div class="col-12 col-lg col-md p-0 mb-2 mb-mb-0 mb-lg-0">
-                                                        <a class="btn btn-primary" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@vacancy.Id">მოთხოვნის გაგზავნა</a>
+                                                        <button class="btn btn-primary" onClick="ApplyVacancy(@vacancy.Id)">მოთხოვნის გაგზავნა</button>
                                                     </div>
                                                 }
                                                 @if (User.HasClaim(ClaimTypes.Role, UserRole.Company.ToString()) && @vacancy.UserId == int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)))
@@ -159,8 +164,8 @@
                     {
                         <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@i)">@i</button></li>
                     }
-                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 5 <= Mode.TottalPages - 1 ? Model.CurrentPageIndex + 5 : Mode.TottalPages - 1)"><i class="fas fa-angle-right"></i></button></li>
-                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 10 <= Mode.TottalPages - 1 ? Model.CurrentPageIndex + 10 : Mode.TottalPages - 1)"><i class="fas fa-angle-double-right"></i></button></li>
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 5 <= Model.TottalPages - 1 ? Model.CurrentPageIndex + 5 : Model.TottalPages - 1)"><i class="fas fa-angle-right"></i></button></li>
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 10 <= Model.TottalPages - 1 ? Model.CurrentPageIndex + 10 : Model.TottalPages - 1)"><i class="fas fa-angle-double-right"></i></button></li>
                 }
             </ul>
         </div>
@@ -169,6 +174,51 @@
 
 
 <script type="text/javascript">
+
+    function ApplyVacancy(vancacyId) 
+    { 
+        $.ajax({
+            type: "POST",
+            url: "/AppliedCurriculumVitae/Apply",
+            data: {
+                id: vancacyId,
+            },
+            success: function(response) {
+               toastr.success('თქვენი სივი წარამტებით გაიგზავნა დამსაქმებელთან');
+            },
+            error: function(response)
+            { 
+                toastr.error('უპს... დაფიქსირდა შეცდომა')
+            }
+
+        })
+    }
+
+    function AddOrRemoveFavourite(vancacyId) 
+    { 
+        $.ajax({
+            type: "POST",
+            url: "/Vacancy/AddOrRemoveFavourite",
+            data: {
+                id: vancacyId,
+            },
+            success: function(response) {
+                toastr.success('ვაკანსია წარმატებით დაემატა ფავორიტებში');
+                var heart = document.getElementById(vancacyId)
+            
+                if(response==1)
+                    heart.className ="far fa-heart text-primary bi-suit-heart-fill";
+                if(response == 2)
+                    heart.className ="far fa-heart text-primary";
+            },
+            error: function(response)
+            { 
+                toastr.error('უპს... დაფიქსირდა შეცდომა')
+            }
+
+        })
+    }
+
     $('#CategoryInput').change(function() {
         var categoryId = parseInt(jQuery(this).val());
 

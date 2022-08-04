@@ -15,66 +15,64 @@
                         <h3 class="mb-3">@Model.CompanyName</h3>
                         <h3 class="mb-4">@Model.Category</h3>
                     </div>
-                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Location</span>
-                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>@Model.Type</span>
-                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>@Model.SalaryRange</span>
-                        <span class="text-truncate me-0"><i class="far bi bi-envelope  text-primary me-2"></i>@Model.Email</span>
-                    </div>
+                    <span class="text-truncate me-3"><i
+                            class="fa fa-map-marker-alt text-primary me-2"></i>@Model.Location</span>
+                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>@Model.Type</span>
+                    <span class="text-truncate me-0"><i
+                            class="far fa-money-bill-alt text-primary me-2"></i>@Model.SalaryRange</span>
+                    <span class="text-truncate me-0"><i
+                            class="far bi bi-envelope  text-primary me-2"></i>@Model.Email</span>
                 </div>
+            </div>
 
-                <div class="mb-5">
-                    <h4 class="mb-3">აღწერა</h4>
-                    <p> @Model.Description</p>
-                    @if (Model.Qualifications.Count() != 0)
-                    {
-                        <h4 class="mb-3">კვალიფიკაცია</h4>
-                        @foreach (var qualifications in Model.Qualifications)
-                        {
-                            <p>. @qualifications.QualificationName</p>
-                        }
-                    }
-
-                    @if (Model.Responsibilities.Count() != 0)
-                    {
-                        <h4 class="mb-3">მოვალეობები</h4>
-                        @foreach (var responsibilities in Model.Responsibilities)
-                        {
-                            <p>. @responsibilities.ResponsibilityName</p>
-                        }
-                    }
-                </div>
-        
-               @* <div class="">
-                    <h4 class="mb-4">Apply For The Job</h4>
-                    <form>
-                        <div class="row g-3">
-                            <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control" placeholder="Your Name">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="email" class="form-control" placeholder="Your Email">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control" placeholder="Portfolio Website">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="file" class="form-control bg-white">
-                            </div>
-                            <div class="col-12">
-                                <textarea class="form-control" rows="5" placeholder="Coverletter"></textarea>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit">Apply Now</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>*@
-                @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) || !SignInManager.IsSignedIn(User))
+            <div class="mb-5">
+                <h4 class="mb-3">აღწერა</h4>
+                <p> @Model.Description</p>
+                @if (Model.Qualifications.Count() != 0)
                 {
-                    <a class="btn btn-primary me-2" asp-controller="AppliedCurriculumVitae" asp-action="Apply" asp-route-id="@Model.Id">Apply Now</a>
+                    <h4 class="mb-3">კვალიფიკაცია</h4>
+                    @foreach (var qualifications in Model.Qualifications)
+                    {
+                        <p>. @qualifications.QualificationName</p>
+                    }
+                }
+
+                @if (Model.Responsibilities.Count() != 0)
+                {
+                    <h4 class="mb-3">მოვალეობები</h4>
+                    @foreach (var responsibilities in Model.Responsibilities)
+                    {
+                        <p>. @responsibilities.ResponsibilityName</p>
+                    }
                 }
             </div>
 
+            @if (User.HasClaim(ClaimTypes.Role, UserRole.User.ToString()) || !SignInManager.IsSignedIn(User))
+            {
+                <button class="btn btn-primary me-2" onClick="ApplyVacancy(@Model.Id)">მოთხოვნის გაგზავნა</button>
+            }
         </div>
+
     </div>
 </div>
+</div>
+
+<script type="text/javascript">
+
+    function ApplyVacancy(vancacyId) {
+        $.ajax({
+            type: "POST",
+            url: "/AppliedCurriculumVitae/Apply",
+            data: {
+                id: vancacyId,
+            },
+            success: function (response) {
+                toastr.success('თქვენი სივი წარამტებით გაიგზავნა დამსაქმებელთან');
+            },
+            error: function (response) {
+                toastr.error('უპს... დაფიქსირდა შეცდომა')
+            }
+
+        })
+    }
+</script>
