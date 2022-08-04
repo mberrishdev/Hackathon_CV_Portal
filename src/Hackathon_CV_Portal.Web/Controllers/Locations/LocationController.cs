@@ -16,7 +16,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Locations
             _locationService = locationService;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var result = await _locationService.GetLocations();
