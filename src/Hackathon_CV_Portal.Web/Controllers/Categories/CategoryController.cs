@@ -1,7 +1,6 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
 using Hackathon_CV_Portal.Domain.Categories.command;
 using Hackathon_CV_Portal.Domain.Users;
-using Hackathon_CV_Portal.Web.Models.CategoryModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,28 +27,18 @@ namespace Hackathon_CV_Portal.Web.Controllers.Categories
             return View(result);
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult AddCategory()
-        {
-            return View();
-        }
-
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddCategory([FromForm] CreateCategoryDto model)
+        public async Task<IActionResult> AddCategory(string categoryName)
         {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            LoadUserModel();
-
             var command = new CreateCategoryCommand()
             {
-                Name = model.Name,
+                Name = categoryName,
             };
-            await _categoryService.AddCategory(command);
 
-            return RedirectToAction("Index");
+            var id = await _categoryService.AddCategory(command);
+
+            return Ok(id);
         }
 
         [Authorize(Roles = "Admin")]
