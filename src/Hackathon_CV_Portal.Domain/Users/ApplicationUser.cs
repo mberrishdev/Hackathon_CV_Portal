@@ -21,7 +21,7 @@ namespace Hackathon_CV_Portal.Domain.Users
         public ICollection<CurriculumVitae> CVs { get; set; }
         public ICollection<Vacancy> Vacancies { get; set; }
 
-        public DateTime CreateDate { get; private set; }
+        public DateTime CreateDate { get; set; }
 
         public ICollection<ApplicationUserRole> UserRoles { get; set; }
         // public ICollection<FavouriteVacancie> FavouriteVacancies { get; set; }

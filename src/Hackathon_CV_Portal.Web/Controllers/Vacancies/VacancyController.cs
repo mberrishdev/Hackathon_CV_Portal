@@ -89,7 +89,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             var locations = await _locationService.GetLocations();
             ViewBag.Locations = new SelectList(locations, "Id", "CountryCity");
 
-            ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Type = "სრული განაკვეთ" }, new VacancyTypeClass() { Id = 2, Type = "ნახევარი განაკვეთ" } }, "Id", "Type");
+            ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Type = "სრული განაკვეთი" }, new VacancyTypeClass() { Id = 2, Type = "ნახევარი განაკვეთი" } }, "Id", "Type");
 
             return View();
         }
@@ -106,7 +106,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 var locations = await _locationService.GetLocations();
                 ViewBag.Locations = new SelectList(locations, "Id", "CountryCity");
 
-                ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Type = "სრული განაკვეთ" }, new VacancyTypeClass() { Id = 2, Type = "ნახევარი განაკვეთ" } }, "Id", "Type");
+                ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Type = "სრული განაკვეთი" }, new VacancyTypeClass() { Id = 2, Type = "ნახევარი განაკვეთი" } }, "Id", "Type");
                 return View(model);
             }
 
@@ -160,7 +160,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
             var locations = await _locationService.GetLocations();
             ViewBag.Locations = new SelectList(locations, "Id", "CountryCity");
 
-            ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Type = "სრული განაკვეთ" }, new VacancyTypeClass() { Id = 2, Type = "ნახევარი განაკვეთ" } }, "Id", "Type");
+            ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Type = "სრული განაკვეთი" }, new VacancyTypeClass() { Id = 2, Type = "ნახევარი განაკვეთი" } }, "Id", "Type");
 
             return View(vacancy);
         }
@@ -177,7 +177,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
                 var locations = await _locationService.GetLocations();
                 ViewBag.Locations = new SelectList(locations, "Id", "City");
 
-                ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Type = "სრული განაკვეთ" }, new VacancyTypeClass() { Id = 2, Type = "ნახევარი განაკვეთ" } }, "Id", "Type");
+                ViewBag.Types = new SelectList(new List<VacancyTypeClass> { new VacancyTypeClass() { Id = 1, Type = "სრული განაკვეთი" }, new VacancyTypeClass() { Id = 2, Type = "ნახევარი განაკვეთი" } }, "Id", "Type");
                 return View();
             }
 
@@ -215,31 +215,18 @@ namespace Hackathon_CV_Portal.Web.Controllers.Vacancies
         #region Favourite
 
         [Authorize(Roles = "User")]
-        public async Task<IActionResult> AddFavourite(int id)
+        [HttpPost]
+        public async Task<IActionResult> AddOrRemoveFavourite(int id)
         {
             LoadUserModel();
-            var command = new AddFavouriteCommand()
+            var command = new AddRemoveFavouriteCommand()
             {
                 VacasnyId = id,
                 UserModel = UserModel
             };
 
-            await _vacancyService.AddFavourite(command);
-            return RedirectToAction("Index");
-        }
-
-        [Authorize(Roles = "User")]
-        public async Task<IActionResult> RemoveFavourite(int id)
-        {
-            LoadUserModel();
-            var command = new RemoveFavouriteCommand()
-            {
-                VacasnyId = id,
-                UserModel = UserModel
-            };
-
-            await _vacancyService.RemoveFavourite(command);
-            return RedirectToAction("Index");
+            var status = await _vacancyService.AddOrRemoveFavourite(command);
+            return Ok(status);
         }
 
         #endregion

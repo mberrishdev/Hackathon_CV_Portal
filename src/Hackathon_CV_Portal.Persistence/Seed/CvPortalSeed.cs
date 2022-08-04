@@ -28,7 +28,7 @@ namespace Hackathon_CV_Portal.Persistence.Seed
         {
             var seeded = false;
 
-            //SeedRoles(context, ref seeded);
+            SeedRoles(context, ref seeded);
             //SeedUsers(context, ref seeded);
             //SeedCategories(context, ref seeded);
             //SeedCv(context, ref seeded);
