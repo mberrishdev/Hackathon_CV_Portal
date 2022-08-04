@@ -1,5 +1,4 @@
 ﻿using Hackathon_CV_Portal.Application.Abstractions;
-using Hackathon_CV_Portal.Domain.CVs.Commands;
 using Hackathon_CV_Portal.Domain.Enums;
 using Hackathon_CV_Portal.Domain.Users;
 using Hackathon_CV_Portal.Domain.Users.Commands;
@@ -121,7 +120,9 @@ namespace Hackathon_CV_Portal.Application.Implementations
             {
                 UserName = command.Email,
                 Email = command.Email ?? info.Principal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value,
+                CreateDate = DateTime.Now,
             };
+
 
             var result = await _userManager.CreateAsync(user);
 
