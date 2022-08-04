@@ -15,11 +15,11 @@ namespace Hackathon_CV_Portal.Application.Implementations.Locations
             _baseRepository = baseRepository;
         }
 
-        public async Task AddLocation(CreateLocationCommand command)
+        public async Task<int> AddLocation(CreateLocationCommand command)
         {
             var location = new Location(command);
 
-            await _baseRepository.CreateAsync(location);
+            return await _baseRepository.CreateAsync(location);
         }
 
         public async Task DeleteLocation(int id)

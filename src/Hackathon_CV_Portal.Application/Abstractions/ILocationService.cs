@@ -6,7 +6,7 @@ namespace Hackathon_CV_Portal.Application.Abstractions
     public interface ILocationService
     {
         Task<List<LocationVM>> GetLocations();
-        Task AddLocation(CreateLocationCommand command);
+        Task<int> AddLocation(CreateLocationCommand command);
         Task DeleteLocation(int id);
     }
 }

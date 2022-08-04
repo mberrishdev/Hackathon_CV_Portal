@@ -11,27 +11,108 @@
             <h1 class="text-center">ლოკაციები</h1>
         </p>
 
-         <div class="row container mt-5 mb-4">
-                <a class="btn btn-primary col-md-4 float-center" asp-controller="Location" asp-action="AddLocation"><h4 class="text-white">ლოკაციის დამატება</h4></a>
-         </div>
-
-        @foreach (var item in Model)
-        {
-            <div class="job-item p-3 mb-2 bg-light text-dark border">
-                <div class="row g-4">
-                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                        <div class="text-start ps-4">
-                            <h5 class="mb-3">ქვეყანა: @Html.DisplayFor(modelItem => item.Country)</h5>
-                            <h5 class="mb-3">ქალაქი: @Html.DisplayFor(modelItem => item.City)</h5>
-                        </div>
+        <div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="locationModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="locationModalLabel">ლოკაციის დამატება</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                        <div class="d-flex mb-3">
-                            <a class="btn btn-danger me-2" asp-controller="Location" asp-action="DeleteLocation" asp-route-id="@item.Id"><h5 class="text-white">წაშლა</h5></a>
-                        </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">ქვეყანა:</label>
+                                <input id="LocationCountry" class="form-control" id="message-text"></input>
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">ქალაქი:</label>
+                                <input  id="LocationCity" class="form-control" id="message-text"></input>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">ჩახურვა</button>
+                        <button type="button" onClick="AddLocation()" class="btn btn-outline-success float-right">დამატება</button>
                     </div>
                 </div>
             </div>
-        }
+        </div>
+        <div class="row container mt-5 mb-4">
+            <div>
+                <button type="button" class="btn btn-outline-success float-right" data-toggle="modal" data-target="#locationModal">
+                    <i class="bi bi-plus fa-1x"></i> ლოკაციის დამატება
+                </button>
+            </div>
+        </div>
+        <div id="Locations">
+            @foreach (var item in Model)
+            {
+                <div class="job-item p-3 mb-2 bg-light text-dark border">
+                    <div class="row g-4">
+                        <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                            <div class="text-start ps-4">
+                                <h5 class="mb-3">ქვეყანა: @Html.DisplayFor(modelItem => item.Country)</h5>
+                                <h5 class="mb-3">ქალაქი: @Html.DisplayFor(modelItem => item.City)</h5>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                            <div class="d-flex mb-3">
+                                <a class="btn btn-danger me-2" asp-controller="Location" asp-action="DeleteLocation"
+                               asp-route-id="@item.Id">
+                                    <h5 class="text-white">წაშლა</h5>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>
+
+<script>
+    function AddLocation() {
+        var country = document.getElementById("LocationCountry").value;
+        var city = document.getElementById("LocationCity").value;
+
+        $.ajax({
+            type: "POST",
+            url: "/Location/AddLocation",
+            data: {
+                country: country,
+                city: city,
+            },
+            success: function(response) {
+                var locDiv = document.getElementById("Locations").innerHTML +=
+                    `
+                    <div class="job-item p-3 mb-2 bg-light text-dark border">
+                        <div class="row g-4">
+                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                <div class="text-start ps-4">
+                                    <h5 class="mb-3">ქვეყანა: `+ country + `</h5>
+                                    <h5 class="mb-3">ქალაქი: `+ city + `</h5>
+                                </div>
+                            </div>
+                            <div
+                            class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                <div class="d-flex mb-3">
+                                    <a class="btn btn-danger me-2" asp-controller="Location" asp-action="DeleteLocation"
+                                    asp-route-id="`+ response + `">
+                                        <h5 class="text-white">წაშლა</h5>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `
+                toastr.success('ლოკაცია წარმატებით დაემატა');
+            },
+            error: function(data) {
+                toastr.error('დაფიქსირდა შეცდომა');
+            }
+        });
+    }
+</script>

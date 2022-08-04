@@ -15,14 +15,14 @@ namespace Hackathon_CV_Portal.Application.Implementations.Categories
             _baseRepository = baseRepository;
         }
 
-        public async Task AddCategory(CreateCategoryCommand command)
+        public async Task<int> AddCategory(CreateCategoryCommand command)
         {
             Category category = new()
             {
                 Name = command.Name,
             };
 
-            await _baseRepository.CreateAsync(category);
+            return await _baseRepository.CreateAsync(category);
         }
 
         public async Task DeleteCategory(int id)
