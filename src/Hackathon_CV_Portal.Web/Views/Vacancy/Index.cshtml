@@ -164,8 +164,8 @@
                     {
                         <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@i)">@i</button></li>
                     }
-                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 5 <= Mode.TottalPages - 1 ? Model.CurrentPageIndex + 5 : Mode.TottalPages - 1)"><i class="fas fa-angle-right"></i></button></li>
-                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 10 <= Mode.TottalPages - 1 ? Model.CurrentPageIndex + 10 : Mode.TottalPages - 1)"><i class="fas fa-angle-double-right"></i></button></li>
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 5 <= Model.TottalPages - 1 ? Model.CurrentPageIndex + 5 : Model.TottalPages - 1)"><i class="fas fa-angle-right"></i></button></li>
+                    <li class="page-item d-flex align-items-center text-start mx-1 pb-3"><button class="page-link" onclick="GetVacancesByPage(@Model.CurrentPageIndex + 10 <= Model.TottalPages - 1 ? Model.CurrentPageIndex + 10 : Model.TottalPages - 1)"><i class="fas fa-angle-double-right"></i></button></li>
                 }
             </ul>
         </div>
