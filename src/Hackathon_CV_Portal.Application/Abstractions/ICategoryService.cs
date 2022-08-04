@@ -6,7 +6,7 @@ namespace Hackathon_CV_Portal.Application.Abstractions
     public interface ICategoryService
     {
         Task<List<CategoryVM>> GetCategories();
-        Task AddCategory(CreateCategoryCommand command);
+        Task<int> AddCategory(CreateCategoryCommand command);
         Task DeleteCategory(int id);
     }
 }
