@@ -125,14 +125,14 @@
 
 <script type="text/javascript">
     function AddQualification() {
-        var vacancyId = window.location.href.substring(window.location.href.indexOf('=') + 1);;
-        var responsibilityName = document.getElementById("QualificationNameInput").value;
+        var vacancyId = @Model.VacancyId;
+        var QualificationName = document.getElementById("QualificationNameInput").value;
 
         $.ajax({
             type: "POST",
-            url: "/Vacancy/AddResponsibility",
+            url: "/Vacancy/AddQualification",
             data: {
-                responsibilityName: responsibilityName,
+                qualificationName: QualificationName,
                 vacancyId: vacancyId,
             },
             success: function (response) {
@@ -145,7 +145,7 @@
     }
 
     function AddResponsibility() {
-        var vacancyId = window.location.href.substring(window.location.href.indexOf('=') + 1);;
+        var vacancyId = @Model.VacancyId;
         var responsibilityName = document.getElementById("ResponsibilityNameInput").value;
 
         $.ajax({

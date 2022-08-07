@@ -9,46 +9,46 @@
 }
 
 
-        <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="categoryModalLabel">ლოკაციის დამატება</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoryModalLabel">ლოკაციის დამატება</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">კატეგორია:</label>
+                        <input id="Category" class="form-control" id="message-text"></input>
                     </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="form-group">
-                                <label for="message-text" class="col-form-label">კატეგორია:</label>
-                                <input id="Category" class="form-control" id="message-text"></input>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">ჩახურვა</button>
-                        <button type="button" onClick="AddCategory()" class="btn btn-outline-success float-right">დამატება</button>
-                    </div>
-                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">ჩახურვა</button>
+                <button type="button" onClick="AddCategory()" class="btn btn-outline-success float-right">დამატება</button>
             </div>
         </div>
+    </div>
+</div>
 
 
 <div class="container my-5 pt-5 pb-4">
     <h1 class="display-3 text-center  mb-3 animated slideInDown">კატეგორიები</h1>
     <nav aria-label="breadcrumb">
     </nav>
-    @* @if (User.HasClaim(ClaimTypes.Role, UserRole.Admin.ToString()))
-    { *@
+    @if (User.HasClaim(ClaimTypes.Role, UserRole.Admin.ToString()))
+    {
 
         <div class="form-group">
             <button type="button" class="btn btn-outline-success float-right" data-toggle="modal" data-target="#categoryModal">
-                    <i class="bi bi-plus fa-1x"></i> კატეგორიის დამატება
-                </button>
+                <i class="bi bi-plus fa-1x"></i> კატეგორიის დამატება
+            </button>
         </div>
-    @* } *@
+    }
 </div>
 
 
@@ -114,9 +114,7 @@ else
                 categoryName: category,
             },
             success: function(response) {
-                console.log(category);
-                var catDiv = document.getElementById("Categories").innerHTML +=
-                `
+                var newcategory =  `
                 <div class="job-item p-3 mb-2 bg-light text-dark">
                         <div class="row g-4">
                             <div class="col-sm-12 col-md-8 d-flex align-items-center">
@@ -125,15 +123,18 @@ else
                                     <h5 class="mb-3 text-center">`+category+`</h5>
                                 </div>
                             </div>
-                            
+
                                 <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                     <div class="d-flex mb-3">
-                                        <a class="btn btn-danger me-2" asp-controller="Category" asp-action="DeleteCategory" asp-route-id="`+response+`">წაშლა</a>
+                                        <a class="btn btn-danger me-2" href="Category/DeleteCategory/ ` + response + `">წაშლა</a>
                                     </div>
                                 </div>
                         </div>
                     </div>
                 `
+                var updatedInnerHtml = newcategory +  document.getElementById("Categories").innerHTML;
+                var catDiv = document.getElementById("Categories").innerHTML = updatedInnerHtml;
+
                 toastr.success('კატეგორია წარმატებით დაემატა');
             },
             error: function(data) {
