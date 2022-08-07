@@ -55,7 +55,7 @@ namespace Hackathon_CV_Portal.Web.Controllers.AppliedCurriculumVitaes
         }
 
         [Authorize(Roles = "User")]
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Apply(int id)
         {
             LoadUserModel();
