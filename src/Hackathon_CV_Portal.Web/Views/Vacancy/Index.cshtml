@@ -175,20 +175,23 @@
 
 <script type="text/javascript">
 
-    function ApplyVacancy(vancacyId) 
+    function ApplyVacancy(vacancyId) 
     { 
         $.ajax({
-            type: "POST",
+            type: "Get",
             url: "/AppliedCurriculumVitae/Apply",
             data: {
-                id: vancacyId,
+                id: vacancyId,
             },
             success: function(response) {
                toastr.success('თქვენი სივი წარამტებით გაიგზავნა დამსაქმებელთან');
             },
             error: function(response)
             { 
-                toastr.error('უპს... დაფიქსირდა შეცდომა')
+                if(response.status == 401)
+                    location = '@Url.Action( "login", "account")?ReturnUrl=/AppliedCurriculumVitae/Apply?id='+vacancyId;
+
+                toastr.error('უპს... დაფიქსირდა შეცდომა');
             }
 
         })
