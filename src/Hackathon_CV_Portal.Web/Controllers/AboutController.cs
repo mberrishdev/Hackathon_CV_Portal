@@ -31,31 +31,31 @@ namespace Hackathon_CV_Portal.Web.Controllers
             return View(aboutUsVM);
         }
 
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit()
-        {
-            var aboutUs = await _aboutService.GetAboutUs();
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Edit()
+        //{
+        //    var aboutUs = await _aboutService.GetAboutUs();
 
-            AboutVM aboutUsVM = new AboutVM()
-            {
-                Content = aboutUs.Content
-            };
+        //    AboutVM aboutUsVM = new AboutVM()
+        //    {
+        //        Content = aboutUs.Content
+        //    };
 
-            return View(aboutUsVM);
-        }
+        //    return View(aboutUsVM);
+        //}
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(string Content)
-        {
-            CreateAboutUsCommand command = new CreateAboutUsCommand()
-            {
-                Content = Content
-            };
+        //[HttpPost]
+        //[Authorize(Roles = "Admin")]
+        //public async Task<IActionResult> Edit(string Content)
+        //{
+        //    CreateAboutUsCommand command = new CreateAboutUsCommand()
+        //    {
+        //        Content = Content
+        //    };
 
-            await _aboutService.UpdateAboutUs(command);
+        //    await _aboutService.UpdateAboutUs(command);
 
-            return Json(new { redirectToUrl = Url.Action("Index", "About") });
-        }
+        //    return Json(new { redirectToUrl = Url.Action("Index", "About") });
+        //}
     }
 }
