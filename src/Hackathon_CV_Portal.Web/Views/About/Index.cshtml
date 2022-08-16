@@ -19,7 +19,7 @@
 
 
 <style>
-    .selectorWrappeDiv, a, p {
+    selectorWrappeDiv, a, p {
         font-size: 1.1rem;
     }
 
@@ -28,7 +28,7 @@
     }
 
     span {
-        font-size: 1.5rem;
+        font-size: 0.75rem;
     }
 
 </style>
@@ -36,20 +36,22 @@
 <div class="container">
     <div class="d-flex align-items-center justify-content-center mb-5">
         <div class="row col-10" id="selectorWrappeDiv">
-            <a id="opizari" class="border border-dark border-3 btn btn-primary col m-3 text-white d-flex align-items-center justify-content-center" onclick="changeCollege(this)"><span>კოლეჯი "ოპიზარი"</span></a>
-            <a id="ilia" class="btn btn-primary col m-3 text-white d-flex align-items-center justify-content-center" onclick="changeCollege(this)"><span>ილია წინამძღვრიშვილის სახელობის პროფესიული კოლეჯი</span> </a>
-            <a id="aisi" class="btn btn-primary col m-3 text-white d-flex align-items-center justify-content-center" onclick="changeCollege(this)"><span>კოლეჯი „აისი“</span> </a>
+            <a id="opizari" class="btn btn-white col text-dark d-flex align-items-center justify-content-center border border-primary border-2" onclick="changeCollege(this)"><span>კოლეჯი "ოპიზარი"</span></a>
+            <a id="ilia" class="btn btn-white col text-dark d-flex align-items-center justify-content-center  border border-dark border-2" onclick="changeCollege(this)"><span>ილია წინამძღვრიშვილის სახელობის პროფესიული კოლეჯი</span> </a>
+            <a id="aisi" class="btn btn-white col text-dark d-flex align-items-center justify-content-center  border border-dark border-2" onclick="changeCollege(this)"><span>კოლეჯი „აისი“</span> </a>
         </div>
     </div>
     <hr />
     <div id="contenWrapper">
         <div id="opizariwrapperDiv" class="">
             <div class="container mb-5">
-                <div class="col-12 d-flex align-items-center justify-content-center mb-5 mt-5">
-                    <img class="img-fluid" src="~/img/opizariBuilding.png" />
-                </div>
-                <div class="col-12 d-flex align-items-center justify-content-center mt-5 mb-5">
-                    <img class="img-fluid" src="~/img/opizariLogo.png" />
+                <div class="row d-flex align-items-center justify-content-center">
+                    <div class="col-12 col-sm-3 d-flex align-items-center justify-content-center mb-5 mt-5">
+                        <img class="img-fluid" src="~/img/opizariBuilding.png" />
+                    </div>
+                    <div class="col-12 col-sm-3 d-flex align-items-center justify-content-center mt-5 mb-5">
+                        <img class="img-fluid" src="~/img/opizariLogo.png" />
+                    </div>
                 </div>
                 <div class="col-12 d-flex align-items-center justify-content-center mt-5 text-white">
                     <h2>სსიპ კოლეჯი „ოპიზარი“</h2>
@@ -123,11 +125,13 @@
         </div>
         <div id="iliawrapperDiv" class="d-none">
             <div class="container mb-5">
-                <div class="col-12 d-flex align-items-center justify-content-center mb-5 mt-5">
-                    <img class="img-fluid"  src="~/img/iliaBuilding.png" />
-                </div>
-                <div class="col-12 d-flex align-items-center justify-content-center mb-5 mt-5">
-                    <img class="img-fluid"  src="~/img/iliaLogo.png" />
+                <div class="row d-flex align-items-center justify-content-center">
+                    <div class="col-12 col-sm-5 d-flex align-items-center justify-content-center mb-5 mt-5">
+                        <img class="img-fluid" src="/img/iliaBuilding.png">
+                    </div>
+                    <div class="col-12 col-sm-5 d-flex align-items-center justify-content-center mb-5 mt-5">
+                        <img class="img-fluid" src="/img/iliaLogo.png">
+                    </div>
                 </div>
                 <div class="col-12 d-flex align-items-center justify-content-center mb-4 text-white mt-5">
                     <h2>სსიპ ილია წინამძღვრიშვილის სახელობის პროფესიული კოლეჯი </h2>
@@ -197,19 +201,21 @@
                     <li>მცენარეთა დაცვის სამუშაოების წარმოება (ხორციელდება - წინამძღვრიანთკარი);</li>
 
                 </ol>
-                
+
 
             </div>
         </div>
         <div id="aisiwrapperDiv" class="d-none">
-           <div class="container mb-5">
-                <div class="col-12 d-flex align-items-center justify-content-center mb-5 mt-5">
-                    <img class="img-fluid"  src="~/img/aisiBuilding.png" />
+            <div class="container mb-5">
+                <div class="row d-flex align-items-center justify-content-center">
+                    <div class="col-12 col-sm-5 d-flex align-items-center justify-content-center mb-5 mt-5">
+                        <img class="img-fluid" src="~/img/aisiBuilding.png" />
+                    </div>
+                    <div class="col-12 col-sm-5 d-flex align-items-center justify-content-center mb-5 mt-5">
+                        <img class="img-fluid" src="~/img/aisiLogo.png" />
+                    </div>
                 </div>
-                <div class="col-12 d-flex align-items-center justify-content-center mb-5 mt-5">
-                    <img style="max-width:20rem" class="img-fluid"   src="~/img/aisiLogo.png" />
-                </div>
-                <div class="col-12 d-flex align-items-center justify-content-center mb-4 text-white mt-5">
+                <div class="col-12  d-flex align-items-center justify-content-center mb-4 text-white mt-5">
                     <h2>პროფესიული კოლეჯი „აისი“</h2>
                 </div>
 
@@ -217,7 +223,7 @@
                     <p>კოლეჯი „აისი“ კახეთის რეგიონში ლიდერი პროფესიულ საგანმანათლებლო დაწესებულებაა. კოლეჯის ისტორია 1980 წლიდან იწყება. მას შემდეგ    საზოგადოება იგებს, სწავლობს, იღებს  ამ კოლეჯიდან ინოვაციურ განათლებას.  კოლეჯი ,,აისი“, მისი სასწავლო პროცესი, კურსდამთავრებულები,  ინტელექტუალური პოტენციალი, პარტნიორებთან და კოლეგებთან ურთიერთობები, ჩვენი ისტორია - არის ერთგვარი ცოცხალი ორგანიზმი, რომელიც  მუდმივად ახლის ძიებაშია, მუდმივად ვითარდება და მუდმივად იმარჯვებს. კოლეჯი ,,აისი“ არის პიროვნულ ზრდაზე ორიენტირებული ორგანიზაცია.  სასწავლო პროცესი  მიმართულია არა მხოლოდ სტუდენტის ინფორმაციითა და ცოდნით აღჭურვისკენ, არამედ ამ ცოდნის გამოყენებისა და განვრცობის, მის საფუძველზე ახლის მოძიებისკენ. ამიტომ აქ ცოდნის მიღების პარალელურად, სტუდენტებს და მსმენელებს  ვეხმარებით ძლიერი პიროვნული მახასიათებლების განვითარებაში, მათ საზოგადოებასა და სოციალურ გარემოში ინტეგრაციაში, საკუთარი უნარებისა და სოციალური როლის გააზრებაში.    დაარსების დღიდან  კოლეჯში პროფესიული განათლება 50 000-ზე მეტმა ადამიანმა მიიღო. კოლეჯი „აისი“ მოიცავს კახეთის თითქმის მთელ რეგიონს და ძირითადად ოთხ მუნიციპალიტეტშია განთავსებული: გურჯაანის, დედოფლისწყაროს, ლაგოდეხის და ახმეტის მუნიციპალიტეტებში.</p>
                     <p>ოლეჯ „აისს“ აქვს უნივერსალური დიზაინის სასწავლო  გარემო, რომელიც ადაპტირებულია ნებისმიერი საჭიროების მქონე (სსსმ/შშმ) პირისთვის. კოლეჯი უნიკალურია მატერიალურ-ტექნიკური ბაზით, საწარმოებით, ლაბორატორიებით, სახელოსნოებით და სხვადასხვა ტიპის მეურნეობებით. კოლეჯი  წარმოადგენს თანამედროვე დონეზე რეაბილიტირებულ, ახალი ტექნოლოგიებით აღჭურვილ პროფესიულ საგანმანათლებლო დაწესებულებას. კოლეჯ „აისის“ კაჭრეთის ბაზაზე ფუნქციონირებს 300 სტუდენტზე გათვლილი კეთილმოწყობილი  სტუდენტთა პანსიონი, სადაც ყველა სტუდენტს შეუძლია იცხოვროს სახელმწიფოს დაფინანსებით. კოლეჯ „აისში“ სწავლა ხორციელდება  სახელმწიფოს სრული დაფინანსებით.</p>
                     <p>  კოლეჯ „აისის“ მიზანია, მაღალი პროფესიული სტანდარტების დანერგვა და  შრომის ბაზრის მოთხოვნების შესაბამისი მაღალკვალიფიციური სპეციალისტების მომზადება. კოლეჯის გუნდი მუდმივად ისწრაფვის განვითარებისა და სრულყოფილებისაკენ.</p>
-                
+
                     <p>კოლეჯი ახორციელებს 22 საგანამანათლებლო პროგრამას:</p>
 
                     <ol>
@@ -254,9 +260,12 @@
 <script>
     function changeCollege(element) {
         // Border removal
-        var borderClasses = "border border-dark border-3";
+        var initialBorderClass = "border-dark"
+        var borderClasses = "border-primary";
+        $(element).removeClass(initialBorderClass);
         $(element).addClass(borderClasses);
         $(element).parent().children().not("#" + element.id).removeClass(borderClasses);
+        $(element).parent().children().not("#" + element.id).addClass(initialBorderClass);
 
         // d-none (hidden) class adder
         $("#" + element.id + "wrapperDiv").removeClass("d-none")
