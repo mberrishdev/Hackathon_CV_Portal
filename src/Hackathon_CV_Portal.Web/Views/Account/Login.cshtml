@@ -76,7 +76,7 @@
                                 დაგავიწყდათ პაროლი? <a asp-controller="Account" asp-action="ForgotPassword" class="text-white-50 fw-bold">პაროლის აღდგენა</a>
                             </p>
                             <p class="mb-0">
-                                არ გაქვთ ანგარიში? <a asp-controller="Account" asp-action="Register" class="text-white-50 fw-bold">რეგისტრაცია</a>
+                                არ გაქვთ ანგარიში? <a asp-controller="Account" asp-action="Register" asp-route-returnUrl="@ViewData["ReturnUrl"]" class="text-white-50 fw-bold">რეგისტრაცია</a>
                             </p>
                         </div>
 

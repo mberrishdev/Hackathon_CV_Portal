@@ -6,25 +6,59 @@
     ViewData["Title"] = "FindJob.Ge";
 }
 
+
+
 <div class="container">
-    <div class="row justify-content-start mt-3">
+
+    <div class="container">
+        <div class="container-xxl py-5">
+            <div class="container">
+                <div class="row g-5 align-items-center">
+                    <div class="col-lg-12 wow fadeIn" data-wow-delay="0.5s">
+
+                        <h1 style="font-size:52px" class="mb-4">დასაქმება ასე მარტივი არასდროს ყოფილა</h1>
+
+                        <hr />
+
+                        <br />
+                        @if (!User.Identity.IsAuthenticated || User.IsInRole("User"))
+                        {
+                            <a asp-area="" asp-controller="Vacancy" asp-action="Index" class="btn btn-primary py-md-3 px-md-5 me-3 col-5 animated slideInLeft">იპოვე სასურველი ვაკასნია</a>
+                        }
+                        @if (!User.Identity.IsAuthenticated || User.IsInRole("Company"))
+                        {
+                            <a asp-area="" asp-controller="Vacancy" asp-action="Create" class="btn btn-secondary py-md-3 px-md-5 col-6 animated slideInRight">იპოვე სასურველი თანამშრომელი</a>
+                        }
+                        <br /><br />
+
+                        <p><i class="fa fa-check text-primary me-3"></i>სწრაფად</p>
+                        <p><i class="fa fa-check text-primary me-3"></i>მარტივად</p>
+                        <p><i class="fa fa-check text-primary me-3"></i>ხარისხიანად</p>
+
+                        <a class="btn btn-primary p-3 mt-3" asp-controller="About" asp-action="Index"> <span>გაიგე უფრო მეტი</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="container-xxl row  justify-content-start mt-3">
         <div class="col-10 col-lg-8">
-            <h1 class="display-3 text-black animated slideInDown mb-4">იპოვე თქვენთვის სასურველი სამსახური</h1>
             <div class="row">
                 @if (User.Identity.IsAuthenticated && User.IsInRole("User"))
                 {
-                    <a asp-area="" asp-controller="Vacancy" asp-action="Index" class="btn btn-primary py-md-3 px-md-5 me-3 col-5 animated slideInLeft">მოდი სამსახურს ვიპოვი</a>
+                    <a asp-area="" asp-controller="Vacancy" asp-action="Index" class="btn btn-primary py-md-3 px-md-5 me-3 col-5 animated slideInLeft">იპოვე სასურველი ვაკასნია</a>
                     <a asp-area="" asp-controller="Vacancy" asp-action="Index" asp-route-withFiL="@false" asp-route-isFav="@true" class="btn btn-secondary py-md-3 px-md-5 col-5 animated slideInRight">ფავორიტი ვაკანსიები</a>
                 }
 
                 @if (User.Identity.IsAuthenticated && User.IsInRole("Company"))
                 {
-                    <a asp-controller="Vacancy" asp-action="Index" asp-route-companyId="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))" class="btn btn-primary py-md-3 px-md-5 col-6 animated slideInRight">შენი გამოქვეყნებული ვაკანსიები</a>
+                    <a asp-controller="Vacancy" asp-action="Index" asp-route-companyId="@int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier))" class="btn btn-primary py-md-3 px-md-5 col-6 animated slideInRight">თქვენი გამოქვეყნებული ვაკანსიები</a>
                 }
             </div>
         </div>
-    </div>
+    </div>*@
 </div>
 
-@Html.Raw(Model.Content)
+
 
