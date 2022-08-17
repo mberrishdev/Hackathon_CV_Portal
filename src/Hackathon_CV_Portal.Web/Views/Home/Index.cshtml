@@ -23,7 +23,7 @@
                         <br />
                         @if (!User.Identity.IsAuthenticated || User.IsInRole("User"))
                         {
-                            <a asp-area="" asp-controller="Vacancy" asp-action="Index" class="btn btn-primary py-md-3 px-md-5 me-3 col-5 animated slideInLeft">იპოვე სასურველი ვაკასნია</a>
+                            <a asp-area="" asp-controller="Vacancy" asp-action="Index" class="btn btn-primary py-md-3 px-md-5 me-3 col-5 animated slideInLeft">იპოვე სასურველი ვაკანსია</a>
                         }
                         @if (!User.Identity.IsAuthenticated || User.IsInRole("Company"))
                         {
